@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuelidate from 'vuelidate'
 
 import routes from './routes'
 
 Vue.use(VueRouter)
-
+Vue.use(Vuelidate)
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;

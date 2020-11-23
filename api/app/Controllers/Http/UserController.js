@@ -56,7 +56,7 @@ class UserController {
       }])
     } else {
       let body = request.only(User.fillable)
-      const rol = 2 //body.roles
+      const rol = body.roles
       body.roles = [rol]
       const user = await User.create(body)
       response.send(user)

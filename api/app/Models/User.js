@@ -8,21 +8,19 @@ const Hash = use('Hash')
 
 class User extends Model {
   static get fillable() {
-    return ['name', 'lastName', 'address', 'phone', 'email', 'portfolioAddress', 'titularName', 'bankAccount', 'bankName', 'accountType','additionalData']
+    return ['birthdate', 'city','country','email','full_name','password','phone','plan_id','roles']
   }
   static fieldValidationRules() {
     const rulesUser = {
-      name: "required|string",
-      lastName: 'required|string',
-      address: 'required|string',
-      phone: 'required|string',
+      birthdate: 'date',
+      city: 'string',
+      country: 'string',
       email: 'required|email',
-      portfolioAddress:'required|string',
-      titularName: 'required|string',
-      bankAccount: 'required|string',
-      bankName: 'required|string',
-      accountType:'required|string',
-      additionalData:'required|string'
+      full_name: 'string',
+      password:'required|string',
+      phone: 'string',
+      plan_id: 'string',
+      roles: 'number'
     }
     return rulesUser
   }
