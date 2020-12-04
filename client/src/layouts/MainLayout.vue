@@ -1,14 +1,14 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn round dense flat icon="reorder" color="white"/>
-        <q-input class="q-ma-sm" dense color="white" bg-color="white" rounded outlined v-model="search" type="search" style="width: 400px">
-        <template v-slot:prepend>
+      <q-toolbar class="bg-white">
+        <q-btn round dense flat icon="reorder" color="grey"/>
+        <q-input class="q-ma-sm" dense color="white" bg-color="yellow-2" rounded outlined v-model="search" type="search" style="width: 400px">
+        <template v-slot:append>
           <q-icon name="search" />
         </template>
         <template v-slot:after>
-          <q-btn round dense flat icon="settings" color="white"/>
+          <q-btn round dense flat icon="settings" color="grey"/>
         </template>
         </q-input>
       </q-toolbar>
