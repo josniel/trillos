@@ -3,7 +3,7 @@
   <div class="column">
     <animation-transition :animation-in-type="AnimationType.BOUNCEINDOWN" :animation-out-type="AnimationType.ROLLOUT">
       <div class="animated-body row justify-center" v-show="show">
-        <img src="400x400/002.png" alt="Logo HEvent" style="width: 100%;height:260px">
+        <img src="400x400/002.png" alt="Logo" style="width: 100%;height:260px">
       </div>
     </animation-transition>
     <div class="row q-pa-sm">
@@ -76,7 +76,7 @@ export default {
           if (res) {
             this.$router.go(-1)
             this.$q.notify({
-              message: 'Ya formas parte de Hevent, Bienvenido',
+              message: 'Ya formas parte de Trillus, Bienvenido',
               color: 'positive'
             })
           }
