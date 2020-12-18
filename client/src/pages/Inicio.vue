@@ -1,12 +1,27 @@
 <template>
   <div>
-    <div class="q-mt-lg q-ml-sm q-mb-sm estilo-titulos text-bold q-pl-sm">NECESITAS AL PASO</div>
+    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">NECESITAS AL PASO</div>
+    </div>
    <botones-header/>
-  <div class="q-mt-lg text-center q-pa-md bg-secondary text-grey-1 q-ma-md" style="border-radius:12px">BANNER</div>
-  <div class="q-mt-sm q-ml-md q-mb-sm text-bold estilo-titulos q-pl-sm">SUGERENCIA</div>
-  <listado-de-sugerencia/>
-  <div class="q-mt-sm q-ml-md q-mb-sm estilo-titulos text-bold q-pl-sm">MAS POPULARES</div>
-  <listado-mas-populares/>
+   <div class="q-mt-lg text-center q-pa-md bg-secondary text-grey-1 q-ma-md" style="border-radius:12px">BANNER</div>
+   <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">SUGERENCIA</div>
+    </div>
+    <listado-de-sugerencia/>
+    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">MAS POPULARES</div>
+   </div>
+    <listado-mas-populares/>
   </div>
 </template>
 
