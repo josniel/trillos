@@ -67,6 +67,11 @@ class ProductoController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    response.send(await Producto.find(params.id))
+  }
+
+  async productoFiltrado ({ params, request, response, view }) {
+    response.send((await Producto.query().where('categoria_id', params.filtrar).fetch()).toJSON())
   }
 
   /**

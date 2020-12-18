@@ -18,9 +18,8 @@ class NecesidadController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-    let datos = await Necesidad
-    .all()
+  async index ({ request, response, auth }) {
+    let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
     response.send(datos)
   }
 
@@ -44,14 +43,14 @@ class NecesidadController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, auth }) {
     let recibir = request.all()
-    console.log(recibir)
     const validation = await validate(recibir, Necesidad.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
       let body = request.only(Necesidad.fillable)
+      body.ownerId = ((await auth.getUser()).toJSON())._id
       let guardar = await Necesidad.create(body)
       response.send(guardar)
     }

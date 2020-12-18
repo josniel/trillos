@@ -1,25 +1,31 @@
 <template>
-  <div class="row">
-   <q-card v-for="(img, index) in imagenes" class="shadow-3 bg-secondary q-ml-md" style="border-radius:12px; height: 190px; width: 150px" :key="index">
-    <q-img class="q-mr-sm" :src="img.dir" spinner-color="white" style="height: 190px; width: 150px" />
-  </q-card>
+  <div class="row q-gutter-md q-ma-sm">
+    <q-card v-for="(img, index) in productos" class="shadow-3 bg-secondary q-mt-lg" style="border-radius:12px;width: 150px" :key="index" @click="$router.push('/descripcionproducto/' + img._id)">
+      <q-img :src="baseu + '/' + img.fileName" spinner-color="white" style="height: 190px; width: 150px" />
+      <div class="text-subtitle1 text-center">{{img.name}}</div>
+    </q-card>
   </div>
 </template>
 
 <script>
+import env from '../env'
 export default {
   data () {
     return {
-      imagenes: [
-        {
-          dir: 'aciento.jpg',
-          name: 'ejemplo'
-        },
-        {
-          dir: 'caucho.jpg',
-          name: 'ejemplo'
-        }
-      ]
+      productos: [
+      ],
+      baseu: ''
+    }
+  },
+  mounted () {
+    this.baseu = env.apiUrl + '/productos_img'
+    this.cargarProductos()
+  },
+  methods: {
+    cargarProductos () {
+      this.$api.get('producto').then(res => {
+        this.productos = res
+      })
     }
   }
 }

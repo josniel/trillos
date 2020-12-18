@@ -14,10 +14,16 @@
         <q-input bg-color="primary" v-model.number="form.cantidad" type="number" dense :error="$v.form.cantidad.$error" error-message="Este campo es requerido"  @blur="$v.form.cantidad.$touch()"/>
       </div>
     </div>
-    <div class="row">
+    <div class="row items-center">
       <div class="q-mt-lg q-ml-sm q-mb-sm text-subtitle2">Agregar Foto</div>
-      <div>
-        <q-btn class="q-mt-md q-ml-lg q-mb-sm" color="primary" text-color="white" glossy unelevated icon="camera_enhance" label="Subir" />
+      <div class="q-ml-md q-mt-lg row">
+        <q-file label="Click aqui" dense class="q-pa-sm" bg-color="yellow-2" style="width:200px" v-model="file" accept=".jpg, image/*" @input="changeFile">
+          <template v-slot:before>
+            <q-avatar size="60px" square>
+              <q-img :src="imgPro ? imgPro : 'noimgpro.png'" />
+            </q-avatar>
+          </template>
+        </q-file>
       </div>
     </div>
     <div class="row justify-center q-ma-lg">
@@ -33,7 +39,9 @@ export default {
     return {
       form: {},
       categorias: [
-      ]
+      ],
+      file: null,
+      imgPro: null
     }
   },
   validations: {
@@ -42,22 +50,39 @@ export default {
       description: { required, minLength: minLength(1), maxLength: maxLength(200) },
       cantidad: { required, minLength: minLength(1), maxLength: maxLength(10) },
       categoria_id: { required }
-    }
+    },
+    file: { required }
   },
   mounted () {
     this.obtenerDatos()
   },
   methods: {
-    agregar () {
+    changeFile () {
+      if (this.file) { this.imgPro = URL.createObjectURL(this.file) }
+      console.log(this.imgPro)
+    },
+    async agregar () {
       console.log(this.form, 'aaaaaaaaaaaaaaaaaaaaaaaaa')
+      this.$q.loading.show({
+        message: 'Subiendo Producto, Por Favor Espere...'
+      })
       this.$v.$touch()
       if (!this.$v.form.$error) {
-        this.$api.post('producto', this.form).then(res => {
-          if (res) {
-            console.log('ejecutado o guardado correctamente')
-            this.$router.push('/inicio')
-          }
-        })
+        if (this.file) {
+          var formData = new FormData()
+          var files = []
+          files[0] = this.file
+          formData.append('files', files[0])
+          formData.append('dat', JSON.stringify(this.form))
+          await this.$api.post('producto', formData, {
+            headers: {
+              'Content-Type': undefined
+            }
+          }).then((res) => {
+            this.$q.loading.hide()
+            this.$router.push('/inicio_proveedor')
+          })
+        }
       }
     },
     obtenerDatos () {
@@ -92,6 +117,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.button-camera {
+  border-radius: 12px;
+  border: 2px solid $secondary;
+  width: 100px;
+  height: 50px;
+  background-color: $primary;
+  font-size: 0px;
+}
 </style>

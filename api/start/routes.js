@@ -39,18 +39,24 @@ addPrefixToGroup(
     Route.post("login", "UserController.login");
     Route.post("register", "UserController.register")
     Route.get("validate_email/:email", "UserController.validateEmail")
-    Route.get("plans", "PlanController.index")
-    Route.get("categoria", "CategoriaController.index")
-    Route.post('producto', 'ProductoController.store')
-    Route.get('producto', 'ProductoController.index')
-    Route.post('necesidad', 'NecesidadController.store')
-    Route.get('necesidad', 'NecesidadController.index')
 
+    Route.get("plans", "PlanController.index")
+    Route.get('productos_img/:file', 'UploadController.getFileByDirectoryProductos')
   })
 );
 
 addPrefixToGroup(
   Route.group(() => {
     // Insertar rutas con protección de autenticación aquí
+    Route.get("categoria", "CategoriaController.index")
+
+    Route.post('producto', 'UploadController.registrarProducto')
+    Route.get('producto', 'ProductoController.index')
+    Route.get('producto/:id', 'ProductoController.show')
+    Route.get('producto_filtrado/:filtrar', 'ProductoController.productoFiltrado')
+
+    Route.post('necesidad', 'NecesidadController.store')
+    Route.get('necesidad', 'NecesidadController.index')
+
   }).middleware("auth")
 );

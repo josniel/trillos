@@ -16,6 +16,9 @@ class Necesidad extends Model {
     }
     return rules
   }
+  creador () {
+    return this.hasOne('App/Models/User', 'ownerId', '_id')
+  }
 }
 
 module.exports = Necesidad

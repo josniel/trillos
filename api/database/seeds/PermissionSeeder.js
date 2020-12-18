@@ -16,13 +16,18 @@ const Permission = use("App/Models/Permission")
 const permissionData = [
   {
     id: 1,
-    name: 'Cliente',
-    description: 'Permiso para los botones del footer para el CLIENTE'
+    name: 'Admin',
+    description: ''
   },
   {
     id: 2,
+    name: 'Cliente',
+    description: ''
+  },
+  {
+    id: 3,
     name: 'Proveedor',
-    description: 'Permiso para los botones del footer para el PROVEEDOR'
+    description: ''
   }
 ]
 

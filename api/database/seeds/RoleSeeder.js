@@ -25,7 +25,14 @@ const roleData = [
     name: 'Cliente',
     description: 'Rol de Cliente de TRILLOS',
     permissions: [1]
-  }
+  },
+  {
+    id: 3,
+    name: 'Proveedor',
+    description: 'Rol de Proveedor de TRILLOS',
+    permissions: [1]
+  },
+  
 ]
 
 class RoleSeeder {

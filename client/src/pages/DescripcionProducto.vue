@@ -1,10 +1,10 @@
 <template>
-  <div>
-      <q-img src="aciento.jpg" spinner-color="white" style="height: 250px; width: 100%"/>
-      <q-card class="q-pa-md bg-secondary" style="border-radius:25px">
+  <div class="bg-secondary">
+      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px"/>
+      <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
           <q-item>
             <q-item-section>
-              <q-item-label class="text-subtitle1 text-weight-bolder">NOMBRE DEL PRODUCTO</q-item-label>
+              <q-item-label class="text-subtitle1 text-weight-bolder">{{form.name}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div class="row">
@@ -14,9 +14,9 @@
             </q-item-section>
           </q-item>
       </q-card>
-      <q-card class="q-pa-md shadow-up-4" style="border-radius:25px">
+      <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
-        <div class="q-pa-md">Lorem ipsum dolor sit amet consectetur, adipisicing elit. In nisi aut, non quas amet, dolorem quis veniam vitae consequuntur nemo expedita dignissimos id esse perspiciatis minus. Molestiae, repellat? Quis, dignissimos.</div>
+        <div class="q-pa-md">{{form.description}}</div>
         <div class="row justify-center q-pa-sm">
           <q-btn color="primary" label="Agregar" icon-right="local_grocery_store"/>
         </div>
@@ -25,11 +25,30 @@
 </template>
 
 <script>
+import env from '../env'
 export default {
-
+  data () {
+    return {
+      id: this.$route.params.id,
+      ruta: 'producto',
+      form: {},
+      baseu: ''
+    }
+  },
+  mounted () {
+    this.cargarProducto()
+  },
+  methods: {
+    cargarProducto () {
+      this.$api.get(`${this.ruta}/${this.id}`).then(res => {
+        this.form = res
+        this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
+      })
+    }
+  }
 }
 </script>
 
 <style>
 
-</style>>
+</style>

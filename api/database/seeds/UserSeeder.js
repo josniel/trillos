@@ -30,6 +30,13 @@ const userData = [
     password: 'trillos2020',
     full_name: 'Usuario Cliente de Ejemplo',
     roles: [2]
+  },
+  {
+    _id: '5e90d6e6f75366526a680093',
+    email: 'proveedor@trillos.com',
+    password: 'trillos2020',
+    full_name: 'Usuario Proveedor de Ejemplo',
+    roles: [3]
   }
 ]
 

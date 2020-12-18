@@ -3,6 +3,8 @@
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const User = use("App/Models/User")
+const Producto = use("App/Models/Producto")
+const { validate } = use("Validator")
 const fs = require('fs')
 var randomize = require('randomatic');
 
@@ -15,35 +17,38 @@ var randomize = require('randomatic');
  * Resourceful controller for interacting with uploads
  */
 class UploadController {
-  async registerUpload({ request }) {
+  async registrarProducto ({ request, response, auth }) {
+    let user = await auth.getUser()
     let codeFile = randomize('Aa0', 30)
-    const profilePic = request.file('files', {
-      types: ['image'],
-      size: '20mb'
-    })
     var dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
-    if (Helpers.appRoot('storage/uploads/register')) {
-      await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
-        name: codeFile,
-        overwrite: true
+    const validation = await validate(dat, Producto.fieldValidationRules())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else {
+      const profilePic = request.file('files', {
+        types: ['image'],
+        size: '20mb'
       })
-    } else {
-      mkdirp.sync(`${__dirname}/storage/Excel`)
+      if (Helpers.appRoot('storage/uploads/productos')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/productos'), {
+          name: codeFile,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+      const data = { name: profilePic.fileName }
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        dat.proveedor_id = user._id.toString()
+        dat.fileName = data.name
+        console.log(dat, 'guardar data')
+        await Producto.create(dat)
+      }
+      return data
     }
-    const data = { name: profilePic.fileName }
-    if (!profilePic.moved()) {
-      return profilePic.error()
-    } else {
-      let nombreArchivo = 'storage/uploads/register/' + data.name
-      dat.archiveName = data.name + '.' + profilePic.extname
-      dat.filePath = nombreArchivo + '.' + profilePic.extname
-      let roles = [2]
-      dat.roles = roles
-      console.log(dat, 'mostrando datos para guardar del registro')
-      await User.create(dat)
-    }
-    return data
   }
   async getFile({
     params,
@@ -188,9 +193,10 @@ class UploadController {
     return shop.fileName
   }
 
-  async getFileByDirectory ({ params, response, request }) {
-    const dir = params.dir.split('-').join('/')
-    response.download(Helpers.appRoot('storage/uploads') + `/${dir}`)
+  async getFileByDirectoryProductos({ params, response, request }) {
+    const dir = params.file
+    console.log(dir,'here')
+    response.download(Helpers.appRoot('storage/uploads/productos') + `/${dir}`)
   }
 
 

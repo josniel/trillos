@@ -15,11 +15,11 @@
     </q-header>
     <q-footer>
       <div class="bg-grey-1 text-primary shadow-2 full-width row justify-around" >
-          <q-btn icon="home" color="primary" flat round size="md"/>
-           <q-btn icon="chat" color="primary" flat round size="md"/>
+          <q-btn icon="home" color="primary" flat round size="md" to="/inicio" />
+           <q-btn icon="chat" color="primary" flat round size="md" to="/chat" />
            <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" to="/necesidades"/>
            <q-btn icon="local_grocery_store" color="primary" flat round size="md" to="/registroproductos"/>
-           <q-btn icon="settings" color="primary" flat round size="md"/>
+           <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
       </div>
     </q-footer>
     <q-page-container>
@@ -33,6 +33,7 @@ export default {
   name: 'MainLayout',
   data () {
     return {
+      search: ''
     }
   }
 }
