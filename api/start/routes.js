@@ -42,6 +42,7 @@ addPrefixToGroup(
 
     Route.get("plans", "PlanController.index")
     Route.get('productos_img/:file', 'UploadController.getFileByDirectoryProductos')
+    Route.get("test_file/:file", "UploadController.testFile")
   })
 );
 
@@ -57,6 +58,8 @@ addPrefixToGroup(
 
     Route.post('necesidad', 'NecesidadController.store')
     Route.get('necesidad', 'NecesidadController.index')
+
+    Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
 
   }).middleware("auth")
 );

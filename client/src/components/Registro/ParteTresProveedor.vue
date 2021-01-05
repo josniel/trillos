@@ -214,6 +214,7 @@ export default {
       this.$v.dias.$touch()
       if (!this.$v.form.$error && !this.$v.dias.$error) {
         if (this.tiendaFiles && this.perfilFile) {
+          this.form.cantidadArchivos = this.tiendaFiles.length
           var formData = new FormData()
           formData.append('perfilFile', this.perfilFile)
           for (let i = 0; i < this.tiendaFiles.length; i++) {
