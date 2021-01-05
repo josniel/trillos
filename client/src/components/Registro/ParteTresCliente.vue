@@ -94,6 +94,7 @@ export default {
           formData.append('perfilFile', this.perfilFile)
           formData.append('dat', JSON.stringify(this.form))
           console.log('formdata', formData)
+          console.log('form', this.form)
           await this.$api.post('register', formData, {
             headers: {
               'Content-Type': undefined
