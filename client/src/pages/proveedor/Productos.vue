@@ -1,24 +1,43 @@
 <template>
   <div>
     <div class="row justify-between q-ma-sm">
-        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Nuevo Producto" to="/registroproductos" />
+        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Reportes" />
         <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Ofertas" />
     </div>
     <q-separator inset />
-    <q-list class="q-ma-sm q-gutter-sm" v-if="data.length > 0">
+    <div class="text-h6 q-ma-md text-center">Mis Productos</div>
+    <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
-          <div class="text-h6">{{item.name}}</div>
-          <q-rating
-            v-model="ratingProduc"
-            size="sm"
-            color="yellow"
-            icon="star_border"
-            icon-selected="star"
-          />
-        </div>
-        <div class="row">
-          <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
+          <div class="col-10">
+            <div class="row justify-between">
+              <q-scroll-area
+              class="col-5"
+                horizontal
+                style="height: 27px;"
+              >
+                <div class="text-h6">{{item.name}}</div>
+              </q-scroll-area>
+              <q-rating
+              class="col-7 row justify-end"
+                v-model="ratingProduc"
+                size="sm"
+                color="amber-14"
+                icon="star_border"
+                icon-selected="star"
+              />
+            </div>
+
+            <div class="row">
+              <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
+            </div>
+          </div>
+          <q-separator vertical color="black" />
+          <div class="column">
+            <q-btn round flat color="white" size="sm" text-color="black" icon="edit" />
+            <q-separator color="black" />
+            <q-btn round flat color="white" size="sm" text-color="black" icon="delete" />
+          </div>
         </div>
       </q-card>
     </q-list>
@@ -34,7 +53,7 @@ export default {
     return {
       ratingProduc: 3,
       data: [
-        { name: 'Producto1', description: 'kdfglsdf', cantidad: 59 },
+        { name: 'Productoerwtgsergsertgydrfgdr1', description: 'kdfglsdf', cantidad: 59 },
         { name: 'Producto2', description: 'kdfglsdf', cantidad: 59 }
       ]
     }
