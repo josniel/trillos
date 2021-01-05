@@ -1,36 +1,42 @@
 <template>
   <q-tab-panels v-model="panel" animated>
-    <q-tab-panel name="parte_uno" style="padding:0px">
-      <parte-uno :form="form" :panel="panelito" />
+    <q-tab-panel name="parte_uno" >
+      <ParteUno :form="form" :panel="panelito" />
+      <q-btn style="width: 100%" color="primary" push label="Volver" glossy @click="$router.push('/login')" />
     </q-tab-panel>
-    <q-tab-panel name="parte_dos">
+    <q-tab-panel name="parte_dos" >
       <div class="column">
-        <parte-dos :form="form" :panel="panelito" />
-        <q-btn color="primary" push label="Volver" glossy @click="panelito.panel = 'parte_uno'" />
+        <ParteDos :form="form" :panel="panelito" />
       </div>
     </q-tab-panel>
     <q-tab-panel name="parte_tres_proveedor_datos">
       <div class="column">
-        <parte-tres :form="form" :panel="panelito" />
+        <ParteTresProv :form="form" :panel="panelito" />
       </div>
     </q-tab-panel>
-    <q-tab-panel name="parte_cuatro_proveedor_planes">
+    <q-tab-panel name="parte_tres_cliente_datos">
       <div class="column">
-        <parte-cuatro :form="form" :panel="panelito" />
+        <ParteTresClient :form="form" :panel="panelito" />
       </div>
     </q-tab-panel>
+    <!-- <q-tab-panel name="parte_cuatro_proveedor_planes">
+      <div class="column">
+        <ParteCuatro :form="form" :panel="panelito" />
+      </div>
+    </q-tab-panel> -->
   </q-tab-panels>
 </template>
 
 <script>
 import ParteUno from '../components/Registro/ParteUno'
 import ParteDos from '../components/Registro/ParteDos'
-import ParteTres from '../components/Registro/ParteTresProveedor'
-import ParteCuatro from '../components/Registro/ParteCuatroProveedor'
+import ParteTresProv from '../components/Registro/ParteTresProveedor'
+import ParteTresClient from '../components/Registro/ParteTresCliente'
+/* import ParteCuatro from '../components/Registro/ParteCuatroProveedor' */
 import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
 export default {
   components: {
-    ParteUno, ParteDos, ParteTres, ParteCuatro
+    ParteUno, ParteDos, ParteTresProv, ParteTresClient
   },
   computed: {
     panel () {

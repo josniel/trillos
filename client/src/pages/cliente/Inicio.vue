@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import BotonesHeader from '../components/BotonesHeader.vue'
-import ListadoDeSugerencia from '../components/ListadoDeSugerencia.vue'
-import ListadoMasPopulares from '../components/ListadoMasPopulares.vue'
+import BotonesHeader from '../../components/BotonesHeader.vue'
+import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
+import ListadoMasPopulares from '../../components/ListadoMasPopulares.vue'
 export default {
   components: {
     BotonesHeader,

@@ -1,67 +1,96 @@
 <template>
   <div style="height:100%;width:100%">
-    <q-card class="absolute-center" style="width: 400px; min-width:300px">
-      <q-card-section class="q-ma-lg">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="q-pa-md row justify-center">
+    <div class="absolute-center" style="width:80%; height:85%">
+      <div class="absolute-center full-width">
+          <div class="q-mb-md row justify-center">
             <q-img :src="url" spinner-color="white" style="height: 140px; max-width: 150px"/>
           </div>
-          <div class="col-xs-11 col-sm-6 col-md-6 col-lg-6 q-pb-md">
-            <q-input v-model="form.email" type="email" hint="Ingrese su email" />
+          <div class="row justify-center">
+            <q-input
+              style="width: 100%"
+              autofocus
+              outlined
+              v-model="form.email"
+              :error="$v.form.email.$error"
+              error-message="Este campo es requerido"
+              @blur="$v.form.email.$touch()"
+              type="email"
+              placeholder="Ingrese su email" />
           </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <q-input v-model="form.password" :type="isPwd ? 'password' : 'text'" hint="Ingrese su contraseña">
-              <template v-slot:append>
-                <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
-              </template>
+          <div class="row justify-center q-mt-md">
+            <q-input
+              style="width: 100%"
+              autofocus
+              outlined
+              v-model="form.password"
+              :error="$v.form.password.$error"
+              error-message="Este campo es requerido"
+              @blur="$v.form.password.$touch()"
+              :type="isPwd ? 'password' : 'text'"
+              placeholder="Ingrese su contraseña">
+                <template v-slot:append>
+                  <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
+                </template>
             </q-input>
           </div>
           <div class="q-mt-md row justify-center">
-              <q-btn color="primary" text-color="white" label="Iniciar Sesión" @click="loguear"/>
+              <q-btn color="primary" text-color="white" label="Iniciar Sesión" :loading="loading" @click="loguear()"/>
           </div>
           <div class="q-mt-sm row justify-center">
               <q-btn flat color="primary" label="Registrarse aqui" @click="$router.push('/registro')"/>
           </div>
-        </div>
-      </q-card-section>
-    </q-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
+import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      loading: false,
       form: {
       },
       isPwd: true,
       url: 'favicon.ico'
     }
   },
+  validations: {
+    form: {
+      email: { required },
+      password: { required }
+    }
+  },
   methods: {
     ...mapMutations('generals', ['login']),
     loguear () {
-      this.$q.loading.show({
-        message: 'Iniciando sesión'
-      })
-      this.$api.post('login', this.form).then(res => {
-        if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
-          // const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
-          console.log(res, 'client')
-          if (res.TRI_SESSION_INFO.roles[0] === 3) {
-            this.login(res)
-            this.$router.push('/inicio_proveedor')
+      this.$v.$touch()
+      if (!this.$v.form.$error) {
+        this.loading = true
+        this.$q.loading.show({
+          message: 'Iniciando sesión'
+        })
+        this.$api.post('login', this.form).then(res => {
+          if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
+            // const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
+            console.log(res, 'client')
+            if (res.TRI_SESSION_INFO.roles[0] === 3) {
+              this.login(res)
+              this.$router.push('/productos')
+            } else if (res.TRI_SESSION_INFO.roles[0] === 2) {
+              this.login(res)
+              this.$router.push('/inicio_cliente')
+            } else {}
           } else {
-            this.login(res)
-            this.$router.push('/inicio')
+            console.log('error de ususario')
+            this.loading = false
+            this.$q.loading.hide()
           }
-        } else {
-          console.log('error de ususario')
-          // this.loading = false
-        }
-        this.$q.loading.hide()
-      })
+          this.$q.loading.hide()
+        })
+      }
     }
   }
 

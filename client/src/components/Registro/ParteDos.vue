@@ -1,75 +1,107 @@
 <template>
-  <div>
-    <div class="text-h6 text-center text-grey-9" >¿Eres Un?</div>
-    <q-list>
-      <q-card v-ripple style="border-radius:10px;width:100%" class="q-pa-sm q-mt-md q-mb-md" v-for="(item, index) in options_roles" :key="index" @click="onSubmit(item.value)" >
-        <q-item>
-          <q-item-section avatar>
-            <q-avatar :icon="item.icon" class="text-primary" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-primary text-h6">{{item.label}}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon name="arrow_right" color="primary" />
-          </q-item-section>
-        </q-item>
-      </q-card>
-    </q-list>
-  </div>
+<q-card class="q-ma-md q-pa-md">
+  <div class="column">
+    <animation-transition :animation-in-type="AnimationType.BOUNCEINDOWN" :animation-out-type="AnimationType.ROLLOUT">
+      <div class="animated-body row justify-center" v-show="show">
+        <img src="favicon.ico" alt="Logo" style="width: 90%;height:260px">
+      </div>
+    </animation-transition>
+    <div class="row q-pa-sm">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-input
+          v-model="form.email"
+          type="email"
+          label="Email"
+          outlined
+          dense
+          error-message="Ingrese un email válido"
+          :error="$v.form.email.$error"
+          @blur="$v.form.email.$touch()"
+        />
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-input
+          v-model="password"
+          label="Contraseña"
+          outlined
+          dense
+          error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
+          :error="$v.password.$error"
+          @blur="$v.password.$touch()"
+        />
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-input
+          v-model="repeatPassword"
+          label="Repita su Contraseña"
+          outlined
+          dense
+          error-message="Las contraseñas deben ser iguales"
+          :error="$v.repeatPassword.$error"
+          @blur="$v.repeatPassword.$touch()"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <q-btn @click="$router.push('/login')" color="primary" push label="Ya Tengo Cuenta" flat/>
+      <q-space />
+      <q-btn @click="next()" color="primary" push label="Siguiente" glossy/>
+    </div>
+    </div>
+</q-card>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+import { AnimationVueTransition, AnimationVueTransitionType } from 'vue-animation'
 export default {
+  components: {
+    [AnimationVueTransition.name]: AnimationVueTransition
+  },
   props: ['form', 'panel'],
   data () {
     return {
-      options_roles: [
-        { label: 'Proveedor', value: 3, icon: 'store' },
-        { label: 'Cliente', value: 2, icon: 'person' }
-      ]
+      repeatPassword: '',
+      password: '',
+      AnimationType: AnimationVueTransitionType,
+      show: false
     }
   },
+  validations () {
+    return {
+      form: {
+        full_name: { required, maxLength: maxLength(40) },
+        email: { required, email }
+      },
+      repeatPassword: { sameAsPassword: sameAs('password') },
+      password: { required, maxLength: maxLength(256), minLength: minLength(6) }
+    }
+  },
+  mounted () {
+    this.show = true
+  },
   methods: {
-    ...mapMutations('generals', ['login']),
-    async onSubmit (rol) {
-      this.$q.loading.show()
-      this.form.roles = rol
-      console.log(this.form, 'formmmm parte dos')
-      if (rol === 2) { // Es Cliente
-        await this.$api.post('register', this.form).then(res => {
-          this.$q.loading.hide()
-          if (res) {
-            this.$q.notify({
-              message: 'Ya formas parte de Trillos, Bienvenido',
-              color: 'positive'
-            })
-            this.loguear()
-          }
-        })
-      } else if (rol === 3) { // Es proveedor
-        this.panel.panel = 'parte_tres_proveedor_datos'
-      }
-      this.$q.loading.hide()
-    },
-    loguear () {
-      this.$api.post('login', this.form).then(res => {
-        if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
-          const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
-          if (!client) {
-            this.login(res)
-            this.$router.push('/inicio')
-          } else {
-            this.login(res)
-            this.$router.push('/inicio')
-          }
-        } else {
-          console.log('error de ususario')
-          // this.loading = false
+    async next () {
+      if (this.panel.panel === 'parte_dos') {
+        this.$q.loading.show()
+        this.$v.form.email.$touch()
+        this.$v.password.$touch()
+        this.$v.repeatPassword.$touch()
+        if (!this.$v.form.email.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+          await this.$api.get('validate_email/' + this.form.email).then(res => {
+            if (res) {
+              this.form.password = this.password
+              console.log('form parte 2', this.form)
+              if (this.form.roles === 2) {
+                this.panel.panel = 'parte_tres_cliente_datos'
+              } else if (this.form.roles === 3) {
+                this.panel.panel = 'parte_tres_proveedor_datos'
+              }
+            }
+          })
         }
         this.$q.loading.hide()
-      })
+      }
     }
   }
 }
