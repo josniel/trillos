@@ -199,6 +199,11 @@ class UploadController {
     response.download(Helpers.appRoot('storage/uploads/productos') + `/${dir}`)
   }
 
+  async testFile ({ params, response, request }) {
+    console.log(params.file, 'params file')
+    response.download(Helpers.appRoot('storage/uploads/tiendaFiles/' + params.file))
+  }
+
 
 }
 

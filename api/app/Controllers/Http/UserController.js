@@ -1,5 +1,9 @@
 "use strict";
 
+const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const fs = require('fs')
+var randomize = require('randomatic');
 const User = use("App/Models/User")
 const Role = use("App/Models/Role")
 const { validate } = use("Validator")
@@ -47,7 +51,11 @@ class UserController {
    */
   async register({ request, response }) {
     let requestAll = request.all()
-    const validation = await validate(request.all(), User.fieldValidationRules())
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+    console.log(dat, 'datt2')
+
+    const validation = await validate(dat, User.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else if (((await User.where({email: requestAll.email}).fetch()).toJSON()).length) {
@@ -55,10 +63,48 @@ class UserController {
         message: 'Correo ya registrado en el sistema!'
       }])
     } else {
-      let body = request.only(User.fillable)
+      let images = []
+      if (dat.cantidadArchivos && dat.cantidadArchivos > 0) {
+        for (let i = 0; i < dat.cantidadArchivos; i++) {
+          console.log(i, 'i CICLO')
+          let codeFile = randomize('Aa0', 30)
+          const profilePic = request.file('tiendaFiles_' + i, {
+            types: ['image'],
+            size: '20mb'
+          })
+          if (Helpers.appRoot('storage/uploads/tiendaFiles')) {
+            await profilePic.move(Helpers.appRoot('storage/uploads/tiendaFiles'), {
+              name: codeFile,
+              overwrite: true
+            })
+          } else {
+            mkdirp.sync(`${__dirname}/storage/Excel`)
+          }
+          images.push(profilePic.fileName)
+        }
+        console.log(images, 'images')
+      }
+      let body = dat
       const rol = body.roles
       body.roles = [rol]
+      if (images.length > 0) {
+        body.tiendaFiles = images
+        delete body.cantidadArchivos
+      }
       const user = await User.create(body)
+      const profilePic = request.file('perfilFile', {
+        types: ['image'],
+        size: '20mb'
+      })
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: 'perfil' + user._id.toString(),
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+      const data = { name: profilePic.fileName }
       response.send(user)
     }
   }
