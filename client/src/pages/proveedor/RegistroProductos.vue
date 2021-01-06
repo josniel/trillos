@@ -1,10 +1,10 @@
 <template>
   <div class="q-pa-md">
-    <div class="q-mt-sm q-mb-sm text-subtitle2 q-pl-sm">Registro de Productos</div>
+    <div class="q-mt-sm q-mb-sm text-subtitle2 q-pl-sm">{{edit ? 'Modificar Producto' : 'Nuevo Producto'}}</div>
     <q-input rounded outlined bg-color="yellow-2" v-model="form.name" label="Nombre" dense :error="$v.form.name.$error" error-message="Este campo es requerido"  @blur="$v.form.name.$touch()"/>
     <div class="q-mt-lg q-mb-sm text-subtitle2 q-pl-sm">Categoria</div>
     <div class="row justify-around">
-      <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(index)" />
+      <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(item)" />
     </div>
     <div class="q-mt-lg q-mb-sm text-subtitle2 q-pl-sm">Descripcion</div>
       <q-input rounded outlined bg-color="yellow-2" v-model="form.description" type="textarea" :error="$v.form.description.$error" error-message="Este campo es requerido"  @blur="$v.form.description.$touch()"/>
@@ -17,7 +17,7 @@
     <div class="row items-center">
       <div class="q-mt-lg q-ml-sm q-mb-sm text-subtitle2">Agregar Foto</div>
       <div class="q-ml-md q-mt-lg row">
-        <q-file label="Click aqui" dense class="q-pa-sm" bg-color="yellow-2" style="width:200px" v-model="file" accept=".jpg, image/*" @input="changeFile">
+        <q-file label="Click aqui" dense class="q-pa-sm" bg-color="yellow-2" style="width:200px" v-model="file" accept=".jpg, image/*" @input="changeFile" :error="$v.file.$error" error-message="Este campo es requerido"  @blur="$v.file.$touch()">
           <template v-slot:before>
             <q-avatar size="60px" square>
               <q-img :src="imgPro ? imgPro : 'noimgpro.png'" />
@@ -27,19 +27,22 @@
       </div>
     </div>
     <div class="row justify-center q-ma-lg">
-      <q-btn color="primary" text-color="white" label="Agregar Producto" @click="agregar"/>
+      <q-btn color="primary" text-color="white" :label="edit ? 'Actualizar Producto' : 'Agregar Producto'" @click="!edit ? agregar() : actualizarProducto()"/>
     </div>
   </div>
 </template>
 
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import env from '../../env'
 export default {
   data () {
     return {
+      id: '',
+      edit: false,
       form: {},
-      categorias: [
-      ],
+      categorias: [],
+      categoria_id: '',
       file: null,
       imgPro: null
     }
@@ -48,41 +51,81 @@ export default {
     form: {
       name: { required, minLength: minLength(3), maxLength: maxLength(50) },
       description: { required, minLength: minLength(1), maxLength: maxLength(200) },
-      cantidad: { required, minLength: minLength(1), maxLength: maxLength(10) },
-      categoria_id: { required }
+      cantidad: { required, minLength: minLength(1), maxLength: maxLength(10) }
     },
+    categoria_id: { required },
     file: { required }
   },
   mounted () {
     this.obtenerDatos()
+    if (this.$route.params.id) {
+      this.edit = true
+      this.id = this.$route.params.id
+      this.$api.get('producto/' + this.id).then(res => {
+        if (res) {
+          this.form = res
+          console.log('form traido', this.form)
+          for (let i = 0; i < this.categorias.length; i++) {
+            if (this.categorias[i]._id === this.form.categoria_id) {
+              this.categorias[i].select = true
+            } else {
+              this.categorias[i].select = false
+            }
+          }
+          this.imgPro = env.apiUrl + '/productos_img/' + this.form.fileName
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    }
   },
   methods: {
     changeFile () {
       if (this.file) { this.imgPro = URL.createObjectURL(this.file) }
-      console.log(this.imgPro)
     },
     async agregar () {
-      console.log(this.form, 'aaaaaaaaaaaaaaaaaaaaaaaaa')
-      this.$q.loading.show({
-        message: 'Subiendo Producto, Por Favor Espere...'
-      })
+      console.log('form', this.form)
       this.$v.$touch()
+      if (this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
+        this.$q.dialog({
+          message: 'Debes seleccionar una categoria',
+          persistent: true
+        }).onOk(() => {
+        })
+      }
+      if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
+        this.form.categoria_id = this.categoria_id
+        this.$q.loading.show({
+          message: 'Subiendo Producto, Por Favor Espere...'
+        })
+        var formData = new FormData()
+        formData.append('files', this.file)
+        formData.append('dat', JSON.stringify(this.form))
+        await this.$api.post('producto', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          this.$q.loading.hide()
+          this.$router.push('/productos')
+        })
+      }
+    },
+    async actualizarProducto () {
+      this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        this.form.categoria_id = this.categoria_id
+        /* this.$q.loading.show({
+          message: 'Actualizando Producto, Por Favor Espere...'
+        }) */
+        var formData = new FormData()
         if (this.file) {
-          var formData = new FormData()
-          var files = []
-          files[0] = this.file
-          formData.append('files', files[0])
-          formData.append('dat', JSON.stringify(this.form))
-          await this.$api.post('producto', formData, {
-            headers: {
-              'Content-Type': undefined
-            }
-          }).then((res) => {
-            this.$q.loading.hide()
-            this.$router.push('/inicio_proveedor')
-          })
+          this.form.buscar_file = true
+          formData.append('files', this.file)
+        } else {
+          this.form.buscar_file = false
         }
+        formData.append('dat', JSON.stringify(this.form))
       }
     },
     obtenerDatos () {
@@ -96,21 +139,17 @@ export default {
               select: false
             }
           })
-          console.log(this.categorias, 'Aqui estan todas las categorias')
         }
       })
     },
-    seleccionarcategoria (index) {
-      var categoria = this.categorias
-      var seleccionado = categoria.findIndex(v => v.select === true)
-      console.log(categoria)
-      if (seleccionado === -1) {
-        categoria[index].select = true
-        this.form.categoria_id = categoria[index]._id
-      } else {
-        categoria[seleccionado].select = false
-        categoria[index].select = true
-        this.form.categoria_id = categoria[index]._id
+    seleccionarcategoria (item) {
+      this.categoria_id = item._id
+      for (let i = 0; i < this.categorias.length; i++) {
+        if (this.categorias[i]._id === this.categoria_id) {
+          this.categorias[i].select = true
+        } else {
+          this.categorias[i].select = false
+        }
       }
     }
   }

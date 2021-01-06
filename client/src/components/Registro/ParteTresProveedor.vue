@@ -41,9 +41,10 @@
           </div>
         <q-card style="width: 100%" class="shadow-11 q-mt-sm">
           <q-card-section>
+            <div>Agrega fotos de la tienda</div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
             <div class="col-10">
-                <q-file style="width: 100%" @input="tienda" accept=".jpg, image/*" multiple append v-model="tiendaFiles" hint="Pueden ser hasta 5 fotos" outlined label="Agrega fotos de la tienda">
+                <q-file style="width: 100%" @input="tienda" accept=".jpg, image/*" multiple append v-model="tiendaFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
                 </q-file>
             </div>
             <div class="col-2 row justify-center">

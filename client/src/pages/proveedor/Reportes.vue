@@ -1,39 +1,38 @@
 <template>
   <div>
-    <div class="row justify-between q-ma-sm">
-        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Reportes" to="/reportes_proveedor" />
-        <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Ofertas" />
+    <div class="row justify-around q-ma-sm">
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semanal" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Mensual" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semestral" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Anual" />
     </div>
     <q-separator inset />
-    <div class="text-h6 q-ma-md text-center">Mis Productos</div>
+    <div class="text-h6 q-ma-md text-center">Mis Clientes</div>
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
-          <div class="col-4">
-            <q-img :src="baseu + '/' + item.fileName" style="width:100px" />
+          <div class="col-3">
+            <q-avatar size="70px">
+                <q-img :src="baseu + '/' + item.fileName" style="width:70px" />
+            </q-avatar>
           </div>
-          <div class="col-6">
+          <div class="col-9">
               <q-scroll-area
                 horizontal
                 style="height: 27px; width:100%"
               >
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
-              <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
               <q-rating
-              disable
                 v-model="ratingProduc"
                 size="sm"
                 color="amber-14"
                 icon="star_border"
                 icon-selected="star"
               />
-          </div>
-          <q-separator vertical color="black" />
-          <div class="column">
-            <q-btn round flat color="white" size="sm" text-color="black" icon="edit" @click="editProduct(item._id)" />
-            <q-separator color="black" />
-            <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteProduct(item._id)" />
+              <div class="row justify-end">
+                  <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Ver" to="/chat" />
+              </div>
           </div>
         </div>
       </q-card>
@@ -67,13 +66,10 @@ export default {
         }
       })
     },
-    editProduct (id) {
-      this.$router.push('/editar_producto/' + id)
-    },
-    deleteProduct (id) {
+    rechazar () {
       this.$q.dialog({
         title: 'Confirma',
-        message: '¿Seguro deseas eliminar este producto?',
+        message: '¿Seguro deseas rechazar el contrato?',
         cancel: true,
         persistent: true
       }).onOk(() => {
