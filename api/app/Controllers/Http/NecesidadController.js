@@ -1,6 +1,10 @@
 'use strict'
 const Necesidad = use("App/Models/Necesidad")
 const { validate } = use("Validator")
+const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const fs = require('fs')
+var randomize = require('randomatic');
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -45,11 +49,37 @@ class NecesidadController {
    */
   async store ({ request, response, auth }) {
     let recibir = request.all()
-    const validation = await validate(recibir, Necesidad.fieldValidationRules())
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+    console.log(dat, 'datt2')
+    const validation = await validate(dat, Necesidad.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
-      let body = request.only(Necesidad.fillable)
+      let images = []
+      if (dat.cantidadArchivos && dat.cantidadArchivos > 0) {
+        for (let i = 0; i < dat.cantidadArchivos; i++) {
+          let codeFile = randomize('Aa0', 30)
+          const profilePic = request.file('necesidadFiles_' + i, {
+            types: ['image'],
+            size: '20mb'
+          })
+          if (Helpers.appRoot('storage/uploads/necesidades')) {
+            await profilePic.move(Helpers.appRoot('storage/uploads/necesidades'), {
+              name: codeFile,
+              overwrite: true
+            })
+          } else {
+            mkdirp.sync(`${__dirname}/storage/Excel`)
+          }
+          images.push(profilePic.fileName)
+        }
+        console.log(images, 'images')
+        dat.images = images
+      }
+      let body = dat
+      delete body.cantidadArchivos
+
       body.ownerId = ((await auth.getUser()).toJSON())._id
       let guardar = await Necesidad.create(body)
       response.send(guardar)

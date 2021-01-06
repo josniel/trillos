@@ -26,28 +26,30 @@ class UploadController {
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
     } else {
-      const profilePic = request.file('files', {
-        types: ['image'],
-        size: '20mb'
-      })
-      if (Helpers.appRoot('storage/uploads/productos')) {
-        await profilePic.move(Helpers.appRoot('storage/uploads/productos'), {
-          name: codeFile,
-          overwrite: true
+      if (dat.buscar_file) {
+        const profilePic = request.file('files', {
+          types: ['image'],
+          size: '20mb'
         })
-      } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
+        if (Helpers.appRoot('storage/uploads/productos')) {
+          await profilePic.move(Helpers.appRoot('storage/uploads/productos'), {
+            name: codeFile,
+            overwrite: true
+          })
+        } else {
+          mkdirp.sync(`${__dirname}/storage/Excel`)
+        }
+        const data = { name: profilePic.fileName }
+        if (!profilePic.moved()) {
+          return profilePic.error()
+        } else {
+          dat.fileName = data.name
+          delete dat.buscar_file
+        }
       }
-      const data = { name: profilePic.fileName }
-      if (!profilePic.moved()) {
-        return profilePic.error()
-      } else {
-        dat.proveedor_id = user._id.toString()
-        dat.fileName = data.name
-        console.log(dat, 'guardar data')
-        await Producto.create(dat)
-      }
-      return data
+      dat.proveedor_id = user._id.toString()
+      let guardar = await Producto.create(dat)
+      response.send(guardar)
     }
   }
   async getFile({

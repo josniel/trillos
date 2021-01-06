@@ -1,6 +1,10 @@
 'use strict'
 const Producto = use("App/Models/Producto")
 const { validate } = use("Validator")
+const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const fs = require('fs')
+var randomize = require('randomatic');
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -95,6 +99,36 @@ class ProductoController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+    const validation = await validate(dat, Producto.fieldValidationRules())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else {
+      if (dat.buscar_file) {
+        const profilePic = request.file('files', {
+          types: ['image'],
+          size: '20mb'
+        })
+        if (Helpers.appRoot('storage/uploads/productos')) {
+          await profilePic.move(Helpers.appRoot('storage/uploads/productos'), {
+            name: dat.fileName,
+            overwrite: true
+          })
+        } else {
+          mkdirp.sync(`${__dirname}/storage/Excel`)
+        }
+        const data = { name: profilePic.fileName }
+        if (!profilePic.moved()) {
+          return profilePic.error()
+        } else {
+          dat.fileName = data.name
+          delete dat.buscar_file
+        }
+      } else { dat.fileName = '' }
+      let modificar = await Producto.query().where('_id', params.id).update(dat)
+      response.send(modificar)
+    }
   }
 
   /**
