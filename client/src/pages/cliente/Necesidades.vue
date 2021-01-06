@@ -1,6 +1,7 @@
 <template>
  <div>
     <div class="q-mt-lg q-ml-md q-mb-sm text-bold q-pl-sm">¿QUE NECESITAS?</div>
+    <q-input class="q-mx-md" rounded outlined bg-color="yellow-2" v-model="form.name" label="Nombre de la solicitud" dense :error="$v.form.name.$error" error-message="Este campo es requerido"  @blur="$v.form.name.$touch()"/>
     <div class="row justify-around">
       <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(index)" />
     </div>
@@ -34,6 +35,7 @@ export default {
   },
   validations: {
     form: {
+      name: { required },
       categoria_id: { required },
       ciudad: { required },
       necesidad: { required },

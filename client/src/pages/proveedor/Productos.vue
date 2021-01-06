@@ -10,7 +10,7 @@
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
           <div class="col-4">
-            <q-img :src="baseu + '/' + item.fileName" style="width:100px" />
+            <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'favicon.ico'" style="width:100px" />
           </div>
           <div class="col-6">
               <q-scroll-area

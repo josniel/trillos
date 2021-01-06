@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import BotonesHeader from '../components/BotonesHeader.vue'
-import ListadoDeSugerencia from '../components/ListadoDeSugerencia.vue'
+import BotonesHeader from '../../components/BotonesHeader.vue'
+import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
 export default {
   components: { BotonesHeader, ListadoDeSugerencia },
   data () {

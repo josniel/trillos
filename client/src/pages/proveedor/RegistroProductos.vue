@@ -17,7 +17,7 @@
     <div class="row items-center">
       <div class="q-mt-lg q-ml-sm q-mb-sm text-subtitle2">Agregar Foto</div>
       <div class="q-ml-md q-mt-lg row">
-        <q-file label="Click aqui" dense class="q-pa-sm" bg-color="yellow-2" style="width:200px" v-model="file" accept=".jpg, image/*" @input="changeFile" :error="$v.file.$error" error-message="Este campo es requerido"  @blur="$v.file.$touch()">
+        <q-file label="Click aqui" hint="Opcional" dense class="q-pa-sm" bg-color="yellow-2" style="width:200px" v-model="file" accept=".jpg, image/*" @input="changeFile" >
           <template v-slot:before>
             <q-avatar size="60px" square>
               <q-img :src="imgPro ? imgPro : 'noimgpro.png'" />
@@ -53,8 +53,7 @@ export default {
       description: { required, minLength: minLength(1), maxLength: maxLength(200) },
       cantidad: { required, minLength: minLength(1), maxLength: maxLength(10) }
     },
-    categoria_id: { required },
-    file: { required }
+    categoria_id: { required }
   },
   mounted () {
     this.obtenerDatos()
@@ -86,20 +85,25 @@ export default {
     async agregar () {
       console.log('form', this.form)
       this.$v.$touch()
-      if (this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
+      if (this.$v.categoria_id.$error && !this.$v.form.$error) {
         this.$q.dialog({
           message: 'Debes seleccionar una categoria',
           persistent: true
         }).onOk(() => {
         })
       }
-      if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
+      if (!this.$v.categoria_id.$error && !this.$v.form.$error) {
         this.form.categoria_id = this.categoria_id
         this.$q.loading.show({
           message: 'Subiendo Producto, Por Favor Espere...'
         })
         var formData = new FormData()
-        formData.append('files', this.file)
+        if (this.file) {
+          this.form.buscar_file = true
+          formData.append('files', this.file)
+        } else {
+          this.form.buscar_file = false
+        }
         formData.append('dat', JSON.stringify(this.form))
         await this.$api.post('producto', formData, {
           headers: {
