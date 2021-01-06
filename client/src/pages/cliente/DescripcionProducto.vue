@@ -1,10 +1,15 @@
 <template>
   <div class="bg-secondary">
-      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px"/>
+      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+        <div class="row justify-end bg-transparent" style="width:100%">
+          <q-icon :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
+        </div>
+      </q-img>
       <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
           <q-item>
             <q-item-section>
-              <q-item-label class="text-subtitle1 text-weight-bolder">{{form.name}}</q-item-label>
+              <q-item-label class="text-h6 text-weight-bolder">{{form.name}}</q-item-label>
+              <q-item-label class="text-subtitle2">Cantidad: {{form.cantidad}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div class="row">
@@ -31,6 +36,7 @@ export default {
     return {
       id: this.$route.params.id,
       ruta: 'producto',
+      fav: false,
       form: {},
       baseu: ''
     }
