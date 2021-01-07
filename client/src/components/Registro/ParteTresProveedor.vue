@@ -214,30 +214,30 @@ export default {
       this.$v.form.$touch()
       this.$v.dias.$touch()
       if (!this.$v.form.$error && !this.$v.dias.$error) {
-        if (this.tiendaFiles && this.perfilFile) {
-          this.form.cantidadArchivos = this.tiendaFiles.length
-          var formData = new FormData()
+        var formData = new FormData()
+        if (this.perfilFile) {
           formData.append('perfilFile', this.perfilFile)
+        }
+        if (this.tiendaFiles) {
+          this.form.cantidadArchivos = this.tiendaFiles.length
           for (let i = 0; i < this.tiendaFiles.length; i++) {
             formData.append('tiendaFiles_' + i, this.tiendaFiles[i])
           }
-          formData.append('dat', JSON.stringify(this.form))
-          console.log('formdata', formData)
-          console.log('form', this.form)
-          await this.$api.post('register', formData, {
-            headers: {
-              'Content-Type': undefined
-            }
-          }).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Ya formas parte de Trillos, Bienvenido',
-                color: 'positive'
-              })
-              this.loguear()
-            }
-          })
         }
+        formData.append('dat', JSON.stringify(this.form))
+        await this.$api.post('register', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Ya formas parte de Trillos, Bienvenido',
+              color: 'positive'
+            })
+            this.loguear()
+          }
+        })
       }
     },
     loguear () {

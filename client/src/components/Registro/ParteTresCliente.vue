@@ -89,26 +89,24 @@ export default {
     async next () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
+        var formData = new FormData()
         if (this.perfilFile) {
-          var formData = new FormData()
           formData.append('perfilFile', this.perfilFile)
-          formData.append('dat', JSON.stringify(this.form))
-          console.log('formdata', formData)
-          console.log('form', this.form)
-          await this.$api.post('register', formData, {
-            headers: {
-              'Content-Type': undefined
-            }
-          }).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Ya formas parte de Trillos, Bienvenido',
-                color: 'positive'
-              })
-              this.loguear()
-            }
-          })
         }
+        formData.append('dat', JSON.stringify(this.form))
+        await this.$api.post('register', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Ya formas parte de Trillos, Bienvenido',
+              color: 'positive'
+            })
+            this.loguear()
+          }
+        })
       }
     },
     loguear () {

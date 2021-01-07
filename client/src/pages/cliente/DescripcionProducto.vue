@@ -1,8 +1,14 @@
 <template>
   <div class="bg-secondary">
       <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-        <div class="row justify-end bg-transparent" style="width:100%">
-          <q-icon :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
+        <div class="row justify-between bg-transparent" style="width:100%">
+          <q-card @click="$router.push('/tienda')" class="shadow-13 bg-grey-2 q-pa-xs col-10" style="border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+            <div class="row">
+            <q-icon class="col-2" name="store" color="primary" style="font-size: 2rem;"/>
+            <div class="col-10 text-h6 text-black text-weight-bolder">Nombre de Tienda</div>
+          </div>
+          </q-card>
+          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
       </q-img>
       <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
@@ -49,6 +55,7 @@ export default {
       this.$api.get(`${this.ruta}/${this.id}`).then(res => {
         this.form = res
         this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
+        console.log('producto', this.form)
       })
     }
   }

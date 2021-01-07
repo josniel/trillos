@@ -8,6 +8,30 @@
     </div>
     <q-input class="q-mx-md q-mt-md" outlined autogrow bg-color="yellow-2" v-model="form.direction" label="Ingrese Dirección" dense :error="$v.form.direction.$error" error-message="Este campo es requerido" @blur="$v.form.direction.$touch()" />
     <q-select class="q-mx-md q-mb-md" color="grey" bg-color="yellow-2" filled v-model="form.necesidad" :options="options" label="Tiempo del servicio" dense :error="$v.form.necesidad.$error" error-message="Este campo es requerido" @blur="$v.form.necesidad.$touch()"/>
+    <q-card class="shadow-13 q-ma-md bg-yellow-2" style="border-radius:25px">
+          <q-card-section>
+            <div>Fotos referentes a tu solicitud (Opcional)</div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
+            <div class="col-10">
+                <q-file style="width: 100%" @input="filesSolicitud" accept=".jpg, image/*" multiple append v-model="solicitudFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
+                </q-file>
+            </div>
+            <div class="col-2 row justify-center">
+              <q-icon size="md" name="close" color="negative" @click="solicitudFiles = [], imgSolicitud = []" class="cursor-pointer" />
+            </div>
+          </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="row justify-around">
+            <div v-if="!imgSolicitud.length" class="text-subtitle2 text-grey text-center">No hay fotos de la tienda</div>
+            <div v-else v-ripple v-for="(item, index) in imgSolicitud" :key="index" class="col-5 q-pa-sm">
+              <q-img
+                :src="imgSolicitud.length > 0 ? imgSolicitud[index] : 'favicon.ico'"
+                style="width:120px"
+              />
+            </div>
+          </q-card-section>
+    </q-card>
     <q-card class="q-pa-md shadow-up-4" style="border-radius:25px">
       <div class="text-h6 q-ml-md q-pt-xs">Descripción</div>
       <q-input borderless v-model="form.descripcion" type="textarea" />
@@ -20,10 +44,13 @@
 
 <script>
 import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import env from '../../env'
 export default {
   data () {
     return {
       form: {},
+      solicitudFiles: [],
+      imgSolicitud: [],
       file: null,
       categoria_id: '',
       options: [
@@ -44,8 +71,18 @@ export default {
   },
   mounted () {
     this.obtenerDatos()
+    this.baseu = env.apiUrl
   },
   methods: {
+    filesSolicitud () {
+      var img = ''
+      var cc = {}
+      if (this.solicitudFiles.length > 0) {
+        cc = this.solicitudFiles[this.solicitudFiles.length - 1]
+        img = URL.createObjectURL(cc)
+        this.imgSolicitud.push(img)
+      }
+    },
     agregar () {
       console.log('form', this.form)
       this.$v.$touch()
@@ -62,9 +99,11 @@ export default {
           message: 'Subiendo Solicitud, Por Favor Espere...'
         })
         var formData = new FormData()
-        if (this.file) {
+        if (this.solicitudFiles.length > 0) {
+          for (let i = 0; i < this.solicitudFiles.length; i++) {
+            formData.append('solicitudFiles_' + i, this.solicitudFiles[i])
+          }
           this.form.buscar_file = true
-          formData.append('files', this.file)
         } else {
           this.form.buscar_file = false
         }

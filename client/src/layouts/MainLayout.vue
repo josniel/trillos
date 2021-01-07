@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="bg-white">
-        <q-btn round dense flat icon="settings" color="grey"/>
+        <q-btn round dense flat icon="keyboard_backspace" color="primary" @click="$router.go(-1)"/>
         <q-input class="q-ma-sm" dense color="white" bg-color="yellow-2" rounded outlined v-model="search" type="search" style="width: 400px">
         <template v-slot:append>
           <q-icon name="search" />
@@ -16,8 +16,8 @@
     <q-footer>
       <div class="bg-grey-1 text-primary shadow-2 full-width row justify-around" >
           <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : ''" />
-           <q-btn icon="chat" color="primary" flat round size="md" to="/chat" />
-           <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/necesidades' : rol === 3 ? '/registroproductos' : ''"/>
+           <q-btn icon="chat" color="primary" flat round size="md" to="/mis_chats" />
+           <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
            <q-btn icon="local_grocery_store" color="primary" flat round size="md" :to="rol === 2 ? '' : rol === 3 ? '/productos' : ''"/>
            <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
       </div>
