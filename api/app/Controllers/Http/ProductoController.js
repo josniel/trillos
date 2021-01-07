@@ -106,13 +106,14 @@ class ProductoController {
       response.unprocessableEntity(validation.messages())
     } else {
       if (dat.buscar_file) {
+        let codeFile = randomize('Aa0', 30)
         const profilePic = request.file('files', {
           types: ['image'],
           size: '20mb'
         })
         if (Helpers.appRoot('storage/uploads/productos')) {
           await profilePic.move(Helpers.appRoot('storage/uploads/productos'), {
-            name: dat.fileName,
+            name: codeFile,
             overwrite: true
           })
         } else {
@@ -125,7 +126,7 @@ class ProductoController {
           dat.fileName = data.name
           delete dat.buscar_file
         }
-      } else { dat.fileName = '' }
+      } else { }
       let modificar = await Producto.query().where('_id', params.id).update(dat)
       response.send(modificar)
     }
