@@ -76,10 +76,11 @@ class NecesidadController {
         }
         console.log(images, 'images')
         dat.images = images
+
       }
       let body = dat
       delete body.cantidadArchivos
-
+      delete body.buscar_file
       body.ownerId = ((await auth.getUser()).toJSON())._id
       let guardar = await Necesidad.create(body)
       response.send(guardar)

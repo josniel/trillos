@@ -10,7 +10,6 @@ class Necesidad extends Model {
   static fieldValidationRules() {
     const rules = {
       categoria_id: "string",
-      ciudad: "required|string",
       necesidad: "required|string",
       descripcion: "required|string"
     }
