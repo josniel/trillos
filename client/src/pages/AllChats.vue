@@ -7,7 +7,7 @@
         <div class="row justify-between">
           <div class="col-3">
             <q-avatar size="70px">
-                <q-img :src="baseu + '/' + item.fileName" style="width:70px" />
+                <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:70px" />
             </q-avatar>
           </div>
           <div class="col-9">

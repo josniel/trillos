@@ -16,10 +16,10 @@
     <q-footer>
       <div class="bg-grey-1 text-primary shadow-2 full-width row justify-around" >
           <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : ''" />
-           <q-btn icon="chat" color="primary" flat round size="md" to="/mis_chats" />
-           <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
-           <q-btn icon="local_grocery_store" color="primary" flat round size="md" :to="rol === 2 ? '' : rol === 3 ? '/productos' : ''"/>
-           <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
+          <q-btn icon="local_grocery_store" color="primary" flat round size="md" :to="rol === 2 ? '/solicitudes' : rol === 3 ? '/productos' : ''"/>
+          <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
+          <q-btn icon="chat" color="primary" flat round size="md" to="/mis_chats" />
+          <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
       </div>
     </q-footer>
     <q-page-container>

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-secondary">
-      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+      <q-img :src="form.fileName ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
         <div class="row justify-between bg-transparent" style="width:100%">
           <q-card @click="$router.push('/tienda')" class="shadow-13 bg-grey-2 q-pa-xs col-10" style="border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
             <div class="row">

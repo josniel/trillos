@@ -78,7 +78,7 @@ export default {
             console.log(res, 'client')
             if (res.TRI_SESSION_INFO.roles[0] === 3) {
               this.login(res)
-              this.$router.push('/productos')
+              this.$router.push('/inicio_proveedor')
             } else if (res.TRI_SESSION_INFO.roles[0] === 2) {
               this.login(res)
               this.$router.push('/inicio_cliente')

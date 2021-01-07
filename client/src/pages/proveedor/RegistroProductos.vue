@@ -136,6 +136,7 @@ export default {
             'Content-Type': undefined
           }
         }).then((res) => {
+          console.log('res', res)
           this.$q.loading.hide()
           this.$router.push('/productos')
         })

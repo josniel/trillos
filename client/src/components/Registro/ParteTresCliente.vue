@@ -34,7 +34,9 @@
             :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()" />
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" hint="Foto de Perfil" outlined label="" @input="test">
+            <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" hint="Foto de Perfil" outlined label="" @input="test"
+              error-message="Debes subir una foto de perfil"
+              :error="$v.perfilFile.$error" @blur="$v.perfilFile.$touch()">
               <template v-slot:prepend>
                 <q-avatar>
                   <img  :src="imgPerfil ? imgPerfil : 'favicon.ico'">
@@ -55,6 +57,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import env from '../../env'
 export default {
@@ -75,24 +78,25 @@ export default {
         direccion: { required },
         run_dni: { required },
         phone: { required }
-      }
+      },
+      perfilFile: { required }
     }
   },
   mounted () {
     this.baseu = env.apiUrl
   },
   methods: {
+    ...mapMutations('generals', ['login']),
     test () {
       console.log(this.perfilFile, 'file')
       if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
     },
     async next () {
       this.$v.form.$touch()
-      if (!this.$v.form.$error) {
+      this.$v.perfilFile.$touch()
+      if (!this.$v.form.$error && !this.$v.perfilFile.$error) {
         var formData = new FormData()
-        if (this.perfilFile) {
-          formData.append('perfilFile', this.perfilFile)
-        }
+        formData.append('perfilFile', this.perfilFile)
         formData.append('dat', JSON.stringify(this.form))
         await this.$api.post('register', formData, {
           headers: {
@@ -116,10 +120,10 @@ export default {
           const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
           if (!client) {
             this.login(res)
-            this.$router.push('/inicio')
+            this.$router.push('/inicio_proveedor')
           } else {
             this.login(res)
-            this.$router.push('/inicio')
+            this.$router.push('/inicio_cliente')
           }
         } else {
           console.log('error de ususario')
