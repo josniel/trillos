@@ -7,7 +7,7 @@
           :error="$v.form.full_name.$error" @blur="$v.form.full_name.$touch()"
         />
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mb-md">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-select v-model="form.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese País de la empresa" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -22,13 +22,15 @@
           :error="$v.form.run_dni.$error" @blur="$v.form.run_dni.$touch()"
         />
       </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mb-md">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <q-input v-model="form.phone" type="tel" label="Telefono" outlined dense
             error-message="Ingrese Teléfono de la empresa"
             :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()" />
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" hint="Foto perfil de la tienda" outlined label="" @input="test">
+            <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" outlined label="Foto perfil de la tienda" @input="test"
+              error-message="Ingrese una foto de perfil para su tienda"
+              :error="$v.perfilFile.$error" @blur="$v.perfilFile.$touch()">
               <template v-slot:prepend>
                 <q-avatar>
                   <img  :src="imgPerfil ? imgPerfil : 'favicon.ico'">
@@ -44,7 +46,7 @@
             <div>Agrega fotos de la tienda</div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
             <div class="col-10">
-                <q-file style="width: 100%" @input="tienda" accept=".jpg, image/*" multiple append v-model="tiendaFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
+                <q-file max-files="5" style="width: 100%" @input="tienda" accept=".jpg, image/*" multiple append v-model="tiendaFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
                 </q-file>
             </div>
             <div class="col-2 row justify-center">
@@ -134,6 +136,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { required, maxLength } from 'vuelidate/lib/validators'
 import env from '../../env'
 export default {
@@ -189,13 +192,15 @@ export default {
         hora_inicio: { required },
         hora_fin: { required }
       },
-      dias: { required }
+      dias: { required },
+      perfilFile: { required }
     }
   },
   mounted () {
     this.baseu = env.apiUrl
   },
   methods: {
+    ...mapMutations('generals', ['login']),
     tienda () {
       var img = ''
       var cc = {}
@@ -213,17 +218,16 @@ export default {
       this.form.dias = this.dias
       this.$v.form.$touch()
       this.$v.dias.$touch()
-      if (!this.$v.form.$error && !this.$v.dias.$error) {
-        if (this.tiendaFiles && this.perfilFile) {
-          this.form.cantidadArchivos = this.tiendaFiles.length
+      this.$v.perfilFile.$touch()
+      if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error) {
+        if (this.tiendaFiles.length > 0) {
           var formData = new FormData()
           formData.append('perfilFile', this.perfilFile)
+          this.form.cantidadArchivos = this.tiendaFiles.length
           for (let i = 0; i < this.tiendaFiles.length; i++) {
             formData.append('tiendaFiles_' + i, this.tiendaFiles[i])
           }
           formData.append('dat', JSON.stringify(this.form))
-          console.log('formdata', formData)
-          console.log('form', this.form)
           await this.$api.post('register', formData, {
             headers: {
               'Content-Type': undefined
@@ -237,6 +241,12 @@ export default {
               this.loguear()
             }
           })
+        } else {
+          this.$q.dialog({
+            message: 'Debes subir fotos de la tienda.',
+            persistent: true
+          }).onOk(() => {
+          })
         }
       }
     },
@@ -247,10 +257,10 @@ export default {
           const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
           if (!client) {
             this.login(res)
-            this.$router.push('/inicio')
+            this.$router.push('/inicio_proveedor')
           } else {
             this.login(res)
-            this.$router.push('/inicio')
+            this.$router.push('/inicio_cliente')
           }
         } else {
           console.log('error de ususario')

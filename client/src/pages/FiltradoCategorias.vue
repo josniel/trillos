@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import env from '../../env'
+import env from '../env'
 export default {
   data () {
     return {

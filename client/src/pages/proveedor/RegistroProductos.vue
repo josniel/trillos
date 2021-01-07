@@ -63,6 +63,7 @@ export default {
       this.$api.get('producto/' + this.id).then(res => {
         if (res) {
           this.form = res
+          this.categoria_id = this.form.categoria_id
           console.log('form traido', this.form)
           for (let i = 0; i < this.categorias.length; i++) {
             if (this.categorias[i]._id === this.form.categoria_id) {
@@ -119,9 +120,9 @@ export default {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.form.categoria_id = this.categoria_id
-        /* this.$q.loading.show({
+        this.$q.loading.show({
           message: 'Actualizando Producto, Por Favor Espere...'
-        }) */
+        })
         var formData = new FormData()
         if (this.file) {
           this.form.buscar_file = true
@@ -130,6 +131,15 @@ export default {
           this.form.buscar_file = false
         }
         formData.append('dat', JSON.stringify(this.form))
+        await this.$api.put('producto/' + this.id, formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log('res', res)
+          this.$q.loading.hide()
+          this.$router.push('/productos')
+        })
       }
     },
     obtenerDatos () {
