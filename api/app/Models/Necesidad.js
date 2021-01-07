@@ -11,7 +11,8 @@ class Necesidad extends Model {
     const rules = {
       categoria_id: "string",
       necesidad: "required|string",
-      descripcion: "required|string"
+      descripcion: "required|string",
+      direction: "string"
     }
     return rules
   }
