@@ -8,9 +8,9 @@
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
-          <div class="col-4">
+          <!-- <div class="col-4">
             <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:100px" />
-          </div>
+          </div> -->
           <div class="col-6">
               <q-scroll-area
                 horizontal
@@ -18,7 +18,7 @@
               >
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
-              <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
+              <div>Cantidad: <strong>{{item.descripcion}}</strong></div>
           </div>
           <q-separator vertical color="black" />
           <div class="column">

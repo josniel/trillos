@@ -5,14 +5,14 @@ const Model = use('Model')
 
 class Necesidad extends Model {
   static get fillable() {
-    return ['categoria_id','ciudad','necesidad','descripcion']
+    return ['categoria_id','direccion','necesidad','descripcion']
   }
   static fieldValidationRules() {
     const rules = {
       categoria_id: "string",
       necesidad: "required|string",
       descripcion: "required|string",
-      direction: "string"
+      direccion: "string"
     }
     return rules
   }
