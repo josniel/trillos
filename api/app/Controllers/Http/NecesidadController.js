@@ -60,7 +60,7 @@ class NecesidadController {
       if (dat.cantidadArchivos && dat.cantidadArchivos > 0) {
         for (let i = 0; i < dat.cantidadArchivos; i++) {
           let codeFile = randomize('Aa0', 30)
-          const profilePic = request.file('necesidadFiles_' + i, {
+          const profilePic = request.file('solicitudFiles_' + i, {
             types: ['image'],
             size: '20mb'
           })
@@ -81,7 +81,8 @@ class NecesidadController {
       let body = dat
       delete body.cantidadArchivos
       body.ownerId = ((await auth.getUser()).toJSON())._id
-      let guardar = await Necesidad.create(body)
+      console.log(body, 'body')
+      let guardar = body // await Necesidad.create(body)
       response.send(guardar)
     }
   }
