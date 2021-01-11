@@ -142,7 +142,7 @@ class ProductoController {
    */
   async destroy ({ params, request, response }) {
     let producto = await Producto.find(params.id)
-    fs.unlink(`storage/uploads/${producto.fileName}`, (err) => {
+    fs.unlink(`storage/uploads/productos/${producto.fileName}`, (err) => {
       if (err) throw err;
       console.log(`${producto.fileName} Eliminado por el Cliente`);
     });
