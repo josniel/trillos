@@ -6,14 +6,14 @@
     <div class="row justify-around">
       <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(item)" />
     </div>
-    <q-input class="q-mx-md q-mt-md" outlined autogrow bg-color="yellow-2" v-model="form.direction" label="Ingrese Dirección" dense :error="$v.form.direction.$error" error-message="Este campo es requerido" @blur="$v.form.direction.$touch()" />
+    <q-input class="q-mx-md q-mt-md" outlined autogrow bg-color="yellow-2" v-model="form.direccion" label="Ingrese Dirección" dense :error="$v.form.direccion.$error" error-message="Este campo es requerido" @blur="$v.form.direccion.$touch()" />
     <q-select class="q-mx-md q-mb-md" color="grey" bg-color="yellow-2" filled v-model="form.necesidad" :options="options" label="Tiempo del servicio" dense :error="$v.form.necesidad.$error" error-message="Este campo es requerido" @blur="$v.form.necesidad.$touch()"/>
     <q-card class="shadow-13 q-ma-md bg-yellow-2" style="border-radius:25px">
           <q-card-section>
             <div>Fotos referentes a tu solicitud (Opcional)</div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
             <div class="col-10">
-                <q-file style="width: 100%" @input="filesSolicitud" accept=".jpg, image/*" multiple append v-model="solicitudFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
+                <q-file max-files="5" style="width: 100%" @input="filesSolicitud" accept=".jpg, image/*" multiple append v-model="solicitudFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ" :error="$v.solicitudFiles.$error" error-message="Este campo es requerido" @blur="$v.solicitudFiles.$touch()">
                 </q-file>
             </div>
             <div class="col-2 row justify-center">
@@ -63,11 +63,12 @@ export default {
   validations: {
     form: {
       name: { required },
-      direction: { required },
+      direccion: { required },
       necesidad: { required },
       descripcion: { required, minLength: minLength(1), maxLength: maxLength(200) }
     },
-    categoria_id: { required }
+    categoria_id: { required },
+    solicitudFiles: { required }
   },
   mounted () {
     this.obtenerDatos()
@@ -85,28 +86,23 @@ export default {
     },
     agregar () {
       this.$v.$touch()
-      if (this.$v.categoria_id.$error && !this.$v.form.$error) {
+      if (this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.solicitudFiles.$error) {
         this.$q.dialog({
           message: 'Debes seleccionar una categoria',
           persistent: true
         }).onOk(() => {
         })
       }
-      if (!this.$v.categoria_id.$error && !this.$v.form.$error) {
+      if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.solicitudFiles.$error) {
         this.form.categoria_id = this.categoria_id
         console.log('form', this.form)
         this.$q.loading.show({
           message: 'Subiendo Solicitud, Por Favor Espere...'
         })
         var formData = new FormData()
-        if (this.solicitudFiles.length > 0) {
-          this.form.cantidadArchivos = this.tiendaFiles.length
-          for (let i = 0; i < this.solicitudFiles.length; i++) {
-            formData.append('solicitudFiles_' + i, this.solicitudFiles[i])
-          }
-          this.form.buscar_file = true
-        } else {
-          this.form.buscar_file = false
+        this.form.cantidadArchivos = this.solicitudFiles.length
+        for (let i = 0; i < this.solicitudFiles.length; i++) {
+          formData.append('solicitudFiles_' + i, this.solicitudFiles[i])
         }
         formData.append('dat', JSON.stringify(this.form))
         this.$api.post('necesidad', formData, {

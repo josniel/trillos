@@ -1,48 +1,48 @@
 <template>
   <div>
-    <div class="text-caption q-ma-md q-mb-none"> Necesidades de Clientes </div>
-    <q-separator inset />
-    <q-list class="q-ma-sm q-gutter-sm" v-if="data.length > 0">
-      <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple @click="$router.push('/chat')">
-        <div class="column">
-          <div>Cliente: <strong>{{item.creador.full_name}}</strong></div>
-          <div>Ciudad: <strong>{{item.ciudad}}</strong></div>
-          <div>Necesidad: <strong>{{item.necesidad}}</strong></div>
-          <div>Descripción: <strong>{{item.descripcion}}</strong></div>
-        </div>
-      </q-card>
-    </q-list>
-    <q-card v-else class="shadow-2 flex flex-center q-pa-xl" style="width:400px; min-width:300px; max-width:400px">
-      <div class="text-center text-subtitle1">Actualmente sin necesidades...</div>
-    </q-card>
+    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">NECESITAS AL PASO</div>
+    </div>
+   <botones-header/>
+   <div class="q-mt-lg text-center q-pa-md bg-secondary text-grey-1 q-ma-md" style="border-radius:12px">BANNER</div>
+   <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">SUGERENCIA</div>
+    </div>
+    <listado-de-sugerencia/>
+    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <div class="text-bold q-ml-sm">MAS POPULARES</div>
+   </div>
+    <listado-mas-populares/>
   </div>
 </template>
 
 <script>
+import BotonesHeader from '../../components/BotonesHeader.vue'
+import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
+import ListadoMasPopulares from '../../components/ListadoMasPopulares.vue'
 export default {
-  data () {
-    return {
-      data: []
-    }
-  },
-  mounted () {
-    this.cargarNecesidades()
-  },
-  methods: {
-    cargarNecesidades () {
-      this.$api.get('necesidad').then(res => {
-        this.data = res
-        console.log(res, 'res data')
-      })
-    }
+  components: {
+    BotonesHeader,
+    ListadoDeSugerencia,
+    ListadoMasPopulares
   }
 }
 </script>
 
-<style scoped lang="scss">
-.bordes {
-  border-left: 6px solid $primary;
-  background-color: rgba(202, 202, 202, 0.474);
-  border-radius: 12px;
+<style>
+.estilo-titulos {
+  background-color: #fff599;
+  width: 230px;
+  border-radius: 12px
 }
-</style>
+
+</style>>

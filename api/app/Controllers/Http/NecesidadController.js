@@ -80,7 +80,6 @@ class NecesidadController {
       }
       let body = dat
       delete body.cantidadArchivos
-      delete body.buscar_file
       body.ownerId = ((await auth.getUser()).toJSON())._id
       console.log(body, 'body')
       let guardar = body // await Necesidad.create(body)
