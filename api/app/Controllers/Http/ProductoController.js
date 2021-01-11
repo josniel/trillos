@@ -27,6 +27,11 @@ class ProductoController {
     response.send(datos)
   }
 
+  async productoByProveedor ({ request, response, params }) {
+    let datos = (await Producto.query().where({proveedor_id: params.proveedor_id}).fetch()).toJSON()
+    response.send(datos)
+  }
+
   /**
    * Render a form to be used for creating a new producto.
    * GET productos/create
