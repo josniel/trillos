@@ -125,6 +125,11 @@ class UserController {
     response.send(user)
   }
 
+  async userById({ params, response }) {
+    const user = User.find(params.find)
+    response.send(user)
+  }
+
   async update({ request, response, params }) {
     let modelo = {
       accion: 'update',

@@ -62,6 +62,7 @@ addPrefixToGroup(
     Route.get('necesidad', 'NecesidadController.index')
 
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
+    Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
 
   }).middleware("auth")
 );
