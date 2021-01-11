@@ -126,7 +126,7 @@ class UserController {
   }
 
   async userById({ params, response }) {
-    const user = User.find(params.id)
+    const user = await User.find(params.id)
     response.send(user)
   }
 
