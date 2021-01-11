@@ -82,7 +82,7 @@ class NecesidadController {
       delete body.cantidadArchivos
       body.ownerId = ((await auth.getUser()).toJSON())._id
       console.log(body, 'body')
-      let guardar = body // await Necesidad.create(body)
+      let guardar = await Necesidad.create(body)
       response.send(guardar)
     }
   }
