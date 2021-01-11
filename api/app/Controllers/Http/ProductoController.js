@@ -141,6 +141,13 @@ class ProductoController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    let producto = await Producto.find(params.id)
+    fs.unlink(`storage/uploads/${producto.fileName}`, (err) => {
+      if (err) throw err;
+      console.log(`${producto.fileName} Eliminado por el Cliente`);
+    });
+    await producto.delete()
+    response.send(producto)
   }
 }
 

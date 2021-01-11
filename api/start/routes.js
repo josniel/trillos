@@ -53,6 +53,7 @@ addPrefixToGroup(
 
     Route.post('producto', 'UploadController.registrarProducto')
     Route.put('producto/:id', 'ProductoController.update')
+    Route.delete('producto/:id', 'ProductoController.destroy')
     Route.get('producto', 'ProductoController.index')
     Route.get('producto/:id', 'ProductoController.show')
     Route.get('producto_filtrado/:filtrar', 'ProductoController.productoFiltrado')
