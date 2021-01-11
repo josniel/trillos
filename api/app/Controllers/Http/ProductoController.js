@@ -23,8 +23,7 @@ class ProductoController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    let datos = await Producto
-    .all()
+    let datos = (await Producto.query().where({}).limit(10).fetch()).toJSON()
     response.send(datos)
   }
 
