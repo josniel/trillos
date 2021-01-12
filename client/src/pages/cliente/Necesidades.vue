@@ -50,10 +50,15 @@ export default {
   },
   methods: {
     getSolicitudes () {
-      this.$api.get('necesidad').then(v => {
-        if (v) {
-          this.data = v
-          console.log('solicitudes', this.data)
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          var id = res._id
+          this.$api.get('necesidad_by_user_id/' + id).then(v => {
+            if (v) {
+              this.data = v
+              console.log('solicitudes', this.data)
+            }
+          })
         }
       })
     },
