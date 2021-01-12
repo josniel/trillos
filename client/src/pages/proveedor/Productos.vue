@@ -15,7 +15,7 @@
           <div class="col-6">
               <q-scroll-area
                 horizontal
-                style="height: 27px; width:100%"
+                style="height: 33px; width:100%"
               >
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
@@ -60,10 +60,15 @@ export default {
   },
   methods: {
     getProduct () {
-      this.$api.get('producto').then(v => {
-        if (v) {
-          this.data = v
-          console.log('productos', this.data)
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          var id = res._id
+          this.$api.get('producto_by_proveedor/' + id).then(v => {
+            if (v) {
+              this.data = v
+              console.log('productos', this.data)
+            }
+          })
         }
       })
     },
@@ -77,7 +82,15 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        // console.log('aceptar')
+        this.$api.delete('producto/' + id).then(res => {
+          if (res) {
+            this.$q.notify({
+              color: 'positive',
+              message: 'Eliminado Correctamente'
+            })
+            this.getProduct()
+          }
+        })
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       })

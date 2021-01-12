@@ -152,31 +152,31 @@ export default {
       options_dias: [
         {
           label: 'Lunes',
-          value: 'Lunes'
+          value: 1
         },
         {
           label: 'Martes',
-          value: 'Martes'
+          value: 2
         },
         {
           label: 'Miércoles',
-          value: 'Miercoles'
+          value: 3
         },
         {
           label: 'Jueves',
-          value: 'Jueves'
+          value: 4
         },
         {
           label: 'Viernes',
-          value: 'Viernes'
+          value: 5
         },
         {
           label: 'Sábado',
-          value: 'Sabado'
+          value: 6
         },
         {
           label: 'Domingo',
-          value: 'Domingo'
+          value: 0
         }
       ]
     }

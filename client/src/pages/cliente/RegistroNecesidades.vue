@@ -51,7 +51,9 @@ export default {
       form: {},
       solicitudFiles: [],
       imgSolicitud: [],
+      id: '',
       file: null,
+      edit: false,
       categoria_id: '',
       options: [
         'Urgente (1 a 3 Horas)', 'Medio (5 a 24 Horas)', 'Programado (2 días en adelante)'
@@ -73,6 +75,26 @@ export default {
   mounted () {
     this.obtenerDatos()
     this.baseu = env.apiUrl
+    /* if (this.$route.params.id) {
+      this.edit = true
+      this.id = this.$route.params.id
+      this.$api.get('necesidad/' + this.id).then(res => {
+        if (res) {
+          this.form = res
+          this.categoria_id = this.form.categoria_id
+          console.log('form traido', this.form)
+          for (let i = 0; i < this.categorias.length; i++) {
+            if (this.categorias[i]._id === this.form.categoria_id) {
+              this.categorias[i].select = true
+            } else {
+              this.categorias[i].select = false
+            }
+          }
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    } */
   },
   methods: {
     filesSolicitud () {
@@ -111,7 +133,7 @@ export default {
           }
         }).then(res => {
           this.$q.loading.hide()
-          this.$router.push('/inicio_cliente')
+          this.$router.push('/solicitudes')
         })
       }
     },

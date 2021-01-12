@@ -14,7 +14,7 @@
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <div class="text-bold q-ml-sm">SUGERENCIA</div>
     </div>
-    <listado-de-sugerencia/>
+    <listado-de-sugerencia :data="data" ruta="cliente" />
     <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
@@ -34,6 +34,21 @@ export default {
     BotonesHeader,
     ListadoDeSugerencia,
     ListadoMasPopulares
+  },
+  data () {
+    return {
+      data: {}
+    }
+  },
+  mounted () {
+    this.cargarProductos()
+  },
+  methods: {
+    cargarProductos () {
+      this.$api.get('producto').then(res => {
+        this.data = res
+      })
+    }
   }
 }
 </script>

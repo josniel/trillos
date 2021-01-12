@@ -17,7 +17,7 @@ const routes = [
       { path: '/solicitudes', component: () => import('pages/cliente/Necesidades.vue') },
       { path: '/registronecesidades', component: () => import('pages/cliente/RegistroNecesidades.vue') },
       { path: '/editar_solicitud/:id', component: () => import('pages/cliente/RegistroNecesidades.vue') },
-      { path: '/tienda', component: () => import('pages/cliente/Tienda.vue') },
+      { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue') },
       { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue') },
       // Generales
       { path: '/chat', component: () => import('pages/Chat.vue') },
