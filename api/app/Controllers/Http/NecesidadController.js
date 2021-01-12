@@ -23,7 +23,12 @@ class NecesidadController {
    * @param {View} ctx.view
    */
   async index ({ request, response, auth }) {
-    let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
+    let datos = (await Necesidad.query().where({}).with('creador').limit(10).fetch()).toJSON()
+    response.send(datos)
+  }
+
+  async necesidadByUserId ({ response, params }) {
+    let datos = (await Necesidad.query().where({ownerId: params.user_id}).with('creador').fetch()).toJSON()
     response.send(datos)
   }
 
