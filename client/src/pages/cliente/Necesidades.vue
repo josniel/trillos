@@ -8,9 +8,9 @@
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
-          <!-- <div class="col-4">
-            <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:100px" />
-          </div> -->
+          <div class="col-4">
+            <q-img :src="item.images ? baseu + '/' + item.images[0] : 'noimgpro.png'" style="width:100px" />
+          </div>
           <div class="col-6">
               <q-scroll-area
                 horizontal
@@ -46,7 +46,7 @@ export default {
   },
   mounted () {
     this.getSolicitudes()
-    this.baseu = env.apiUrl + '/productos_img'
+    this.baseu = env.apiUrl + '/necesidad_img'
   },
   methods: {
     getSolicitudes () {

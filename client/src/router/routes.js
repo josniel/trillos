@@ -11,6 +11,7 @@ const routes = [
       { path: '/productos', component: () => import('pages/proveedor/Productos.vue') },
       { path: '/registroproductos', component: () => import('pages/proveedor/RegistroProductos.vue') },
       { path: '/editar_producto/:id', component: () => import('pages/proveedor/RegistroProductos.vue') },
+      { path: '/descripcionsolicitud/:id', component: () => import('pages/proveedor/DescripcionNecesidad.vue') },
       // Cliente
       { path: '/inicio_cliente', component: () => import('pages/cliente/Inicio.vue') },
       { path: '/reportes_cliente', component: () => import('pages/cliente/Reportes.vue') },

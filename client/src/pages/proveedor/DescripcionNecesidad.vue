@@ -1,13 +1,8 @@
 <template>
   <div class="bg-secondary" style="height:100%">
-      <q-img :src="form.fileName ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-        <div class="row justify-between bg-transparent" style="width:100%">
-          <q-card @click="$router.push('/tienda')" class="shadow-13 bg-grey-2 q-pa-xs col-10" style="border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-            <div class="row">
-            <q-icon class="col-2" name="store" color="primary" style="font-size: 2rem;"/>
-            <div class="col-10 text-h6 text-black text-weight-bolder">{{infoProv.full_name ? infoProv.full_name : 'Nombre de Tienda'}}</div>
-          </div>
-          </q-card>
+      <q-img :src="form.images ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+        <div class="row justify-between" style="width:100%">
+            <div class="col-10 text-h6 text-white text-weight-bolder">{{infoClient.full_name ? infoClient.full_name + ' ' + infoClient.last_name : 'Nombre de Cliente'}}</div>
           <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
       </q-img>
@@ -15,7 +10,6 @@
           <q-item>
             <q-item-section>
               <q-item-label class="text-h6 text-weight-bolder">{{form.name}}</q-item-label>
-              <q-item-label class="text-subtitle2">Cantidad: {{form.cantidad}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
               <div class="row">
@@ -27,14 +21,11 @@
       </q-card>
       <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;height:300px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
-        <div class="q-pa-md">{{form.description}}</div>
-        <div class="absolute-bottom bg-red q-pa-sm">
-          <q-btn color="primary" label="Agregar" icon-right="local_grocery_store"/>
+        <div class="q-pa-md">{{form.descripcion}}</div>
+        <div class="absolute-bottom row justify-center q-pa-sm">
+          <q-btn color="primary" label="Cotizar" icon-right="local_grocery_store" @click="$router.push('/chat')"/>
         </div>
       </q-card>
-      <div class="absolute-bottom bg-red q-pa-sm">
-        <q-btn color="primary" label="Agregar" icon-right="local_grocery_store"/>
-      </div>
   </div>
 </template>
 
@@ -44,27 +35,27 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
-      ruta: 'producto',
+      ruta: 'necesidad',
       fav: false,
       form: {},
-      infoProv: {},
+      infoClient: {},
       baseu: ''
     }
   },
   mounted () {
-    this.cargarProducto()
+    this.cargarSolicitud()
   },
   methods: {
-    cargarProducto () {
+    cargarSolicitud () {
       this.$api.get(`${this.ruta}/${this.id}`).then(res => {
         if (res) {
           this.form = res
-          this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
-          console.log('id', this.form.proveedor_id, 'producto', this.form)
+          this.baseu = env.apiUrl + '/necesidad_img/' + this.form.images[0]
+          console.log('id', this.form.ownerId, 'solicitud', this.form)
           if (this.form) {
-            this.$api.get('user_by_id/' + this.form.proveedor_id).then(v => {
-              this.infoProv = v
-              console.log('proveedor', this.infoProv)
+            this.$api.get('user_by_id/' + this.form.ownerId).then(v => {
+              this.infoClient = v
+              console.log('Cliente', this.infoClient)
             })
           }
         }

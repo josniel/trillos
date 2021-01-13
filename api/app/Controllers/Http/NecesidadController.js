@@ -102,6 +102,7 @@ class NecesidadController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    response.send(await Necesidad.find(params.id))
   }
 
   /**

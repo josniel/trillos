@@ -13,7 +13,7 @@
         <div class="row justify-between">
           <div class="col-3">
             <q-avatar size="70px">
-                <q-img :src="baseu + '/' + item.fileName" style="width:70px" />
+                <q-img :src="baseu + '/' + item.images[0]" style="width:70px" />
             </q-avatar>
           </div>
           <div class="col-9">
@@ -24,7 +24,7 @@
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
               <q-rating
-                v-model="ratingProduc"
+                v-model="ratingSolicitud"
                 size="sm"
                 color="amber-14"
                 icon="star_border"
@@ -38,7 +38,7 @@
       </q-card>
     </q-list>
     <q-card v-else class="shadow-2 q-ma-md q-pa-md">
-      <div class="text-center text-subtitle1">Actualmente sin productos...</div>
+      <div class="text-center text-subtitle1">Actualmente sin nada que reportar...</div>
     </q-card>
   </div>
 </template>
@@ -49,33 +49,26 @@ export default {
   data () {
     return {
       baseu: '',
-      ratingProduc: 3,
+      ratingSolicitud: 3,
       data: []
     }
   },
   mounted () {
-    this.getProduct()
-    this.baseu = env.apiUrl + '/productos_img'
+    this.getSolicitudes()
+    this.baseu = env.apiUrl + '/necesidad_img'
   },
   methods: {
-    getProduct () {
-      this.$api.get('producto').then(v => {
-        if (v) {
-          this.data = v
-          console.log('productos', this.data)
+    getSolicitudes () {
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          var id = res._id
+          this.$api.get('necesidad_by_user_id/' + id).then(v => {
+            if (v) {
+              this.data = v
+              console.log('solicitudes', this.data)
+            }
+          })
         }
-      })
-    },
-    rechazar () {
-      this.$q.dialog({
-        title: 'Confirma',
-        message: '¿Seguro deseas rechazar el contrato?',
-        cancel: true,
-        persistent: true
-      }).onOk(() => {
-        // console.log('aceptar')
-      }).onCancel(() => {
-        // console.log('>>>> Cancel')
       })
     }
   }

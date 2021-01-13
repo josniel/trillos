@@ -7,7 +7,7 @@
         <div class="row justify-between">
           <div class="col-3">
             <q-avatar size="70px">
-                <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:70px" />
+                <q-img :src="item.images ? baseu + '/' + item.images[0] : 'noimgpro.png'" style="width:70px" />
             </q-avatar>
           </div>
           <div class="col-9">
@@ -39,14 +39,14 @@ export default {
   },
   mounted () {
     this.getProduct()
-    this.baseu = env.apiUrl + '/productos_img'
+    this.baseu = env.apiUrl + '/necesidad_img'
   },
   methods: {
     getProduct () {
       this.$api.get('user_info').then(res => {
         if (res) {
           var id = res._id
-          this.$api.get('producto_by_proveedor/' + id).then(v => {
+          this.$api.get('necesidad_by_user_id/' + id).then(v => {
             if (v) {
               this.data = v
               console.log('productos', this.data)

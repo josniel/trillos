@@ -38,7 +38,7 @@
       </q-card>
     </q-list>
     <q-card v-else class="shadow-2 q-ma-md q-pa-md">
-      <div class="text-center text-subtitle1">Actualmente sin productos...</div>
+      <div class="text-center text-subtitle1">Actualmente sin nada que reportar...</div>
     </q-card>
   </div>
 </template>
@@ -69,18 +69,6 @@ export default {
             }
           })
         }
-      })
-    },
-    rechazar () {
-      this.$q.dialog({
-        title: 'Confirma',
-        message: '¿Seguro deseas rechazar el contrato?',
-        cancel: true,
-        persistent: true
-      }).onOk(() => {
-        // console.log('aceptar')
-      }).onCancel(() => {
-        // console.log('>>>> Cancel')
       })
     }
   }

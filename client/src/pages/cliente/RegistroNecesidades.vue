@@ -36,7 +36,7 @@
       <div class="text-h6 q-ml-md q-pt-xs">Descripción</div>
       <q-input borderless v-model="form.descripcion" type="textarea" />
       <div class="row justify-center q-pa-sm">
-        <q-btn color="primary" label="Enviar Solicitud" @click="agregar()"/>
+        <q-btn color="primary" :label="edit ? 'Actualizar Solicitud' : 'Enviar Solicitud'" @click="!edit ? agregar() : actualizarSolicitud()"/>
       </div>
     </q-card>
  </div>
@@ -132,6 +132,35 @@ export default {
             'Content-Type': undefined
           }
         }).then(res => {
+          this.$q.loading.hide()
+          this.$router.push('/solicitudes')
+        })
+      }
+    },
+    async actualizarSolicitud () {
+      this.$v.form.$touch()
+      if (!this.$v.form.$error) {
+        this.form.categoria_id = this.categoria_id
+        this.$q.loading.show({
+          message: 'Actualizando Solicitud, Por Favor Espere...'
+        })
+        var formData = new FormData()
+        if (this.solicitudFiles) {
+          this.form.buscar_file = true
+          this.form.cantidadArchivos = this.solicitudFiles.length
+          for (let i = 0; i < this.solicitudFiles.length; i++) {
+            formData.append('solicitudFiles_' + i, this.solicitudFiles[i])
+          }
+        } else {
+          this.form.buscar_file = false
+        }
+        formData.append('dat', JSON.stringify(this.form))
+        await this.$api.put('producto/' + this.id, formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log('res', res)
           this.$q.loading.hide()
           this.$router.push('/solicitudes')
         })
