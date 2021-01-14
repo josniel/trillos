@@ -21,7 +21,7 @@ const routes = [
       { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue') },
       { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue') },
       // Generales
-      { path: '/chat', component: () => import('pages/Chat.vue') },
+      { path: '/chat/:id', component: () => import('pages/Chat.vue') },
       { path: '/mis_chats', component: () => import('pages/AllChats.vue') },
       { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') }
 

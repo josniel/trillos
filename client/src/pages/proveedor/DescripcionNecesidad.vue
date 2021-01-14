@@ -23,7 +23,7 @@
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.descripcion}}</div>
         <div class="absolute-bottom row justify-center q-pa-sm">
-          <q-btn color="primary" label="Cotizar" icon-right="local_grocery_store" @click="$router.push('/chat')"/>
+          <q-btn color="primary" label="Cotizar" icon-right="local_grocery_store" @click="$router.push('/chat/' + form._id)"/>
         </div>
       </q-card>
   </div>
