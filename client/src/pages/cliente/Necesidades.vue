@@ -72,7 +72,15 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        // console.log('aceptar')
+        this.$api.delete('necesidad/' + id).then(res => {
+          if (res) {
+            this.$q.notify({
+              color: 'positive',
+              message: 'Eliminado Correctamente'
+            })
+            this.getSolicitudes()
+          }
+        })
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       })

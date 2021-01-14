@@ -58,9 +58,10 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
-      tags: [],
       add: {},
-      carrito: []
+      carrito: [],
+      cotizacion: {},
+      totalCot: 0
     }
   },
   validations () {
@@ -97,7 +98,10 @@ export default {
     },
     enviarCotizacion () {
       if (this.carrito.length > 0) {
-        console.log('car', this.carrito)
+        this.cotizacion.servicios = this.carrito
+        this.cotizacion.total = this.totalCarrito
+        this.cotizacion.status = 0
+        console.log('cotizacion', this.cotizacion)
       } else {
         this.$q.notify({
           message: 'Ingrese sus servicios antes de enviar una cotización',
