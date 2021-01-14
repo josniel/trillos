@@ -5,12 +5,19 @@
         <q-btn icon="close" v-close-popup flat dense/>
       </div>
       <div class="text-primary text-center text-h5">* Cotización *</div>
-      <div class="text-caption text-grey-7 q-mt-lg">Ingresa el servicio que deseas brindar, la cantidad y el precio de este.</div>
+      <div class="text-caption text-grey-7 q-mt-lg">Ingresa el servicio que deseas brindar, el precio y su descripción.</div>
       <div class="row q-mt-sm justify-around">
-        <q-input class="col-5" v-model="add.serv" placeholder="Servicio" dense outlined rounded error-message="Requerido" :error="$v.add.serv.$error" @blur="$v.add.serv.$touch()"/>
-        <q-input class="col-5" v-model.number="add.cant" placeholder="Cantidad" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.cant.$error" @blur="$v.add.cant.$touch()" />
-        <q-input class="col-5" v-model.number="add.prec" placeholder="Precio" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.prec.$error" @blur="$v.add.prec.$touch()" />
-        <q-input class="col-5" v-model.number="add.tot" placeholder="Total" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.tot.$error" @blur="$v.add.tot.$touch()" />
+        <q-input bottom-slots class="col-12" v-model="add.servicio" placeholder="Servicio" dense outlined rounded error-message="Requerido" :error="$v.add.servicio.$error" @blur="$v.add.servicio.$touch()">
+          <template v-slot:before>
+            <q-icon name="settings" />
+          </template>
+        </q-input>
+        <q-input bottom-slots class="col-12" v-model.number="add.precio" placeholder="Precio" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.precio.$error" @blur="$v.add.precio.$touch()" >
+          <template v-slot:before>
+            <q-icon name="monetization_on" />
+          </template>
+        </q-input>
+        <q-input autogrow class="col-12" v-model="add.descripcion" label="Descripción del servicio" dense outlined error-message="Requerido" :error="$v.add.descripcion.$error" @blur="$v.add.descripcion.$touch()" ></q-input>
       </div>
       <div class="row justify-end q-mt-xs">
         <q-btn label="agregar" dense style="padding:1px; border-radius:12px;width:150px" color="primary" push glossy @click="addCarrito(add)"/>
@@ -21,17 +28,14 @@
             <div class="row items-center">
               <div class="text-subtitle2 text-grey-9 q-ml-sm"> * Servicios *</div>
             </div>
-            <div class="row justify-center">
-              <div class="col-3 title-table q-pa-xs">Servicio</div>
-              <div class="col-3 title-table q-pa-xs">Cantidad</div>
-              <div class="col-3 title-table q-pa-xs">Precio</div>
-              <div class="col-3 title-table q-pa-xs">Total</div>
+            <div v-if="!carrito.length" class="col-6 title-table q-pa-xs">Debes añadir un servicio</div>
+            <div v-else class="row justify-center">
+              <div class="col-6 title-table q-pa-xs">Servicio</div>
+              <div class="col-6 title-table q-pa-xs">Precio</div>
             </div>
             <div class="row justify-center q-mt-sm" v-for="(item, index) in carrito" :key="index">
-              <div class="col-3 title-table-product q-pa-xs">{{item.serv}}</div>
-              <div class="col-3 title-table-product q-pa-xs">{{item.cant}}</div>
-              <div class="col-3 title-table-product q-pa-xs">{{item.prec}}</div>
-              <div class="col-3 title-table-product q-pa-xs">{{item.tot}}</div>
+              <div class="col-6 title-table-product q-pa-xs">{{item.servicio}}</div>
+              <div class="col-6 title-table-product q-pa-xs">{{item.precio}}</div>
             </div>
           </div>
       </div>
@@ -40,7 +44,6 @@
         <div class="text-h6 text-primary">Total</div>
         <div class="column">
           <div class="text-h6 text-primary">$ {{totalCarrito}}</div>
-          <div class="text-grey-7" style="font-size:10px">iva incluido</div>
         </div>
       </div>
       <div class="row justify-center q-mt-md">
@@ -63,10 +66,9 @@ export default {
   validations () {
     return {
       add: {
-        serv: { required },
-        cant: { required },
-        prec: { required },
-        tot: { required }
+        servicio: { required },
+        precio: { required },
+        descripcion: { required }
       }
     }
   },
@@ -75,7 +77,7 @@ export default {
       let total = 0
       if (this.carrito.length > 0) {
         for (const i of this.carrito) {
-          total = total + i.tot
+          total = total + i.precio
         }
       }
       return total
