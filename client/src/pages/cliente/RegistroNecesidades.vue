@@ -74,14 +74,19 @@ export default {
   },
   mounted () {
     this.obtenerDatos()
-    this.baseu = env.apiUrl
-    /* if (this.$route.params.id) {
+    this.baseu = env.apiUrl + '/necesidad_img'
+    if (this.$route.params.id) {
       this.edit = true
       this.id = this.$route.params.id
       this.$api.get('necesidad/' + this.id).then(res => {
         if (res) {
           this.form = res
           this.categoria_id = this.form.categoria_id
+          for (let i = 0; i < this.form.images.length; i++) {
+            var cc = ''
+            cc = this.baseu + '/' + this.form.images[i]
+            this.imgSolicitud.push(cc)
+          }
           console.log('form traido', this.form)
           for (let i = 0; i < this.categorias.length; i++) {
             if (this.categorias[i]._id === this.form.categoria_id) {
@@ -94,7 +99,7 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    } */
+    }
   },
   methods: {
     filesSolicitud () {
@@ -138,7 +143,8 @@ export default {
       }
     },
     async actualizarSolicitud () {
-      this.$v.form.$touch()
+      console.log(this.form)
+      /* this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.form.categoria_id = this.categoria_id
         this.$q.loading.show({
@@ -164,7 +170,7 @@ export default {
           this.$q.loading.hide()
           this.$router.push('/solicitudes')
         })
-      }
+      } */
     },
     obtenerDatos () {
       this.$api.get('categoria').then(res => {
