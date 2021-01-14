@@ -102,6 +102,8 @@ class NecesidadController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    let dato = await Necesidad.find(params.id)
+    response.send(dato)
   }
 
   /**
