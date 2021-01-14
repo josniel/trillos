@@ -38,7 +38,7 @@
       </q-card>
     </q-list>
     <q-card v-else class="shadow-2 q-ma-md q-pa-md">
-      <div class="text-center text-subtitle1">Actualmente sin productos...</div>
+      <div class="text-center text-subtitle1">Actualmente sin nada que reportar...</div>
     </q-card>
   </div>
 </template>
@@ -59,23 +59,16 @@ export default {
   },
   methods: {
     getProduct () {
-      this.$api.get('producto').then(v => {
-        if (v) {
-          this.data = v
-          console.log('productos', this.data)
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          var id = res._id
+          this.$api.get('producto_by_proveedor/' + id).then(v => {
+            if (v) {
+              this.data = v
+              console.log('productos', this.data)
+            }
+          })
         }
-      })
-    },
-    rechazar () {
-      this.$q.dialog({
-        title: 'Confirma',
-        message: '¿Seguro deseas rechazar el contrato?',
-        cancel: true,
-        persistent: true
-      }).onOk(() => {
-        // console.log('aceptar')
-      }).onCancel(() => {
-        // console.log('>>>> Cancel')
       })
     }
   }

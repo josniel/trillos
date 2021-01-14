@@ -11,16 +11,17 @@ const routes = [
       { path: '/productos', component: () => import('pages/proveedor/Productos.vue') },
       { path: '/registroproductos', component: () => import('pages/proveedor/RegistroProductos.vue') },
       { path: '/editar_producto/:id', component: () => import('pages/proveedor/RegistroProductos.vue') },
+      { path: '/descripcionsolicitud/:id', component: () => import('pages/proveedor/DescripcionNecesidad.vue') },
       // Cliente
       { path: '/inicio_cliente', component: () => import('pages/cliente/Inicio.vue') },
       { path: '/reportes_cliente', component: () => import('pages/cliente/Reportes.vue') },
       { path: '/solicitudes', component: () => import('pages/cliente/Necesidades.vue') },
       { path: '/registronecesidades', component: () => import('pages/cliente/RegistroNecesidades.vue') },
       { path: '/editar_solicitud/:id', component: () => import('pages/cliente/RegistroNecesidades.vue') },
-      { path: '/tienda', component: () => import('pages/cliente/Tienda.vue') },
+      { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue') },
       { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue') },
       // Generales
-      { path: '/chat', component: () => import('pages/Chat.vue') },
+      { path: '/chat/:id', component: () => import('pages/Chat.vue') },
       { path: '/mis_chats', component: () => import('pages/AllChats.vue') },
       { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') }
 
