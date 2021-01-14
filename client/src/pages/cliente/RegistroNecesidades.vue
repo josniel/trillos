@@ -17,7 +17,7 @@
                 </q-file>
             </div>
             <div class="col-2 row justify-center">
-              <q-icon size="md" name="close" color="negative" @click="solicitudFiles = [], imgSolicitud = []" class="cursor-pointer" />
+              <q-icon size="md" name="close" color="negative" @click="solicitudFiles = [], imgSolicitud = [], edit ? imgsTraidas() : ''" class="cursor-pointer" />
             </div>
           </div>
           </q-card-section>
@@ -54,6 +54,7 @@ export default {
       id: '',
       file: null,
       edit: false,
+      editImg: false,
       categoria_id: '',
       options: [
         'Urgente (1 a 3 Horas)', 'Medio (5 a 24 Horas)', 'Programado (2 días en adelante)'
@@ -77,16 +78,13 @@ export default {
     this.baseu = env.apiUrl + '/necesidad_img'
     if (this.$route.params.id) {
       this.edit = true
+      this.editImg = true
       this.id = this.$route.params.id
       this.$api.get('necesidad/' + this.id).then(res => {
         if (res) {
           this.form = res
           this.categoria_id = this.form.categoria_id
-          for (let i = 0; i < this.form.images.length; i++) {
-            var cc = ''
-            cc = this.baseu + '/' + this.form.images[i]
-            this.imgSolicitud.push(cc)
-          }
+          this.imgsTraidas()
           console.log('form traido', this.form)
           for (let i = 0; i < this.categorias.length; i++) {
             if (this.categorias[i]._id === this.form.categoria_id) {
@@ -102,9 +100,21 @@ export default {
     }
   },
   methods: {
+    imgsTraidas () {
+      for (let i = 0; i < this.form.images.length; i++) {
+        var cc = ''
+        cc = this.baseu + '/' + this.form.images[i]
+        this.imgSolicitud.push(cc)
+      }
+      this.editImg = true
+    },
     filesSolicitud () {
       var img = ''
       var cc = {}
+      if (this.editImg && this.solicitudFiles.length > 0) {
+        this.imgSolicitud = []
+        this.editImg = false
+      }
       if (this.solicitudFiles.length > 0) {
         cc = this.solicitudFiles[this.solicitudFiles.length - 1]
         img = URL.createObjectURL(cc)
@@ -144,7 +154,7 @@ export default {
     },
     async actualizarSolicitud () {
       console.log(this.form)
-      /* this.$v.form.$touch()
+      this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.form.categoria_id = this.categoria_id
         this.$q.loading.show({
@@ -152,16 +162,15 @@ export default {
         })
         var formData = new FormData()
         if (this.solicitudFiles) {
-          this.form.buscar_file = true
           this.form.cantidadArchivos = this.solicitudFiles.length
           for (let i = 0; i < this.solicitudFiles.length; i++) {
             formData.append('solicitudFiles_' + i, this.solicitudFiles[i])
           }
         } else {
-          this.form.buscar_file = false
+          this.form.cantidadArchivos = 0
         }
         formData.append('dat', JSON.stringify(this.form))
-        await this.$api.put('producto/' + this.id, formData, {
+        await this.$api.put('necesidad/' + this.id, formData, {
           headers: {
             'Content-Type': undefined
           }
@@ -170,7 +179,7 @@ export default {
           this.$q.loading.hide()
           this.$router.push('/solicitudes')
         })
-      } */
+      }
     },
     obtenerDatos () {
       this.$api.get('categoria').then(res => {
