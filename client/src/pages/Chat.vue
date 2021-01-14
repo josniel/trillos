@@ -1,9 +1,9 @@
 <template>
   <div class="row justify-center">
-    <div v-if="cotizarBtn" class="row justify-end full-width q-pa-sm">
+    <div v-if="cotizarBtn === 1 || cotizarBtn === 2" class="row justify-end full-width q-pa-sm">
       <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Cotizar" @click="dialog = true" />
+      <q-separator class="col-12" />
     </div>
-    <q-separator v-if="cotizarBtn" />
 
     <q-dialog v-model="dialog" transition-show="slide-up" transition-hide="slide-down" >
       <enviar-cotizacion />
@@ -53,7 +53,7 @@ export default {
       id: this.$route.params.id,
       text: '',
       deshabilitarMsg: false,
-      cotizarBtn: false,
+      cotizarBtn: 0,
       dialog: false,
       form: {},
       solicitud: {},
@@ -78,7 +78,7 @@ export default {
       this.$api.get('user_info').then(v => {
         if (v) {
           if (v.roles[0] === 3) {
-            this.cotizarBtn = true
+            this.cotizarBtn = 1
           }
         }
       })

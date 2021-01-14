@@ -18,7 +18,8 @@
               >
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
-              <div>Cantidad: <strong>{{item.descripcion}}</strong></div>
+              <div class="text-caption">Caracter:</div>
+              <q-chip text-color="white" :label="item.necesidad" :color="item.necesidad === 'Urgente (1 a 3 Horas)' ? 'red' : item.necesidad === 'Medio (5 a 24 Horas)' ? 'amber-7' : 'green-14'" />
           </div>
           <q-separator vertical color="black" />
           <div class="column">
