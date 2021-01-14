@@ -126,6 +126,7 @@ class NecesidadController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+
   }
 
   /**
@@ -137,6 +138,8 @@ class NecesidadController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    let eliminar = (await Necesidad.find(params.id)).delete()
+    response.send(eliminar)
   }
 }
 
