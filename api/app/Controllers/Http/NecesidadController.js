@@ -126,7 +126,41 @@ class NecesidadController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
-
+    var dat = request.only(['dat'])
+    dat = JSON.parse(dat.dat)
+    const validation = await validate(dat, Necesidad.fieldValidationRules())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else {
+      let images = []
+      if (dat.cantidadArchivos && dat.cantidadArchivos > 0) {
+        for (let i = 0; i < dat.cantidadArchivos; i++) {
+          let codeFile = randomize('Aa0', 30)
+          const profilePic = request.file('solicitudFiles_' + i, {
+            types: ['image']
+          })
+          if (Helpers.appRoot('storage/uploads/necesidades')) {
+            await profilePic.move(Helpers.appRoot('storage/uploads/necesidades'), {
+              name: codeFile,
+              overwrite: true
+            })
+          } else {
+            mkdirp.sync(`${__dirname}/storage/Excel`)
+          }
+          images.push(profilePic.fileName)
+        }
+        for (let j of dat.images) {
+          fs.unlink(`storage/uploads/necesidades/${j}`, (err) => {
+            if (err) throw err;
+            console.log(`${j} Eliminado por el Cliente`);
+          });
+        }
+        dat.images = images
+      }
+      delete dat.cantidadArchivos
+      let modificar = await Producto.query().where('_id', params.id).update(dat)
+      response.send(modificar)
+    }
   }
 
   /**
@@ -138,7 +172,14 @@ class NecesidadController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
-    let eliminar = (await Necesidad.find(params.id)).delete()
+    let eliminar = await Necesidad.find(params.id)
+    for (let j of eliminar.images) {
+      fs.unlink(`storage/uploads/necesidades/${j}`, (err) => {
+        if (err) throw err;
+        console.log(`${j} Eliminado por el Cliente`);
+      });
+    }
+    eliminar.delete()
     response.send(eliminar)
   }
 }

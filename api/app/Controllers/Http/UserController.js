@@ -69,8 +69,7 @@ class UserController {
           console.log(i, 'i CICLO')
           let codeFile = randomize('Aa0', 30)
           const profilePic = request.file('tiendaFiles_' + i, {
-            types: ['image'],
-            size: '20mb'
+            types: ['image']
           })
           if (Helpers.appRoot('storage/uploads/tiendaFiles')) {
             await profilePic.move(Helpers.appRoot('storage/uploads/tiendaFiles'), {
@@ -93,8 +92,7 @@ class UserController {
       }
       const user = await User.create(body)
       const profilePic = request.file('perfilFile', {
-        types: ['image'],
-        size: '20mb'
+        types: ['image']
       })
       if (Helpers.appRoot('storage/uploads/perfil')) {
         await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
