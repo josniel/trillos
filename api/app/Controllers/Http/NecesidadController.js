@@ -158,7 +158,7 @@ class NecesidadController {
         dat.images = images
       }
       delete dat.cantidadArchivos
-      let modificar = await Producto.query().where('_id', params.id).update(dat)
+      let modificar = await Necesidad.query().where('_id', params.id).update(dat)
       response.send(modificar)
     }
   }
