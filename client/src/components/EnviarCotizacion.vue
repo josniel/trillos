@@ -2,15 +2,15 @@
   <q-card class="q-ma-sm">
     <q-card-section>
       <div class="row justify-end">
-        <q-btn icon="highlight_off" v-close-popup flat dense color="grey" />
+        <q-btn icon="close" v-close-popup flat dense/>
       </div>
-      <div class="text-primary text-center text-h6">* Cotización *</div>
-      <div class="text-caption text-grey q-mt-lg">Agrega el servicio, la cantidad, el precio y agregalo</div>
+      <div class="text-primary text-center text-h5">* Cotización *</div>
+      <div class="text-caption text-grey-7 q-mt-lg">Ingresa el servicio que deseas brindar, la cantidad y el precio de este.</div>
       <div class="row q-mt-sm justify-around">
         <q-input class="col-5" v-model="add.serv" placeholder="Servicio" dense outlined rounded error-message="Requerido" :error="$v.add.serv.$error" @blur="$v.add.serv.$touch()"/>
-        <q-input class="col-5" v-model.number="add.cant" placeholder="Cantidad" dense outlined rounded error-message="Requerido" :error="$v.add.cant.$error" @blur="$v.add.cant.$touch()" />
-        <q-input class="col-5" v-model.number="add.prec" placeholder="Precio" dense outlined rounded error-message="Requerido" :error="$v.add.prec.$error" @blur="$v.add.prec.$touch()" />
-        <q-input class="col-5" v-model.number="add.tot" placeholder="Total" dense outlined rounded error-message="Requerido" :error="$v.add.tot.$error" @blur="$v.add.tot.$touch()" />
+        <q-input class="col-5" v-model.number="add.cant" placeholder="Cantidad" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.cant.$error" @blur="$v.add.cant.$touch()" />
+        <q-input class="col-5" v-model.number="add.prec" placeholder="Precio" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.prec.$error" @blur="$v.add.prec.$touch()" />
+        <q-input class="col-5" v-model.number="add.tot" placeholder="Total" type="number" dense outlined rounded error-message="Requerido" :error="$v.add.tot.$error" @blur="$v.add.tot.$touch()" />
       </div>
       <div class="row justify-end q-mt-xs">
         <q-btn label="agregar" dense style="padding:1px; border-radius:12px;width:150px" color="primary" push glossy @click="addCarrito(add)"/>
@@ -38,9 +38,9 @@
       <q-separator inset class="q-mt-md" />
       <div class="row justify-around q-mt-md">
         <div class="text-h6 text-primary">Total</div>
-        <div class="column text-primary">
-          <div class="text-h6">$ {{totalCarrito}}</div>
-          <div style="font-size:10px">iva incluido</div>
+        <div class="column">
+          <div class="text-h6 text-primary">$ {{totalCarrito}}</div>
+          <div class="text-grey-7" style="font-size:10px">iva incluido</div>
         </div>
       </div>
       <div class="row justify-center q-mt-md">
@@ -98,8 +98,8 @@ export default {
         console.log('car', this.carrito)
       } else {
         this.$q.notify({
-          message: 'Ingrese Productos antes de enviar una cotizacion',
-          color: 'warning'
+          message: 'Ingrese sus servicios antes de enviar una cotización',
+          color: 'black'
         })
       }
     }
@@ -120,7 +120,7 @@ export default {
 
 .title-table-product {
   border-radius: 12px;
-  background-color: #cccccc;
+  background-color: #888585;
   color: rgb(255, 255, 255);
   border: 1px solid rgb(255, 255, 255);
 }
