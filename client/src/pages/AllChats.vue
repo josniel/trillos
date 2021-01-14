@@ -3,7 +3,7 @@
     <div class="q-ma-md text-h6">Mis Chats</div>
     <q-separator inset />
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
-      <q-card @click="$router.push('/chat')" class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
+      <q-card @click="$router.push('/chat/' + item._id)" class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
           <div class="col-3">
             <q-avatar size="70px">

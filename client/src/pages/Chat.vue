@@ -53,7 +53,7 @@ export default {
       id: this.$route.params.id,
       text: '',
       deshabilitarMsg: false,
-      cotizarBtn: true,
+      cotizarBtn: false,
       dialog: false,
       form: {},
       solicitud: {},
@@ -70,9 +70,19 @@ export default {
     }
   },
   mounted () {
+    this.getUser()
     this.cargarSolicitud()
   },
   methods: {
+    getUser () {
+      this.$api.get('user_info').then(v => {
+        if (v) {
+          if (v.roles[0] === 3) {
+            this.cotizarBtn = true
+          }
+        }
+      })
+    },
     cargarSolicitud () {
       this.$api.get('necesidad/' + this.id).then(res => {
         if (res) {

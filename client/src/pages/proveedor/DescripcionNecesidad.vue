@@ -2,7 +2,7 @@
   <div class="bg-secondary" style="height:100%">
       <q-img :src="form.images ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
         <div class="row justify-between" style="width:100%">
-            <div class="col-10 text-h6 text-white text-weight-bolder">{{infoClient.full_name ? infoClient.full_name + ' ' + infoClient.last_name : 'Nombre de Cliente'}}</div>
+            <div class="col-10 text-h6 text-white text-weight-bolder">{{infoClient.full_name && infoClient.last_name ? infoClient.full_name + ' ' + infoClient.last_name : infoClient.full_name}}</div>
           <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
       </q-img>
