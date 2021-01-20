@@ -47,12 +47,10 @@ class ChatController {
   async store ({ request, response, auth, params }) {
     const user_id = ((await auth.getUser()).toJSON())._id
     let body = request.only(['message'])
-    console.log('body', body)
     body.user_id = user_id
     body.cotisazion_id = params.id_cotisation
     body.visto = false
     let message = (await Chat.create(body)).toJSON()
-    console.log('message', message)
     let chat = await ChatMessage.query().where('_id', params.id_cotisation).update({last_message: message.message, created_at_message:  moment(message.created_at).lang('es').calendar()})
     response.send(message)
   }
@@ -60,7 +58,6 @@ class ChatController {
   async storeChat ({ request, response, params, auth }) {
     let body = request.all()
     var chatM = (await ChatMessage.query().where({ necesidad_id: params.id_cotisation, proveedor_id: body.proveedor_id }).fetch()).toJSON()
-    console.log('chatM', chatM)
     let cotisation = {}
     if (!chatM.length) {
       body.necesidad_id = params.id_cotisation
@@ -98,10 +95,10 @@ class ChatController {
     const id_user = user._id
     let cotisation = (await ChatMessage.query().where('_id',params.id_cotisation).fetch()).toJSON()
     let send = {
-      datos_proveedor: cotisation.proveedor_id,
-      datos_cliente: cotisation.cliente_id,
+      datos_proveedor: cotisation[0].proveedor_id,
+      datos_cliente: cotisation[0].cliente_id,
       messages: [],
-      status: cotisation.status ? cotisation.status : 'Pendiente'
+      status: cotisation[0].status
     }
     let messages = (await Chat.where({cotisazion_id: params.id_cotisation}).with('datos_user').fetch()).toJSON()
     send.messages = messages
