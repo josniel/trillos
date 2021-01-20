@@ -2,14 +2,14 @@
   <div class="row justify-center">
     <div v-if="cotizarBtn === 1 || cotizarBtn === 2" class="row justify-end full-width q-pa-sm">
       <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Cotizar" @click="dialog = true" />
-      <q-separator class="col-12" />
     </div>
+    <q-separator v-if="cotizarBtn === 1 || cotizarBtn === 2" />
 
     <q-dialog v-model="dialog" transition-show="slide-up" transition-hide="slide-down" >
       <enviar-cotizacion />
     </q-dialog>
 
-    <div class="q-pa-sm">
+    <div class="q-pa-sm" style="width: 100%; max-width: 400px">
       <q-chat-message
         :label="date"
       />
@@ -19,8 +19,8 @@
         :text="[mens.message]"
         :stamp="mens.stamp"
         :sent="mens.send"
-        :bg-color="mens.send ? 'primary' : 'grey-4'"
-        :text-color="mens.send ? 'white' : 'black'"
+        :bg-color="mens.send ? 'amber-7' : 'blue'"
+        :text-color="mens.send ? 'black' : 'white'"
         size="6"
       />
       <div id="fin"></div>
@@ -52,11 +52,11 @@ export default {
     return {
       id: this.$route.params.id,
       text: '',
+      user: {},
       deshabilitarMsg: false,
       cotizarBtn: 0,
       dialog: false,
       form: {},
-      solicitud: {},
       info: {},
       date: moment().format('DD-MMMM-YYYY'),
       data: {
@@ -71,35 +71,48 @@ export default {
   },
   mounted () {
     this.getUser()
-    this.cargarSolicitud()
+    this.getinfo()
   },
   methods: {
     getUser () {
       this.$api.get('user_info').then(v => {
         if (v) {
+          this.user = v
           if (v.roles[0] === 3) {
             this.cotizarBtn = 1
           }
         }
       })
     },
-    cargarSolicitud () {
-      this.$api.get('necesidad/' + this.id).then(res => {
-        if (res) {
-          this.solicitud = res
-          console.log('solicitud', this.solicitud)
-          if (this.solicitud) {
-            this.$api.get('user_by_id/' + this.solicitud.ownerId).then(v => {
-              this.info = v
-              console.log('Informacion', this.info)
+    getinfo () {
+      this.$api.get('show_all_info_cotization/' + this.id).then(v => {
+        if (v) {
+          console.log('v', v)
+          if (v.status > 0) {
+            this.deshabilitarMsg = true
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Este chat esta deshabilitado, la cotizacion ya ha sido aprobada,cotizada o rechazada por el cliente. Podra ver los mensajes pero no puede cotizar ni enviar mensajes en este chat'
+            }).onOk(() => {
+
             })
           }
+          this.data = v
+          console.log('data', this.data)
         }
       })
     },
     sendChat () {
       if (this.text !== '') {
-        console.log(this.text)
+        this.$api.post('send_message/' + this.id, { message: this.text }).then(v => {
+          this.text = ''
+          this.$api.get('show_all_info_cotization/' + this.id).then(v => {
+            if (v) {
+              console.log('v', v)
+              this.data.messages = v.messages
+            }
+          })
+        })
       }
     }
   }

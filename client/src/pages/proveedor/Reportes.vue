@@ -7,7 +7,7 @@
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Anual" />
     </div>
     <q-separator inset />
-    <div class="text-h6 q-ma-md text-center">Mis Clientes</div>
+    <div class="text-h6 q-ma-md text-center">Mis Reportes</div>
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
@@ -31,7 +31,7 @@
                 icon-selected="star"
               />
               <div class="row justify-end">
-                  <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Ver" to="/chat" />
+                  <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Ver" />
               </div>
           </div>
         </div>

@@ -23,7 +23,7 @@
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.descripcion}}</div>
         <div class="absolute-bottom row justify-center q-pa-sm">
-          <q-btn color="primary" label="Cotizar" icon-right="local_grocery_store" @click="$router.push('/chat/' + form._id)"/>
+          <q-btn color="primary" label="Iniciar cotización" @click="iraChat(form._id)"/>
         </div>
       </q-card>
   </div>
@@ -58,6 +58,20 @@ export default {
               console.log('Cliente', this.infoClient)
             })
           }
+        }
+      })
+    },
+    iraChat (id) {
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          var info = {}
+          info.proveedor_id = res._id
+          info.cliente_id = this.infoClient._id
+          this.$api.post('crear_chat/' + id, info).then(v => {
+            if (v) {
+              this.$router.push('/chat/' + v._id)
+            }
+          })
         }
       })
     }

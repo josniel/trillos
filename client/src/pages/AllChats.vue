@@ -2,7 +2,8 @@
   <div>
     <div class="q-ma-md text-h6">Mis Chats</div>
     <q-separator inset />
-    <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
+    <div v-if="data.length > 0" class="q-pr-md q-pt-sm text-subtitle2 text-right text-grey-8"><u>Tienes {{ data.length }} Mensajes</u></div>
+    <!-- <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card @click="$router.push('/chat/' + item._id)" class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
           <div class="col-3">
@@ -20,7 +21,22 @@
           </div>
         </div>
       </q-card>
-    </q-list>
+    </q-list> -->
+
+    <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
+        <q-card class="my-card shadow-13 row" @click="$router.push('/chat/' + chat._id)" v-for="(chat, index) in data" :key="index">
+            <div class="col-3">
+              <div class="text-center text-grey text-bold text-caption q-pt-sm">{{chat.visto ? 'Leido' : 'Pendiente'}}</div>
+              <q-icon size="60px" class="text-black q-px-md q-pb-xs" name="account_circle" />
+            </div>
+            <div class="col-9">
+              <div class="text-primary text-bold text-center text-subtitle1 q-pt-sm">{{rol === 2 ? chat.datos_proveedor.full_name : chat.datos_cliente.full_name}}</div>
+              <div class="text-center text-caption">{{chat.last_message}}</div>
+              <div class="absolute-bottom text-primary text-subtitle1 text-right q-pr-sm">{{chat.created_at}}</div>
+            </div>
+        </q-card>
+    </div>
+
     <q-card v-else class="shadow-2 q-ma-md q-pa-md">
       <div class="text-center text-subtitle1">Actualmente sin chats...</div>
     </q-card>
@@ -38,18 +54,18 @@ export default {
     }
   },
   mounted () {
-    this.getProduct()
+    this.getRecords()
     this.baseu = env.apiUrl + '/necesidad_img'
   },
   methods: {
-    getProduct () {
-      this.$api.get('user_info').then(res => {
-        if (res) {
-          var id = res._id
-          this.$api.get('necesidad_by_user_id/' + id).then(v => {
-            if (v) {
-              this.data = v
-              console.log('productos', this.data)
+    getRecords () {
+      this.$api.get('user_info').then(v => {
+        if (v) {
+          this.rol = v.roles[0]
+          this.$api.get('cotizaciones').then(res => {
+            if (res) {
+              this.data = res
+              console.log('data', this.data)
             }
           })
         }

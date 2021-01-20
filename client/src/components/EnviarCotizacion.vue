@@ -100,8 +100,16 @@ export default {
       if (this.carrito.length > 0) {
         this.cotizacion.servicios = this.carrito
         this.cotizacion.total = this.totalCarrito
-        this.cotizacion.status = 0
+        this.cotizacion.status = 'pendiente'
         console.log('cotizacion', this.cotizacion)
+        this.$api.post(`enviar_cotizacion/${this.$route.params.id}`, { carrito: this.cotizacion }).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Cotizacion Enviada con Exito',
+              color: 'positive'
+            })
+          }
+        })
       } else {
         this.$q.notify({
           message: 'Ingrese sus servicios antes de enviar una cotización',
