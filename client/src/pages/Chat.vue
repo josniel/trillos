@@ -88,11 +88,11 @@ export default {
       this.$api.get('show_all_info_cotization/' + this.id).then(v => {
         if (v) {
           console.log('v', v)
-          if (v.status > 0) {
+          if (v.status !== 'Pendiente') {
             this.deshabilitarMsg = true
             this.$q.dialog({
               title: '¡Atención!',
-              message: 'Este chat esta deshabilitado, la cotizacion ya ha sido aprobada,cotizada o rechazada por el cliente. Podra ver los mensajes pero no puede cotizar ni enviar mensajes en este chat'
+              message: 'Este chat esta deshabilitado'
             }).onOk(() => {
 
             })

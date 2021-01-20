@@ -7,12 +7,12 @@
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
         <q-card class="bordes row" @click="$router.push('/chat/' + chat._id)" v-for="(chat, index) in data" :key="index">
             <div class="col-3">
-              <div class="text-center text-grey text-bold text-caption q-pt-sm">{{chat.visto ? 'Leido' : 'Pendiente'}}</div>
-              <q-icon size="60px" class="text-black q-px-md q-pb-xs" name="account_circle" />
+              <q-icon size="60px" class="text-black q-px-md q-pt-sm" name="account_circle" />
+              <div class="text-center text-grey text-bold text-caption q-pb-xs">{{chat.status}}</div>
             </div>
             <div class="col-9">
-              <div class="text-black text-bold text-center text-subtitle1 q-pt-sm">{{rol === 2 ? chat.datos_proveedor.full_name : chat.datos_cliente.full_name}}</div>
-              <div class="text-center text-caption">{{chat.last_message}}</div>
+              <div class="text-black text-bold text-subtitle1 q-pt-sm">{{rol === 2 ? chat.datos_proveedor.full_name : chat.datos_cliente.full_name + ' ' + chat.datos_cliente.last_name}}</div>
+              <div class="text-caption q-px-sm">{{chat.last_message}}</div>
               <div class="absolute-bottom text-amber-8 text-subtitle1 text-right q-pr-sm">{{chat.created_at_message}}</div>
             </div>
         </q-card>

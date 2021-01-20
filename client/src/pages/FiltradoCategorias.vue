@@ -6,8 +6,8 @@
     </div>
     <q-separator />
     <div class="row q-gutter-md q-ma-sm" v-if="data.length > 0">
-      <q-card v-for="(item, index) in data" class="shadow-3 bg-secondary q-mt-lg" style="border-radius:12px;width: 150px" :key="index" @click="$router.push('/descripcionproducto/' + item._id)">
-        <q-img :src="baseu + item.fileName" spinner-color="white" style="height: 190px; width: 150px" />
+      <q-card v-for="(item, index) in data" class="shadow-3 bg-secondary q-mt-lg" style="border-radius:12px;width: 150px" :key="index" @click="rol === 2 ? $router.push('/descripcionproducto/' + item._id) : $router.push('/descripcionsolicitud/' + item._id)">
+        <q-img :src="item.fileName ? baseu + item.fileName : item.images ? baseu + item.images[0] : 'noimgpro.png'" spinner-color="white" style="height: 190px; width: 150px" />
         <div class="text-subtitle1 text-center">{{item.name}}</div>
       </q-card>
     </div>
@@ -26,7 +26,8 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
-      ruta: 'producto_filtrado',
+      rol: 0,
+      ruta: '',
       categoria: {},
       data: [],
       baseu: ''
@@ -37,16 +38,29 @@ export default {
   },
   methods: {
     cargar () {
-      this.$api.get(`${this.ruta}/${this.id}`).then(res => {
-        console.log(res, 'ressssssss')
-        this.data = res
-        this.baseu = env.apiUrl + '/productos_img/'
-        this.$api.get('categoria').then(v => {
-          if (v) {
-            this.categoria = v.find(x => x._id === this.id)
-            console.log(this.categoria, 'Aqui estan todas las categorias')
+      this.$api.get('user_info').then(v => {
+        if (v) {
+          this.rol = v.roles[0]
+          if (this.rol === 2) {
+            this.ruta = 'producto_filtrado'
+          } else {
+            this.ruta = 'necesidad_by_categoria_id'
           }
-        })
+          this.$api.get(`${this.ruta}/${this.id}`).then(res => {
+            this.data = res
+            console.log('data', this.data)
+            if (this.rol === 2) {
+              this.baseu = env.apiUrl + '/productos_img/'
+            } else {
+              this.baseu = env.apiUrl + '/necesidad_img/'
+            }
+            this.$api.get('categoria').then(v => {
+              if (v) {
+                this.categoria = v.find(x => x._id === this.id)
+              }
+            })
+          })
+        }
       })
     }
   }

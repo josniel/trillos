@@ -53,7 +53,7 @@ class ChatController {
     body.visto = false
     let message = (await Chat.create(body)).toJSON()
     console.log('message', message)
-    let chat = await ChatMessage.query().where('_id', params.id_cotisation).update({last_message: message.message, created_at_message:  moment(message.created_at).lang('es').calendar(), visto: message.visto})
+    let chat = await ChatMessage.query().where('_id', params.id_cotisation).update({last_message: message.message, created_at_message:  moment(message.created_at).lang('es').calendar()})
     response.send(message)
   }
 
@@ -64,6 +64,7 @@ class ChatController {
     let cotisation = {}
     if (!chatM.length) {
       body.necesidad_id = params.id_cotisation
+      body.status = 'Pendiente'
       cotisation = await ChatMessage.create(body)
     } else {
       cotisation = chatM[0]
@@ -100,7 +101,7 @@ class ChatController {
       datos_proveedor: cotisation.proveedor_id,
       datos_cliente: cotisation.cliente_id,
       messages: [],
-      status: cotisation.status ? cotisation.status : 0
+      status: cotisation.status ? cotisation.status : 'Pendiente'
     }
     let messages = (await Chat.where({cotisazion_id: params.id_cotisation}).with('datos_user').fetch()).toJSON()
     send.messages = messages
