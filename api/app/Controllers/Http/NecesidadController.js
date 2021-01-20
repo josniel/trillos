@@ -182,6 +182,10 @@ class NecesidadController {
     eliminar.delete()
     response.send(eliminar)
   }
+
+  async necesidadByCategoriaId ({ params, response }) {
+    response.send((await Necesidad.query().where('categoria_id', params.categoria_id).fetch()).toJSON())
+  }
 }
 
 module.exports = NecesidadController
