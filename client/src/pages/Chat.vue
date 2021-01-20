@@ -104,7 +104,7 @@ export default {
     },
     sendChat () {
       if (this.text !== '') {
-        this.$api.post('send_message/' + this.id, { message: this.text }).then(v => {
+        this.$api.post('send_message/' + this.id, { message: this.text }).then(res => {
           this.text = ''
           this.$api.get('show_all_info_cotization/' + this.id).then(v => {
             if (v) {
