@@ -1,12 +1,30 @@
 <template>
   <div class="row justify-center">
-    <div v-if="cotizarBtn === 1 || cotizarBtn === 2" class="row justify-end full-width q-pa-sm">
-      <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Cotizar" @click="dialog = true" />
+    <div v-if="cotizarBtn" class="row justify-end full-width q-pa-sm">
+      <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Cotizar" @click="cotizar = true" />
     </div>
-    <q-separator v-if="cotizarBtn === 1 || cotizarBtn === 2" />
+    <q-separator v-if="cotizarBtn" />
 
-    <q-dialog v-model="dialog" transition-show="slide-up" transition-hide="slide-down" >
+    <q-dialog v-model="cotizar" transition-show="slide-up" transition-hide="slide-down" >
       <enviar-cotizacion />
+    </q-dialog>
+
+    <q-dialog v-model="verCotizacion" transition-show="slide-up" transition-hide="slide-down" >
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6">Atención</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          El proveedor ha cotizado su solicitud.
+        </q-card-section>
+
+        <q-card-section class="row justify-center">
+          <q-btn no-caps label="Ver Cotizacion" color="primary" />
+        </q-card-section>
+      </q-card>
     </q-dialog>
 
     <div class="q-pa-sm" style="width: 100%; max-width: 400px">
@@ -52,10 +70,11 @@ export default {
     return {
       id: this.$route.params.id,
       text: '',
-      user: {},
+      rol: 0,
       deshabilitarMsg: false,
-      cotizarBtn: 0,
-      dialog: false,
+      cotizarBtn: true,
+      cotizar: false,
+      verCotizacion: false,
       form: {},
       info: {},
       date: moment().format('DD-MMMM-YYYY'),
@@ -77,9 +96,9 @@ export default {
     getUser () {
       this.$api.get('user_info').then(v => {
         if (v) {
-          this.user = v
-          if (v.roles[0] === 3) {
-            this.cotizarBtn = 1
+          this.rol = v.roles[0]
+          if (this.rol === 2) {
+            this.cotizarBtn = false
           }
         }
       })
@@ -87,18 +106,32 @@ export default {
     getinfo () {
       this.$api.get('show_all_info_cotization/' + this.id).then(v => {
         if (v) {
-          console.log('v', v)
-          if (v.status !== 'Pendiente') {
+          this.data = v
+          if (this.data.status === 'Cotizado' && this.rol === 2) {
             this.deshabilitarMsg = true
+            this.cotizarBtn = false
+            this.verCotizacion = true
+          }
+          if (this.data.status === 'Cotizado' && this.rol === 3) {
+            this.deshabilitarMsg = true
+            this.cotizarBtn = false
             this.$q.dialog({
               title: '¡Atención!',
-              message: 'Este chat esta deshabilitado'
+              message: 'Este chat esta deshabilitado, la cotizacion ha sido enviada. Debe esperar por la respuesta del cliente.'
             }).onOk(() => {
 
             })
           }
-          this.data = v
-          console.log('data', this.data)
+          if (this.data.status === 'Rechazado') {
+            this.deshabilitarMsg = true
+            this.cotizarBtn = false
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Este chat esta deshabilitado, la cotizacion ha sido rechazada. Podra ver los mensajes pero no interactuar en este chat.'
+            }).onOk(() => {
+
+            })
+          }
         }
       })
     },

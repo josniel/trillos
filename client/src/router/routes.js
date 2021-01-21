@@ -23,6 +23,8 @@ const routes = [
       // Generales
       { path: '/chat/:id', component: () => import('pages/Chat.vue') },
       { path: '/mis_chats', component: () => import('pages/AllChats.vue') },
+      { path: '/mis_cotizaciones', component: () => import('pages/MisCotizaciones.vue') },
+      /* { path: '/cotizacion', component: () => import('pages/cliente/VerCotizacion.vue') }, */
       { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') }
 
     ]

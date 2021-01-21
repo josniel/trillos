@@ -3,7 +3,7 @@
       <q-img :src="form.fileName ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
         <div class="row justify-between" style="width:100%">
           <div class="col-10 text-h6 text-white text-weight-bolder">{{infoProv.full_name ? infoProv.full_name : 'Nombre de Tienda'}}</div>
-          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
+          <q-icon v-if="rol === 2" class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
       </q-img>
       <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
@@ -23,7 +23,7 @@
       <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;height:300px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.description}}</div>
-        <div class="absolute-bottom row justify-center q-pa-sm">
+        <div v-if="rol === 2" class="absolute-bottom row justify-center q-pa-sm">
           <q-btn color="primary" label="Tienda" icon-right="store" @click="$router.push('/tienda/' + infoProv._id)"/>
         </div>
       </q-card>
@@ -36,6 +36,7 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
+      rol: 0,
       ruta: 'producto',
       fav: false,
       form: {},
@@ -48,17 +49,22 @@ export default {
   },
   methods: {
     cargarProducto () {
-      this.$api.get(`${this.ruta}/${this.id}`).then(res => {
+      this.$api.get('user_info').then(res => {
         if (res) {
-          this.form = res
-          this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
-          console.log('id', this.form.proveedor_id, 'producto', this.form)
-          if (this.form) {
-            this.$api.get('user_by_id/' + this.form.proveedor_id).then(v => {
-              this.infoProv = v
-              console.log('proveedor', this.infoProv)
-            })
-          }
+          this.rol = res.roles[0]
+          this.$api.get(`${this.ruta}/${this.id}`).then(res => {
+            if (res) {
+              this.form = res
+              this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
+              console.log('id', this.form.proveedor_id, 'producto', this.form)
+              if (this.form) {
+                this.$api.get('user_by_id/' + this.form.proveedor_id).then(v => {
+                  this.infoProv = v
+                  console.log('proveedor', this.infoProv)
+                })
+              }
+            }
+          })
         }
       })
     }
