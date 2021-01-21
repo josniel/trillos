@@ -7,14 +7,16 @@
     <q-separator inset />
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
-        <q-card class="bordes row" v-for="(cotizacion, index) in data" :key="index" @click="$router.push('/cotizacion/' + cotizacion._id)">
-            <div class="col-3">
-              <q-icon size="60px" class="text-black q-px-md q-pt-sm" name="account_circle" />
-              <div class="text-center text-grey text-bold text-caption q-pb-xs">{{cotizacion.status}}</div>
+        <q-card class="bordes row q-pa-md" v-for="(cotizacion, index) in data" :key="index" @click="$router.push('/cotizacion/' + cotizacion._id)">
+            <div class="col-4">
+                <q-img :src=" baseu + cotizacion.datos_necesidad.images[0]" style="width:100px" />
             </div>
-            <div class="col-9">
-              <div class="text-black text-bold text-subtitle1 q-pt-sm">{{rol === 2 ? cotizacion.datos_proveedor.full_name : cotizacion.datos_cliente.full_name + ' ' + cotizacion.datos_cliente.last_name}}</div>
-              <div class="absolute-bottom text-amber-8 text-subtitle1 text-right q-pr-sm">{{cotizacion.created_at_message}}</div>
+            <div class="col-6">
+              <div class="text-black text-bold text-subtitle1 q-pl-sm">{{cotizacion.datos_necesidad.name}}</div>
+              <div class="row">
+                <div class="text-caption q-pl-md q-pt-sm">Estatus:</div>
+                <q-chip text-color="white" :label="cotizacion.status" :color="cotizacion.status === 'Cotizado' ? 'primary': cotizacion.status === 'Aprobado' ? 'positive' : 'negative'" />
+              </div>
             </div>
         </q-card>
     </div>
@@ -36,14 +38,14 @@ export default {
   },
   mounted () {
     this.getRecords()
-    this.baseu = env.apiUrl + '/necesidad_img'
+    this.baseu = env.apiUrl + '/necesidad_img/'
   },
   methods: {
     getRecords () {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
-          this.$api.get('show_all_chats').then(res => {
+          this.$api.get('show_all_cotizations').then(res => {
             if (res) {
               this.data = res
               console.log('data', this.data)

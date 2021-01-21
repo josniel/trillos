@@ -1,16 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar class="bg-white">
+      <q-toolbar class="bg-white row justify-between">
         <q-btn round dense flat icon="keyboard_backspace" color="primary" @click="$router.go(-1)"/>
-        <q-input class="q-ma-sm" dense color="white" bg-color="yellow-2" rounded outlined v-model="search" type="search" style="width: 400px">
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-        <template v-slot:after>
-          <q-btn round dense icon="person" color="primary"/>
-        </template>
-        </q-input>
+        <q-img src="logo-210x47.png" style="width:140px" />
+        <q-btn flat round dense icon="person" color="primary" />
       </q-toolbar>
     </q-header>
     <q-footer>

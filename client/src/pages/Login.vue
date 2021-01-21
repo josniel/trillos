@@ -3,7 +3,7 @@
     <div class="absolute-center" style="width:80%; height:85%">
       <div class="absolute-center full-width">
           <div class="q-mb-md row justify-center">
-            <q-img :src="url" spinner-color="white" style="height: 140px; max-width: 150px"/>
+            <q-img :src="url" spinner-color="white" style="height: 140px; max-width: 190px"/>
           </div>
           <div class="row justify-center">
             <q-input
@@ -37,7 +37,7 @@
               <q-btn color="primary" text-color="white" label="Iniciar Sesión" :loading="loading" @click="loguear()"/>
           </div>
           <div class="q-mt-sm row justify-center">
-              <q-btn flat color="primary" label="Registrarse aqui" @click="$router.push('/registro')"/>
+              <q-btn flat color="primary" label="Regístrate aquí" @click="$router.push('/registro')"/>
           </div>
       </div>
     </div>
@@ -54,7 +54,7 @@ export default {
       form: {
       },
       isPwd: true,
-      url: 'favicon.ico'
+      url: 'logo-400x400.png'
     }
   },
   validations: {

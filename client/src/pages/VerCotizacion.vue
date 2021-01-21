@@ -20,7 +20,7 @@
       <div class="text-h6 text-primary">Total</div>
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
-    <div v-if="rol === 2" class="row justify-center q-my-md">
+    <div v-if="rol === 2 && btnClient" class="row justify-center q-my-md">
       <q-btn class="q-mr-md" label="Rechazar" color="red" push glossy style="width:110px;height:40px" />
       <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" />
     </div>
@@ -76,8 +76,9 @@
 export default {
   data () {
     return {
-      id: '',
+      id: this.$route.params.id,
       statusAprobado: false,
+      btnClient: true,
       statusRechazado: false,
       fecha_termino: '',
       rol: 0,
@@ -87,12 +88,24 @@ export default {
   },
   mounted () {
     this.getRecords()
+    this.getCotization()
   },
   methods: {
     getRecords () {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
+        }
+      })
+    },
+    getCotization () {
+      this.$api.get('cotization_by_id/' + this.id).then(v => {
+        if (v) {
+          console.log('v', v)
+          this.cotization = v.cotizacion
+          if (v.status !== 'Cotizado') {
+            this.btnClient = false
+          }
         }
       })
     }

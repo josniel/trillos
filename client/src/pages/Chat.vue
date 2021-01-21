@@ -22,7 +22,7 @@
         </q-card-section>
 
         <q-card-section class="row justify-center">
-          <q-btn no-caps label="Ver Cotizacion" color="primary" />
+          <q-btn no-caps label="Ver Cotizacion" color="primary" @click="$router.push('/cotizacion/' + data.id_cotization)" />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -141,7 +141,6 @@ export default {
           this.text = ''
           this.$api.get('show_all_messages/' + this.id).then(v => {
             if (v) {
-              console.log('v', v)
               this.data.messages = v.messages
             }
           })

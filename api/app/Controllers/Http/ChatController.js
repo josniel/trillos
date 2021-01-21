@@ -9,7 +9,7 @@
  */
 const Chat = use("App/Models/Chat")
 const ChatMessage = use("App/Models/ChatMessage")
-const User = use("App/Models/User")
+const Necesidad = use("App/Models/Necesidad")
 const moment = require('moment')
 class ChatController {
   /**
@@ -98,7 +98,8 @@ class ChatController {
       datos_proveedor: cotisation[0].proveedor_id,
       datos_cliente: cotisation[0].cliente_id,
       messages: [],
-      status: cotisation[0].status
+      status: cotisation[0].status,
+      id_cotization: cotisation[0]._id
     }
     let messages = (await Chat.where({cotisazion_id: params.id_cotisation}).with('datos_user').fetch()).toJSON()
     send.messages = messages
@@ -117,11 +118,20 @@ class ChatController {
     const user = (await auth.getUser()).toJSON()
     let cotizaciones = []
     if (user.roles[0] === 2) {
-      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, status: 'Cotizado'}).with('datos_proveedor').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }]}).fetch()).toJSON()
     } else {
-      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, status: 'Cotizado'}).with('datos_cliente').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }]}).fetch()).toJSON()
+    }
+    for (let i = 0; i < cotizaciones.length; i++) {
+      let dat = (await Necesidad.query().where({_id: cotizaciones[i].necesidad_id}).fetch()).toJSON()
+      cotizaciones[i].datos_necesidad = dat[0]
     }
     response.send(cotizaciones)
+  }
+
+  async cotizationById ({ response, params }) {
+    let datos = (await ChatMessage.query().where({_id: params.id_cotisation}).fetch()).toJSON()
+    response.send(datos[0])
   }
 
   /**
