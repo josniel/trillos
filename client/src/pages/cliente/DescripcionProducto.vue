@@ -20,11 +20,11 @@
             </q-item-section>
           </q-item>
       </q-card>
-      <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;height:300px">
+      <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;min-height:340px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.description}}</div>
-        <div v-if="rol === 2" class="absolute-bottom row justify-center q-pa-sm">
-          <q-btn color="primary" label="Tienda" icon-right="store" @click="$router.push('/tienda/' + infoProv._id)"/>
+        <div v-if="rol === 2" class="row justify-center q-pa-sm q-mt-md">
+          <q-btn color="primary" label="Ir A Tienda" icon-right="store" @click="$router.push('/tienda/' + infoProv._id)"/>
         </div>
       </q-card>
   </div>

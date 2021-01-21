@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { required, minLength, maxLength } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 import env from '../../env'
 export default {
   data () {
@@ -68,7 +68,7 @@ export default {
       name: { required },
       direccion: { required },
       necesidad: { required },
-      descripcion: { required, minLength: minLength(1), maxLength: maxLength(200) }
+      descripcion: { required }
     },
     categoria_id: { required },
     solicitudFiles: { required }

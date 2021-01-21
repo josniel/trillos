@@ -18,7 +18,7 @@
           <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : ''" />
           <q-btn icon="view_list" color="primary" flat round size="md" :to="rol === 2 ? '/solicitudes' : rol === 3 ? '/productos' : ''"/>
           <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
-          <q-btn icon="forum" color="primary" flat round size="md" to="/mis_cotizaciones" />
+          <q-btn icon="shopping_cart" color="primary" flat round size="md" to="/mis_cotizaciones" />
           <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
       </div>
     </q-footer>

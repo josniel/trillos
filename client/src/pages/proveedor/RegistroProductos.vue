@@ -50,8 +50,8 @@ export default {
   validations: {
     form: {
       name: { required, minLength: minLength(3), maxLength: maxLength(50) },
-      description: { required, minLength: minLength(1), maxLength: maxLength(200) },
-      cantidad: { required, minLength: minLength(1), maxLength: maxLength(10) }
+      description: { required },
+      cantidad: { required, minLength: minLength(1), maxLength: maxLength(20) }
     },
     categoria_id: { required },
     file: { required }

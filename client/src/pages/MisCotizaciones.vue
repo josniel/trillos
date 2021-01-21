@@ -2,7 +2,7 @@
   <div>
     <div class="row justify-between q-ma-sm">
         <div class="q-ml-sm text-h6">Mis Cotizaciones</div>
-        <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Chats" to="/mis_chats" />
+        <q-btn no-caps class="shadow-11" icon-right="forum" color="primary" text-color="black" label="Chats" to="/mis_chats" />
     </div>
     <q-separator inset />
 

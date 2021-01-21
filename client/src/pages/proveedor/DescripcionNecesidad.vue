@@ -31,10 +31,10 @@
         </q-scroll-area>
       </q-card>
 
-      <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;height:300px">
+      <q-card class="q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;min-height:240px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.descripcion}}</div>
-        <div v-if="rol === 3" class="absolute-bottom row justify-center q-pa-sm">
+        <div v-if="rol === 3" class="row justify-center q-pa-sm q-mt-md">
           <q-btn color="primary" label="Iniciar cotización" @click="iraChat(form._id)"/>
         </div>
       </q-card>

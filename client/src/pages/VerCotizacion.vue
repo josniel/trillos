@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-primary text-center q-my-md text-h5">* Cotización *</div>
+    <div class="text-primary text-center text-bold q-my-md text-h5">* Cotización *</div>
     <q-separator inset />
     <div class="column q-ma-md">
       <div class="row items-center">
