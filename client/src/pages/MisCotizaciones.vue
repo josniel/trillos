@@ -7,7 +7,7 @@
     <q-separator inset />
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
-        <q-card class="bordes row" v-for="(cotizacion, index) in data" :key="index">
+        <q-card class="bordes row" v-for="(cotizacion, index) in data" :key="index" @click="$router.push('/cotizacion/' + cotizacion._id)">
             <div class="col-3">
               <q-icon size="60px" class="text-black q-px-md q-pt-sm" name="account_circle" />
               <div class="text-center text-grey text-bold text-caption q-pb-xs">{{cotizacion.status}}</div>
