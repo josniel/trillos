@@ -21,8 +21,8 @@
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
     <div v-if="rol === 2 && btnClient" class="row justify-center q-my-md">
-      <q-btn class="q-mr-md" label="Rechazar" color="red" push glossy style="width:110px;height:40px" />
-      <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" />
+      <q-btn class="q-mr-md" label="Rechazar" color="red" push glossy style="width:110px;height:40px" @click="rechazarCot()" />
+      <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" @click="aprobarCot()" />
     </div>
 
     <q-dialog v-model="statusAprobado" style="width:100%">
@@ -32,7 +32,6 @@
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-
         <q-card-section>
           <div class="q-px-xs text-subtitle2">Ingrese la fecha de finalización del trabajo</div>
           <q-input outlined v-model="fecha_termino" mask="date" placeholder="aaaa/mm/dd">
@@ -106,7 +105,40 @@ export default {
           if (v.status !== 'Cotizado') {
             this.btnClient = false
           }
+          if (v.status === 'Rechazado') {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Esta cotización ha sido rechazada.'
+            }).onOk(() => {
+
+            })
+          }
         }
+      })
+    },
+    aprobarCot () {
+      this.$q.loading.show({
+        message: 'Aprobando cotización, Por Favor Espere...'
+      })
+      this.$api.put('new_status/' + this.id, { status: 'Aprobado' }).then((res) => {
+        console.log('res', res)
+        this.$q.loading.hide()
+        this.$router.push('/mis_cotizaciones')
+      })
+    },
+    rechazarCot () {
+      this.$q.dialog({
+        title: 'Confirma',
+        message: '¿Seguro deseas rechazar esta cotización?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$api.put('new_status/' + this.id, { status: 'Rechazado' }).then((res) => {
+          console.log('res', res)
+          this.$router.push('/mis_cotizaciones')
+        })
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
       })
     }
   }

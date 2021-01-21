@@ -160,6 +160,17 @@ class ChatController {
     response.send(cotization)
   }
 
+  async updateStatus ({ params, request, response }) {
+    var dat = request.all()
+    let cotization = []
+    if (dat.status === 'Rechazado') {
+      cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
+    } else if (dat.status === 'Aprobado') {
+      cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
+    }
+    response.send(cotization)
+  }
+
   /**
    * Delete a chat with id.
    * DELETE chats/:id

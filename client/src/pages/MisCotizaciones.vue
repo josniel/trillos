@@ -11,10 +11,10 @@
             <div class="col-4">
                 <q-img :src=" baseu + cotizacion.datos_necesidad.images[0]" style="width:100px" />
             </div>
-            <div class="col-6">
+            <div class="col-7">
               <div class="text-black text-bold text-subtitle1 q-pl-sm">{{cotizacion.datos_necesidad.name}}</div>
               <div class="row">
-                <div class="text-caption q-pl-md q-pt-sm">Estatus:</div>
+                <div class="text-caption q-ml-sm q-pt-sm">Estatus:</div>
                 <q-chip text-color="white" :label="cotizacion.status" :color="cotizacion.status === 'Cotizado' ? 'primary': cotizacion.status === 'Aprobado' ? 'positive' : 'negative'" />
               </div>
             </div>
