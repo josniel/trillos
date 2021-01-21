@@ -78,7 +78,7 @@ class ChatController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async showCotizations ({ params, response, auth }) {
+  async showAllChats ({ params, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     let rol = user.roles[0]
     let cotizaciones = []
@@ -90,7 +90,7 @@ class ChatController {
     response.send(cotizaciones)
   }
 
-  async showAllInfoCotisation ({ params, response, auth }) {
+  async showAllMessages ({ params, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     const id_user = user._id
     let cotisation = (await ChatMessage.query().where('_id',params.id_cotisation).fetch()).toJSON()
@@ -113,6 +113,17 @@ class ChatController {
     response.send(send)
   }
 
+  async showAllCotizations ({ params, response, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let cotizaciones = []
+    if (user.roles[0] === 2) {
+      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, status: 'Cotizado'}).with('datos_proveedor').fetch()).toJSON()
+    } else {
+      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, status: 'Cotizado'}).with('datos_cliente').fetch()).toJSON()
+    }
+    response.send(cotizaciones)
+  }
+
   /**
    * Render a form to update an existing chat.
    * GET chats/:id/edit
@@ -133,7 +144,10 @@ class ChatController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async updateCotization ({ params, request, response }) {
+    var dat = request.all()
+    let cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({cotizacion: dat, status: 'Cotizado'})
+    response.send(cotization)
   }
 
   /**

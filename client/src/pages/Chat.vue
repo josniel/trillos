@@ -6,7 +6,7 @@
     <q-separator v-if="cotizarBtn" />
 
     <q-dialog v-model="cotizar" transition-show="slide-up" transition-hide="slide-down" >
-      <enviar-cotizacion />
+      <enviar-cotizacion :ruta="id" />
     </q-dialog>
 
     <q-dialog v-model="verCotizacion" transition-show="slide-up" transition-hide="slide-down" >
@@ -104,7 +104,7 @@ export default {
       })
     },
     getinfo () {
-      this.$api.get('show_all_info_cotization/' + this.id).then(v => {
+      this.$api.get('show_all_messages/' + this.id).then(v => {
         if (v) {
           this.data = v
           if (this.data.status === 'Cotizado' && this.rol === 2) {
@@ -139,7 +139,7 @@ export default {
       if (this.text !== '') {
         this.$api.post('send_message/' + this.id, { message: this.text }).then(res => {
           this.text = ''
-          this.$api.get('show_all_info_cotization/' + this.id).then(v => {
+          this.$api.get('show_all_messages/' + this.id).then(v => {
             if (v) {
               console.log('v', v)
               this.data.messages = v.messages

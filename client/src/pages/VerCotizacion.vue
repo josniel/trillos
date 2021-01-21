@@ -20,10 +20,55 @@
       <div class="text-h6 text-primary">Total</div>
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
-    <div class="row justify-center q-my-md">
+    <div v-if="rol === 2" class="row justify-center q-my-md">
       <q-btn class="q-mr-md" label="Rechazar" color="red" push glossy style="width:110px;height:40px" />
       <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" />
     </div>
+
+    <q-dialog v-model="statusAprobado" style="width:100%">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6 text-bold text-primary">Cotizacion Aprobada</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <div class="q-px-xs text-subtitle2">Ingrese la fecha de finalización del trabajo</div>
+          <q-input outlined v-model="fecha_termino" mask="date" placeholder="aaaa/mm/dd">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                  <q-date v-model="fecha_termino">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Close" color="primary" flat />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <div class="row justify-center q-mt-md">
+            <q-btn class="q-mr-md" label="Iniciar" color="positive" push glossy />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="statusRechazado" style="width:100%">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6 text-bold text-red">Cotizacion Rechazada</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section>
+          <div class="q-px-xs text-subtitle1">Esta cotización fue rechazada.</div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
@@ -32,6 +77,9 @@ export default {
   data () {
     return {
       id: '',
+      statusAprobado: false,
+      statusRechazado: false,
+      fecha_termino: '',
       rol: 0,
       cotization: {
       }

@@ -56,6 +56,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 export default {
+  props: ['ruta'],
   data () {
     return {
       add: {},
@@ -96,11 +97,19 @@ export default {
         console.log(this.carrito, 'carrito')
       }
     },
-    enviarCotizacion () {
+    async enviarCotizacion () {
       if (this.carrito.length > 0) {
+        this.$q.loading.show({
+          message: 'Enviando cotización, Por Favor Espere...'
+        })
         this.cotizacion.servicios = this.carrito
         this.cotizacion.total = this.totalCarrito
         console.log('cotizacion', this.cotizacion)
+        await this.$api.put('cotizar_necesidad/' + this.ruta, this.cotizacion).then((res) => {
+          console.log('res', res)
+          this.$q.loading.hide()
+          this.$router.push('/mis_cotizaciones')
+        })
       } else {
         this.$q.notify({
           message: 'Ingrese sus servicios antes de enviar una cotización',

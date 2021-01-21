@@ -43,7 +43,7 @@ export default {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
-          this.$api.get('cotizaciones').then(res => {
+          this.$api.get('show_all_chats').then(res => {
             if (res) {
               this.data = res
               console.log('data', this.data)
