@@ -107,14 +107,14 @@ export default {
       this.$api.get('show_all_messages/' + this.id).then(v => {
         if (v) {
           this.data = v
-          if (this.data.status === 'Cotizado' && this.rol === 2) {
+          if (this.data.status !== 'Pendiente') {
             this.deshabilitarMsg = true
             this.cotizarBtn = false
+          }
+          if (this.data.status === 'Cotizado' && this.rol === 2) {
             this.verCotizacion = true
           }
           if (this.data.status === 'Cotizado' && this.rol === 3) {
-            this.deshabilitarMsg = true
-            this.cotizarBtn = false
             this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, la cotizacion ha sido enviada. Debe esperar por la respuesta del cliente.'
@@ -123,8 +123,6 @@ export default {
             })
           }
           if (this.data.status === 'Rechazado') {
-            this.deshabilitarMsg = true
-            this.cotizarBtn = false
             this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, la cotizacion ha sido rechazada. Podra ver los mensajes pero no interactuar en este chat.'
@@ -132,9 +130,15 @@ export default {
 
             })
           }
+          if (this.data.status === 'Aprobado') {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Este chat esta deshabilitado, la cotizacion ha sido aprobada. Podra ver los mensajes pero no interactuar en este chat.'
+            }).onOk(() => {
+
+            })
+          }
           if (this.data.status === 'Iniciado' || this.data.status === 'Atrasado') {
-            this.deshabilitarMsg = true
-            this.cotizarBtn = false
             this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, el proceso ya inició. Podra ver los mensajes pero no interactuar en este chat.'
@@ -143,8 +147,6 @@ export default {
             })
           }
           if (this.data.status === 'Terminado') {
-            this.deshabilitarMsg = true
-            this.cotizarBtn = false
             this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, el proceso ha culminado. Podra ver los mensajes pero no interactuar en este chat.'

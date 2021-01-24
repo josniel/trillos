@@ -10,6 +10,7 @@
 const Chat = use("App/Models/Chat")
 const ChatMessage = use("App/Models/ChatMessage")
 const Necesidad = use("App/Models/Necesidad")
+const User = use("App/Models/User")
 const moment = require('moment')
 class ChatController {
   /**

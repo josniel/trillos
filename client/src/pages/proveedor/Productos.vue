@@ -17,7 +17,7 @@
                 horizontal
                 style="height: 33px; width:100%"
               >
-                <div class="text-h6">{{item.name}}</div>
+                <div class="text-subtitle2 text-weight-bolder">{{item.name}}</div>
               </q-scroll-area>
               <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
           </div>

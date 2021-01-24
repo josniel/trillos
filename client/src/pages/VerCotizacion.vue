@@ -67,7 +67,68 @@
         </q-card-section>
         <q-card-section v-if="rol === 3" class="row justify-center q-my-md">
           <q-btn v-if="posponeBtn" class="q-mr-md" label="Posponer" color="primary" push glossy style="width:110px;height:40px" @click="statusIniciado = false, statusAprobado = true" />
-          <q-btn label="Terminar" color="positive" push glossy style="width:110px;height:40px" @click="terminarTrabajo()" />
+          <q-btn label="Finalizar" color="positive" push glossy style="width:110px;height:40px" @click="terminarTrabajo()" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog persistent v-model="statusTerminadoclient" style="width:100%">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section>
+          <div class="q-px-xs text-subtitle1">Califícanos y deja un comentario.</div>
+          <div class="row justify-center">
+            <q-rating
+              v-model="rating_tienda"
+              max="5"
+              size="3em"
+              color="yellow"
+              icon="star_border"
+              icon-selected="star"
+              icon-half="star_half"
+              no-dimming
+            />
+          </div>
+          <q-input
+            v-model="comentario"
+            outlined
+            type="textarea"
+          />
+          <div class="row justify-center q-mt-md">
+            <q-btn class="q-mr-md" label="Calificar" color="primary" push glossy @click="calificar('proveedor')" />
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <q-dialog persistent v-model="statusTerminadoProv" style="width:100%">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none">
+          <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section>
+          <div class="q-px-xs text-subtitle1">Debes calificar al cliente.</div>
+          <div class="row justify-center">
+            <q-rating
+              v-model="rating_cliente"
+              max="5"
+              size="3em"
+              color="yellow"
+              icon="star_border"
+              icon-selected="star"
+              icon-half="star_half"
+              no-dimming
+            />
+          </div>
+          <div class="row justify-center q-mt-md">
+            <q-btn class="q-mr-md" label="Calificar" color="primary" push glossy @click="calificar('cliente')" />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -85,8 +146,14 @@ export default {
       today: null,
       statusAprobado: false,
       statusIniciado: false,
+      statusTerminadoProv: false,
+      statusTerminadoclient: false,
       posponeBtn: false,
       btnClient: true,
+      rating_tienda: 0,
+      rating_cliente: 0,
+      infoCot: {},
+      comentario: '',
       fecha_termino: '',
       fecha: '',
       rol: 0,
@@ -112,10 +179,10 @@ export default {
     getCotization () {
       this.$api.get('cotization_by_id/' + this.id).then(v => {
         if (v) {
+          this.infoCot = v
           console.log('v', v)
           this.cotization = v.cotizacion
           this.today = moment().format('YYYY/MM/DD')
-          console.log('today', this.today)
           if (v.status !== 'Cotizado') {
             this.btnClient = false
           }
@@ -145,8 +212,30 @@ export default {
               this.posponeBtn = true
             }
           }
+          if (v.status === 'Terminado' && this.rol === 2) {
+            this.statusTerminadoclient = true
+          }
+          if (v.status === 'Terminado' && this.rol === 3) {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'El trabajo ya fue completado.'
+            }).onOk(() => {
+
+            })
+          }
         }
       })
+    },
+    calificar (val) {
+      var form = {}
+      if (val === 'proveedor') {
+        form.rating_proveedor = this.rating_tienda
+        form.comentario = this.comentario
+        console.log(form)
+      } else {
+        form.rating_cliente = this.rating_cliente
+        console.log(form)
+      }
     },
     terminarTrabajo () {
       this.$q.loading.show({
@@ -155,7 +244,8 @@ export default {
       this.$api.put('new_status/' + this.id, { status: 'Terminado' }).then((res) => {
         console.log('res', res)
         this.$q.loading.hide()
-        this.$router.push('/mis_cotizaciones')
+        this.statusIniciado = false
+        this.statusTerminadoProv = true
       })
     },
     aprobarCot () {
@@ -163,7 +253,6 @@ export default {
         message: 'Aprobando cotización, Por Favor Espere...'
       })
       this.$api.put('new_status/' + this.id, { status: 'Aprobado' }).then((res) => {
-        console.log('res', res)
         this.$q.loading.hide()
         this.$router.push('/mis_cotizaciones')
       })
@@ -176,7 +265,6 @@ export default {
         persistent: true
       }).onOk(() => {
         this.$api.put('new_status/' + this.id, { status: 'Rechazado' }).then((res) => {
-          console.log('res', res)
           this.$router.push('/mis_cotizaciones')
         })
       }).onCancel(() => {

@@ -5,6 +5,10 @@
             <div class="col-10 text-h6 text-white text-weight-bolder">{{infoClient.full_name && infoClient.last_name ? infoClient.full_name + ' ' + infoClient.last_name : infoClient.full_name}}</div>
           <q-icon v-if="rol === 3" class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
+        <div class="row absolute-bottom" style="width:100%">
+          <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
+          <div class="q-pl-md q-pt-xs text-caption">{{form.direccion}}</div>
+        </div>
       </q-img>
 
       <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">

@@ -16,7 +16,7 @@
                 horizontal
                 style="height: 27px; width:100%"
               >
-                <div class="text-h6">{{item.name}}</div>
+                <div class="text-subtitle2 text-weight-bolder">{{item.name}}</div>
               </q-scroll-area>
               <div class="text-caption">Caracter:</div>
               <q-chip text-color="white" :label="item.necesidad" :color="item.necesidad === 'Urgente (1 a 3 Horas)' ? 'red' : item.necesidad === 'Medio (5 a 24 Horas)' ? 'amber-7' : 'green-14'" />
@@ -57,7 +57,6 @@ export default {
           this.$api.get('necesidad_by_user_id/' + id).then(v => {
             if (v) {
               this.data = v
-              console.log('solicitudes', this.data)
             }
           })
         }
