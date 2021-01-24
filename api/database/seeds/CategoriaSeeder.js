@@ -17,7 +17,7 @@ const categoriaData = [
   {
     id: 1,
     name: 'Pintura de Automóvil',
-    icons: "brush"
+    icons: "format_paint"
   },
   {
     id: 2,
@@ -27,12 +27,12 @@ const categoriaData = [
   {
     id: 3,
     name: 'Repuesto de Vehiculos',
-    icons: "trip_origin"
+    icons: "settings"
   },
   {
     id: 4,
     name: 'Desabolladura',
-    icons: "grade"
+    icons: "build"
   },
   {
     id: 5,

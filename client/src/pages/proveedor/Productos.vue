@@ -10,7 +10,7 @@
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple>
         <div class="row justify-between">
           <div @click="$router.push('/descripcionproducto/' + item._id)" class="col-4">
-            <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:100px" />
+            <q-img :src="item.fileName ? baseu + '/' + item.fileName : 'noimgpro.png'" style="width:100px; height: 80px;" />
           </div>
           <div @click="$router.push('/descripcionproducto/' + item._id)" class="col-6">
               <q-scroll-area
@@ -20,17 +20,9 @@
                 <div class="text-h6">{{item.name}}</div>
               </q-scroll-area>
               <div>Cantidad: <strong>{{item.cantidad}}</strong></div>
-              <q-rating
-              disable
-                v-model="ratingProduc"
-                size="sm"
-                color="amber-14"
-                icon="star_border"
-                icon-selected="star"
-              />
           </div>
           <q-separator vertical color="black" />
-          <div class="column">
+          <div class="column justify-around">
             <q-btn round flat color="white" size="sm" text-color="black" icon="edit" @click="editProduct(item._id)" />
             <q-separator color="black" />
             <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteProduct(item._id)" />
@@ -50,7 +42,6 @@ export default {
   data () {
     return {
       baseu: '',
-      ratingProduc: 3,
       data: []
     }
   },
@@ -66,7 +57,6 @@ export default {
           this.$api.get('producto_by_proveedor/' + id).then(v => {
             if (v) {
               this.data = v
-              console.log('productos', this.data)
             }
           })
         }

@@ -9,7 +9,7 @@
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple >
         <div class="row justify-between">
           <div @click="$router.push('/descripcionsolicitud/' + item._id)" class="col-4">
-            <q-img :src="item.images ? baseu + '/' + item.images[0] : 'noimgpro.png'" style="width:100px" />
+            <q-img :src="item.images ? baseu + '/' + item.images[0] : 'noimgpro.png'" style="width:100px; height: 80px;" />
           </div>
           <div @click="$router.push('/descripcionsolicitud/' + item._id)" class="col-6">
               <q-scroll-area
@@ -22,7 +22,7 @@
               <q-chip text-color="white" :label="item.necesidad" :color="item.necesidad === 'Urgente (1 a 3 Horas)' ? 'red' : item.necesidad === 'Medio (5 a 24 Horas)' ? 'amber-7' : 'green-14'" />
           </div>
           <q-separator vertical color="black" />
-          <div class="column">
+          <div class="column justify-around">
             <q-btn round flat color="white" size="sm" text-color="black" icon="edit" @click="editSolicitud(item._id)" />
             <q-separator color="black" />
             <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteSolicitud(item._id)" />

@@ -132,6 +132,26 @@ export default {
 
             })
           }
+          if (this.data.status === 'Iniciado' || this.data.status === 'Atrasado') {
+            this.deshabilitarMsg = true
+            this.cotizarBtn = false
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Este chat esta deshabilitado, el proceso ya inició. Podra ver los mensajes pero no interactuar en este chat.'
+            }).onOk(() => {
+
+            })
+          }
+          if (this.data.status === 'Terminado') {
+            this.deshabilitarMsg = true
+            this.cotizarBtn = false
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Este chat esta deshabilitado, el proceso ha culminado. Podra ver los mensajes pero no interactuar en este chat.'
+            }).onOk(() => {
+
+            })
+          }
         }
       })
     },

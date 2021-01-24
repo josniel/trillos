@@ -14,8 +14,7 @@
             </q-item-section>
             <q-item-section side top>
               <div class="row">
-                <q-icon name="star" color="yellow" style="font-size: 2rem;"/>
-                <q-item-label class="q-mt-sm text-subtitle1 text-weight-bolder">9.0</q-item-label>
+                <q-icon :name="categoria.icons" color="yellow" style="font-size: 2rem;"/>
               </div>
             </q-item-section>
           </q-item>
@@ -53,6 +52,7 @@ export default {
       fav: false,
       form: {},
       infoClient: {},
+      categoria: {},
       baseu: ''
     }
   },
@@ -69,11 +69,10 @@ export default {
             if (res) {
               this.form = res
               this.perfile = this.form.images[0]
-              console.log('id', this.form.ownerId, 'solicitud', this.form)
+              this.cargarCategoria()
               if (this.form) {
                 this.$api.get('user_by_id/' + this.form.ownerId).then(v => {
                   this.infoClient = v
-                  console.log('Cliente', this.infoClient)
                 })
               }
             }
@@ -92,6 +91,13 @@ export default {
               this.$router.push('/chat/' + v._id)
             }
           })
+        }
+      })
+    },
+    cargarCategoria () {
+      this.$api.get('categoria').then(v => {
+        if (v) {
+          this.categoria = v.find(x => x._id === this.form.categoria_id)
         }
       })
     }

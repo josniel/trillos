@@ -13,7 +13,7 @@
     </div>
     <div v-else>
       <div class="absolute-center text-center row justify-center">
-        <div class="text-h6">Sin productos para esta categoria</div>
+        <div class="text-h6">{{rol === 2 ? 'Sin productos ' : 'Sin socilitudes '}} para esta categoria</div>
         <q-btn class="q-mt-md" size="lg" color="primary" flat icon="arrow_back" label="volver" @click="$router.go(-1)" />
       </div>
     </div>
@@ -43,17 +43,13 @@ export default {
           this.rol = v.roles[0]
           if (this.rol === 2) {
             this.ruta = 'producto_filtrado'
+            this.baseu = env.apiUrl + '/productos_img/'
           } else {
             this.ruta = 'necesidad_by_categoria_id'
+            this.baseu = env.apiUrl + '/necesidad_img/'
           }
           this.$api.get(`${this.ruta}/${this.id}`).then(res => {
             this.data = res
-            console.log('data', this.data)
-            if (this.rol === 2) {
-              this.baseu = env.apiUrl + '/productos_img/'
-            } else {
-              this.baseu = env.apiUrl + '/necesidad_img/'
-            }
             this.$api.get('categoria').then(v => {
               if (v) {
                 this.categoria = v.find(x => x._id === this.id)

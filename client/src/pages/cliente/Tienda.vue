@@ -8,7 +8,6 @@
           </div>
           <div class="col-6 row justify-end">
             <q-rating v-model="ratingTienda" size="2em" color="yellow" readonly/>
-            <div class="text-caption">Califícanos</div>
           </div>
         </div>
         <q-card @click="dialogStado = true" class="q-ma-xs bg-grey-4 absolute-bottom" style="width:30%; height: 30px; border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">

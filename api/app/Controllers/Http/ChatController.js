@@ -51,7 +51,7 @@ class ChatController {
     body.cotisazion_id = params.id_cotisation
     body.visto = false
     let message = (await Chat.create(body)).toJSON()
-    let chat = await ChatMessage.query().where('_id', params.id_cotisation).update({last_message: message.message, created_at_message:  moment(message.created_at).lang('es').calendar()})
+    let chat = await ChatMessage.query().where('_id', params.id_cotisation).update({last_message: message.message, created_at_message: message.created_at})
     response.send(message)
   }
 
@@ -87,6 +87,12 @@ class ChatController {
     } else {
       cotizaciones = (await ChatMessage.query().where('proveedor_id',user._id).with('datos_cliente').fetch()).toJSON()
     }
+    for (let i = 0; i < cotizaciones.length; i++) {
+      if (cotizaciones[i].created_at_message) {
+        cotizaciones[i].created_at_message = moment(cotizaciones[i].created_at_message).lang('es').calendar()
+      }
+      
+    }
     response.send(cotizaciones)
   }
 
@@ -117,14 +123,18 @@ class ChatController {
   async showAllCotizations ({ params, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     let cotizaciones = []
+    let today = moment().format('YYYY/MM/DD')
     if (user.roles[0] === 2) {
-      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }]}).fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }, { status: 'Iniciado' }, { status: 'Terminado' }, { status: 'Atrasado' }]}).with('datos_proveedor').fetch()).toJSON()
     } else {
-      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }]}).fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Rechazado' }, { status: 'Iniciado' }, { status: 'Terminado' }, { status: 'Atrasado' }]}).with('datos_cliente').fetch()).toJSON()
     }
     for (let i = 0; i < cotizaciones.length; i++) {
       let dat = (await Necesidad.query().where({_id: cotizaciones[i].necesidad_id}).fetch()).toJSON()
       cotizaciones[i].datos_necesidad = dat[0]
+      if (cotizaciones[i].fecha_termino && today > cotizaciones[i].fecha_termino) {
+        let updat = await ChatMessage.query().where('_id', cotizaciones[i]._id).update({status: 'Atrasado'})
+      }
     }
     response.send(cotizaciones)
   }
@@ -163,11 +173,19 @@ class ChatController {
   async updateStatus ({ params, request, response }) {
     var dat = request.all()
     let cotization = []
-    if (dat.status === 'Rechazado') {
+    if (dat.status === 'Aprobado') {
+      cotization = (await ChatMessage.query().where('_id', params.id_cotisation).fetch()).toJSON()
+      let otherNeed = await ChatMessage.query().where('necesidad_id', cotization[0].necesidad_id).update({status: 'Rechazado'})
       cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
-    } else if (dat.status === 'Aprobado') {
+    } else {
       cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
     }
+    response.send(cotization)
+  }
+
+  async updateFechaTermino ({ params, request, response }) {
+    var dat = request.all()
+    let cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({fecha_termino: dat.fecha_termino, status: 'Iniciado'})
     response.send(cotization)
   }
 

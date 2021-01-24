@@ -79,6 +79,7 @@ addPrefixToGroup(
     Route.get("show_all_cotizations", "ChatController.showAllCotizations")
     Route.get('cotization_by_id/:id_cotisation', 'ChatController.cotizationById')
     Route.put("new_status/:id_cotisation", "ChatController.updateStatus")
+    Route.put("fecha_de_termino/:id_cotisation", "ChatController.updateFechaTermino")
 
   }).middleware("auth")
 );

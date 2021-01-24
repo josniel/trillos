@@ -25,7 +25,7 @@
       <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" @click="aprobarCot()" />
     </div>
 
-    <q-dialog v-model="statusAprobado" style="width:100%">
+    <q-dialog persistent v-model="statusAprobado" style="width:100%">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 text-bold text-primary">Cotizacion Aprobada</div>
@@ -34,7 +34,7 @@
         </q-card-section>
         <q-card-section>
           <div class="q-px-xs text-subtitle2">Ingrese la fecha de finalización del trabajo</div>
-          <q-input outlined v-model="fecha_termino" mask="date" placeholder="aaaa/mm/dd">
+          <q-input outlined v-model="fecha_termino" mask="date" placeholder="aaaa/mm/dd" :error="$v.fecha_termino.$error" error-message="Este campo es requerido"  @blur="$v.fecha_termino.$touch()">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -48,22 +48,26 @@
             </template>
           </q-input>
           <div class="row justify-center q-mt-md">
-            <q-btn class="q-mr-md" label="Iniciar" color="positive" push glossy />
+            <q-btn class="q-mr-md" label="Iniciar" color="positive" push glossy @click="enviarFecha()" />
           </div>
         </q-card-section>
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="statusRechazado" style="width:100%">
+    <q-dialog v-model="statusIniciado" style="width:100%">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6 text-bold text-red">Cotizacion Rechazada</div>
+          <div class="text-h6 text-bold text-primary">{{fecha > today ? 'Proceso Atrasado' : 'Proceso Iniciado'}}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-
         <q-card-section>
-          <div class="q-px-xs text-subtitle1">Esta cotización fue rechazada.</div>
+          <div class="q-px-xs q-pb-md text-subtitle1">La fecha de culminación del trabajo es:</div>
+          <div class="text-h6 text-center">{{fecha}}</div>
+        </q-card-section>
+        <q-card-section v-if="rol === 3" class="row justify-center q-my-md">
+          <q-btn v-if="posponeBtn" class="q-mr-md" label="Posponer" color="primary" push glossy style="width:110px;height:40px" @click="statusIniciado = false, statusAprobado = true" />
+          <q-btn label="Terminar" color="positive" push glossy style="width:110px;height:40px" @click="terminarTrabajo()" />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -72,18 +76,26 @@
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
+import moment from 'moment'
 export default {
   data () {
     return {
       id: this.$route.params.id,
+      today: null,
       statusAprobado: false,
+      statusIniciado: false,
+      posponeBtn: false,
       btnClient: true,
-      statusRechazado: false,
       fecha_termino: '',
+      fecha: '',
       rol: 0,
       cotization: {
       }
     }
+  },
+  validations: {
+    fecha_termino: { required }
   },
   mounted () {
     this.getRecords()
@@ -102,6 +114,8 @@ export default {
         if (v) {
           console.log('v', v)
           this.cotization = v.cotizacion
+          this.today = moment().format('YYYY/MM/DD')
+          console.log('today', this.today)
           if (v.status !== 'Cotizado') {
             this.btnClient = false
           }
@@ -113,7 +127,35 @@ export default {
 
             })
           }
+          if (v.status === 'Aprobado' && this.rol === 2) {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Esta cotización ha sido aprobada. Debe esperar por la respuesta del proveedor.'
+            }).onOk(() => {
+
+            })
+          }
+          if (v.status === 'Aprobado' && this.rol === 3) {
+            this.statusAprobado = true
+          }
+          if (v.status === 'Iniciado' || v.status === 'Atrasado') {
+            this.statusIniciado = true
+            this.fecha = v.fecha_termino
+            if (this.fecha <= this.today) {
+              this.posponeBtn = true
+            }
+          }
         }
+      })
+    },
+    terminarTrabajo () {
+      this.$q.loading.show({
+        message: 'Culminando el proceso, Por Favor Espere...'
+      })
+      this.$api.put('new_status/' + this.id, { status: 'Terminado' }).then((res) => {
+        console.log('res', res)
+        this.$q.loading.hide()
+        this.$router.push('/mis_cotizaciones')
       })
     },
     aprobarCot () {
@@ -140,6 +182,14 @@ export default {
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       })
+    },
+    enviarFecha () {
+      this.$v.$touch()
+      if (!this.$v.fecha_termino.$error) {
+        this.$api.put('fecha_de_termino/' + this.id, { fecha_termino: this.fecha_termino }).then((res) => {
+          this.$router.push('/mis_cotizaciones')
+        })
+      }
     }
   }
 }

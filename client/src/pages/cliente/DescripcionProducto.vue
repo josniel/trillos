@@ -13,10 +13,7 @@
               <q-item-label class="text-subtitle2">Cantidad: {{form.cantidad}}</q-item-label>
             </q-item-section>
             <q-item-section side top>
-              <div class="row">
-                <q-icon name="star" color="yellow" style="font-size: 2rem;"/>
-                <q-item-label class="q-mt-sm text-subtitle1 text-weight-bolder">9.0</q-item-label>
-              </div>
+              <q-icon :name="categoria.icons" color="yellow" style="font-size: 2.5rem;"/>
             </q-item-section>
           </q-item>
       </q-card>
@@ -41,6 +38,7 @@ export default {
       fav: false,
       form: {},
       infoProv: {},
+      categoria: {},
       baseu: ''
     }
   },
@@ -56,15 +54,21 @@ export default {
             if (res) {
               this.form = res
               this.baseu = env.apiUrl + '/productos_img/' + this.form.fileName
-              console.log('id', this.form.proveedor_id, 'producto', this.form)
+              this.cargarCategoria()
               if (this.form) {
                 this.$api.get('user_by_id/' + this.form.proveedor_id).then(v => {
                   this.infoProv = v
-                  console.log('proveedor', this.infoProv)
                 })
               }
             }
           })
+        }
+      })
+    },
+    cargarCategoria () {
+      this.$api.get('categoria').then(v => {
+        if (v) {
+          this.categoria = v.find(x => x._id === this.form.categoria_id)
         }
       })
     }
