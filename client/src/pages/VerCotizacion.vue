@@ -23,7 +23,7 @@
 
     <div v-if="comentarios === true">
       <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
-        <div class="q-ml-md text-h7 text-grey-9 text-bold">Opiniones</div>
+        <div class="q-ml-md text-h7 text-grey-9 text-bold">Opinion del cliente</div>
           <div class="q-mb-md q-mt-md" v-if="data.length > 0">
             <q-list class="q-mt-sm q-mb-lg">
               <div v-for="(item, index) in data" :key="index">
@@ -47,7 +47,38 @@
           </div>
           <div v-else>
             <div class="absolute-center-bottom text-subtitle1">
-              Actualmente sin opiniones...
+              Actualmente sin opinion del cliente...
+            </div>
+          </div>
+        </q-card>
+    </div>
+
+    <div v-if="comentarios2 === true">
+      <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
+        <div class="q-ml-md text-h7 text-grey-9 text-bold">Calificacion del proveedor</div>
+          <div class="q-mb-md q-mt-md" v-if="data.length > 0">
+            <q-list class="q-mt-sm q-mb-lg">
+              <div v-for="(item, index) in data" :key="index">
+                <q-item class="q-mt-md">
+                  <q-item-section>
+                    <q-item-label>{{item.user_info.full_name}}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <div class="column">
+                      <q-item-label caption>{{item.created_at}}</q-item-label>
+                      <div class="row justify-end q-mt-md items-center">
+                        <div class="text-subtitle1 text-bold"> {{item.rating_cliente}} </div>
+                        <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
+                      </div>
+                    </div>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </q-list>
+          </div>
+          <div v-else>
+            <div class="absolute-center-bottom text-subtitle1">
+              Actualmente sin Calificacion del proveedor...
             </div>
           </div>
         </q-card>
@@ -149,7 +180,7 @@
           <div class="q-px-xs text-subtitle1">Debes calificar al cliente.</div>
           <div class="row justify-center">
             <q-rating
-              v-model="rating_cliente"
+              v-model="form.rating_cliente"
               max="5"
               size="3em"
               color="yellow"
@@ -193,6 +224,7 @@ export default {
       rol: 0,
       data: [],
       comentarios: false,
+      comentarios2: false,
       cotization: {
       }
     }
@@ -257,6 +289,7 @@ export default {
           }
           if (v.status === 'Terminado' && this.rol === 2) {
             this.statusTerminadoclient = true
+            this.comentarios2 = true
           }
           if (v.status === 'Terminado' && this.rol === 3) {
             this.$q.dialog({
@@ -272,7 +305,7 @@ export default {
     calificar (val) {
       this.form.necesidad_id = this.id
       if (val === 'proveedor') {
-        this.$api.post('opinion/' + this.id, this.form).then(res => {
+        this.$api.post('opinion/' + this.id + '/cliente', this.form).then(res => {
           if (res) {
             this.$q.notify({
               message: 'Opinion enviada con Exito',
@@ -282,7 +315,15 @@ export default {
         })
         console.log(this.form)
       } else {
-
+        this.$api.post('opinion/' + this.id + '/proveedor', this.form).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Calificacion enviada con Exito',
+              color: 'positive'
+            })
+          }
+        })
+        console.log(this.form)
       }
       this.statusTerminadoclient = false
     },

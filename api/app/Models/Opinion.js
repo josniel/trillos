@@ -5,13 +5,14 @@ const Model = use('Model')
 
 class Opinion extends Model {
   static get fillable() {
-    return ['comentario', 'rating_tienda', 'necesidad_id']
+    return ['comentario', 'rating_tienda', 'necesidad_id', 'rating_cliente']
   }
   static fieldValidationRules() {
     const rules = {
       comentario: "string",
       rating_tienda: "number",
-      necesidad_id: "string"
+      necesidad_id: "string",
+      rating_cliente: "string"
         }
     return rules
   }

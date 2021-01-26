@@ -22,9 +22,10 @@ class OpinionController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, params }) {
+  async index ({ request, response, params, auth }) {
+    const user = (await auth.getUser()).toJSON()
     console.log(params.necesidad_id, 'paramssss')
-    let opiniones = (await Opiniones.query().where('necesidad_id', params.necesidad_id).with('user_info').fetch()).toJSON()
+    let opiniones = (await Opiniones.query().where({necesidad_id: params.necesidad_id, cliente: user.roles[0] === 2 ? false : true}).with('user_info').fetch()).toJSON()
     let formatearFecha = opiniones.map(v => {
       return {
         ...v,
@@ -57,6 +58,7 @@ class OpinionController {
   async store ({ request, response, params, auth })  {
       const user = (await auth.getUser()).toJSON()
       let body = request.only(Opiniones.fillable)
+      body.cliente = params.quien === 'cliente' ? true : false
       body.user_id = user._id
       const opinion = await Opiniones.create(body)
       response.send(opinion)

@@ -80,7 +80,7 @@ addPrefixToGroup(
     Route.get('cotization_by_id/:id_cotisation', 'ChatController.cotizationById')
     Route.put("new_status/:id_cotisation", "ChatController.updateStatus")
     Route.put("fecha_de_termino/:id_cotisation", "ChatController.updateFechaTermino")
-    Route.post("opinion/:id", "OpinionController.store")
+    Route.post("opinion/:id/:quien", "OpinionController.store")
     Route.get("opiniones/:necesidad_id", "OpinionController.index")
 
 
