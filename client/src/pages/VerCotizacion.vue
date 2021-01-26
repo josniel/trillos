@@ -289,7 +289,7 @@ export default {
           }
           if (v.status === 'Terminado' && this.rol === 2) {
             this.statusTerminadoclient = true
-            this.comentarios2 = true
+            this.comentarios2 = false
           }
           if (v.status === 'Terminado' && this.rol === 3) {
             this.$q.dialog({
