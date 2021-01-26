@@ -20,6 +20,39 @@
       <div class="text-h6 text-primary">Total</div>
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
+
+    <div v-if="comentarios === true">
+      <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
+        <div class="q-ml-md text-h7 text-grey-9 text-bold">Opiniones</div>
+          <div class="q-mb-md q-mt-md" v-if="data.length > 0">
+            <q-list class="q-mt-sm q-mb-lg">
+              <div v-for="(item, index) in data" :key="index">
+                <q-item class="q-mt-md">
+                  <q-item-section>
+                    <q-item-label>{{item.user_info.full_name}}</q-item-label>
+                    <q-item-label caption lines="5">{{item.comentario}}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <div class="column">
+                      <q-item-label caption>{{item.created_at}}</q-item-label>
+                      <div class="row justify-end q-mt-md items-center">
+                        <div class="text-subtitle1 text-bold"> {{item.rating_tienda}} </div>
+                        <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
+                      </div>
+                    </div>
+                  </q-item-section>
+                </q-item>
+              </div>
+            </q-list>
+          </div>
+          <div v-else>
+            <div class="absolute-center-bottom text-subtitle1">
+              Actualmente sin opiniones...
+            </div>
+          </div>
+        </q-card>
+    </div>
+
     <div v-if="rol === 2 && btnClient" class="row justify-center q-my-md">
       <q-btn class="q-mr-md" label="Rechazar" color="red" push glossy style="width:110px;height:40px" @click="rechazarCot()" />
       <q-btn label="Aprobar" color="primary" push glossy style="width:110px;height:40px" @click="aprobarCot()" />
@@ -83,7 +116,7 @@
           <div class="q-px-xs text-subtitle1">Califícanos y deja un comentario.</div>
           <div class="row justify-center">
             <q-rating
-              v-model="rating_tienda"
+              v-model="form.rating_tienda"
               max="5"
               size="3em"
               color="yellow"
@@ -94,7 +127,7 @@
             />
           </div>
           <q-input
-            v-model="comentario"
+            v-model="form.comentario"
             outlined
             type="textarea"
           />
@@ -143,6 +176,7 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
+      form: {},
       today: null,
       statusAprobado: false,
       statusIniciado: false,
@@ -157,6 +191,8 @@ export default {
       fecha_termino: '',
       fecha: '',
       rol: 0,
+      data: [],
+      comentarios: false,
       cotization: {
       }
     }
@@ -167,6 +203,7 @@ export default {
   mounted () {
     this.getRecords()
     this.getCotization()
+    this.consultaropinion()
   },
   methods: {
     getRecords () {
@@ -174,6 +211,12 @@ export default {
         if (v) {
           this.rol = v.roles[0]
         }
+      })
+    },
+    consultaropinion () {
+      this.$api.get('opiniones/' + this.id).then(res => {
+        console.log(this.data, 'mostrando data')
+        this.data = res
       })
     },
     getCotization () {
@@ -220,22 +263,28 @@ export default {
               title: '¡Atención!',
               message: 'El trabajo ya fue completado.'
             }).onOk(() => {
-
+              this.comentarios = true
             })
           }
         }
       })
     },
     calificar (val) {
-      var form = {}
+      this.form.necesidad_id = this.id
       if (val === 'proveedor') {
-        form.rating_proveedor = this.rating_tienda
-        form.comentario = this.comentario
-        console.log(form)
+        this.$api.post('opinion/' + this.id, this.form).then(res => {
+          if (res) {
+            this.$q.notify({
+              message: 'Opinion enviada con Exito',
+              color: 'positive'
+            })
+          }
+        })
+        console.log(this.form)
       } else {
-        form.rating_cliente = this.rating_cliente
-        console.log(form)
+
       }
+      this.statusTerminadoclient = false
     },
     terminarTrabajo () {
       this.$q.loading.show({
