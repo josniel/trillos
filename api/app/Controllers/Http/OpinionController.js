@@ -9,6 +9,7 @@
  *
  */
 const Opiniones = use("App/Models/Opinion")
+const Necesidad = use("App/Models/Necesidad")
 const moment = require('moment')
 
 
@@ -59,6 +60,11 @@ class OpinionController {
       const user = (await auth.getUser()).toJSON()
       let body = request.only(Opiniones.fillable)
       body.cliente = params.quien === 'cliente' ? true : false
+      if (body.cliente === false){
+        const calificado = (await Opiniones.query().where({necesidad_id: params.id}).with('creador').fetch()).toJSON()
+        console.log(calificado, 'el calificado')
+        console.log(params.id, 'el idddddddddddddddddddd')
+      }
       body.user_id = user._id
       const opinion = await Opiniones.create(body)
       response.send(opinion)

@@ -19,6 +19,9 @@ class Opinion extends Model {
   user_info () {
     return this.hasOne('App/Models/User', 'user_id', '_id')
   }
+  creador () {
+    return this.hasOne('App/Models/User', 'ownerId', '_id')
+  }
 }
 
 module.exports = Opinion
