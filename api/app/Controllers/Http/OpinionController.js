@@ -38,15 +38,23 @@ class OpinionController {
   }
 
   async index2 ({ request, response, params, auth }) {
-    let opiniones = (await Opiniones.query().where({calificado: params.id}).fetch()).toJSON()
+    let opiniones = (await Opiniones.query().where({calificado: params.proveedor_id}).fetch()).toJSON()
+    var calificacion = 0
+    var contador = 0
+    console.log(opiniones, 'opiniones')
+    console.log(params.proveedor_id, 'id')
+
+
     for (let j in opiniones) {
-      var calificacion = calificacion + opiniones[j].rating_tienda
-      var contador = contador + 1
+      calificacion = (calificacion + opiniones[j].rating_tienda)
+      contador = contador + 1
     }
     console.log(calificacion, 'calificacion')
     console.log(contador, 'contador')
 
-    let promedio = calificacion / contador
+    let promedio = (calificacion / contador)
+    console.log(promedio, 'promedio')
+
     response.send(promedio)
   }
 

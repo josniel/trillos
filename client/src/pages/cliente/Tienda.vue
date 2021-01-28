@@ -67,7 +67,7 @@ export default {
       img: '',
       estado: false,
       dialogStado: false,
-      ratingTienda: ''
+      ratingTienda: 0
     }
   },
   mounted () {
@@ -102,10 +102,9 @@ export default {
       })
     },
     calificacion () {
-      this.$api.get('calificacion_by_proveedor/' + this.id).then({
+      this.$api.get('calificacion_by_proveedor/' + this.id).then(res => {
         if (res) {
           this.ratingTienda = res
-          console.log(this.ratingTienda, 'calificacion')
         }
       })
     }
