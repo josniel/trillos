@@ -5,6 +5,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       // Administrador
+      { path: '/inicio_administrador', component: () => import('pages/admin/Inicio.vue') },
       // Proveedor
       { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue') },
       { path: '/reportes_proveedor', component: () => import('pages/proveedor/Reportes.vue') },

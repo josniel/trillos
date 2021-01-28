@@ -9,10 +9,10 @@
     </q-header>
     <q-footer>
       <div class="bg-grey-1 text-primary shadow-2 full-width row justify-around" >
-          <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : ''" />
+          <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : rol === 1 ? '/inicio_administrador' : ''" />
           <q-btn icon="view_list" color="primary" flat round size="md" :to="rol === 2 ? '/solicitudes' : rol === 3 ? '/productos' : ''"/>
           <q-btn icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
-          <q-btn icon="shopping_cart" color="primary" flat round size="md" to="/mis_cotizaciones" />
+          <q-btn icon="shopping_cart" color="primary" flat round size="md" :to="rol !== 1 ? '/mis_cotizaciones' : ''" />
           <q-btn icon="logout" color="primary" flat round size="md" to="/login" />
       </div>
     </q-footer>
@@ -27,9 +27,7 @@ export default {
   name: 'MainLayout',
   data () {
     return {
-      search: '',
-      rol: null,
-      id: ''
+      rol: null
     }
   },
   mounted () {
@@ -40,8 +38,6 @@ export default {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
-          this.id = v._id
-          console.log('id', this.id, 'rol ', this.rol)
         }
       })
     }

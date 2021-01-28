@@ -82,7 +82,10 @@ export default {
             } else if (res.TRI_SESSION_INFO.roles[0] === 2) {
               this.login(res)
               this.$router.push('/inicio_cliente')
-            } else {}
+            } else if (res.TRI_SESSION_INFO.roles[0] === 1) {
+              this.login(res)
+              this.$router.push('/inicio_administrador')
+            }
           } else {
             console.log('error de ususario')
             this.loading = false

@@ -19,24 +19,10 @@ const Factory = use('Factory')
 const userData = [
   {
     _id: '5e90d6e6f75366526a680091',
-    email: 'admin@trillos.com',
-    password: 'trillos2020',
+    email: 'admin@triyus.com',
+    password: 'triyus2020',
     full_name: 'Administrador del Sistema',
     roles: [1]
-  },
-  {
-    _id: '5e90d6e6f75366526a680092',
-    email: 'cliente@trillos.com',
-    password: 'trillos2020',
-    full_name: 'Usuario Cliente de Ejemplo',
-    roles: [2]
-  },
-  {
-    _id: '5e90d6e6f75366526a680093',
-    email: 'proveedor@trillos.com',
-    password: 'trillos2020',
-    full_name: 'Usuario Proveedor de Ejemplo',
-    roles: [3]
   }
 ]
 

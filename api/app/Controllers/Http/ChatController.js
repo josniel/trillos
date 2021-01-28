@@ -173,7 +173,6 @@ class ChatController {
 
   async updateStatus ({ params, request, response }) {
     var dat = request.all()
-    console.log('dat', dat)
     let cotization = []
     if (dat.status === 'Aprobado') {
       cotization = (await ChatMessage.query().where('_id', params.id_cotisation).fetch()).toJSON()
