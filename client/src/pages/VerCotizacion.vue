@@ -21,7 +21,7 @@
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
 
-    <div v-if="comentarios === true">
+    <div v-if="comentarios">
       <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
         <div class="q-ml-md text-h7 text-grey-9 text-bold">Opinion del cliente</div>
           <div class="q-mb-md q-mt-md" v-if="data.length > 0">
@@ -53,7 +53,7 @@
         </q-card>
     </div>
 
-    <div v-if="comentarios2 === true">
+    <div v-if="comentarios2">
       <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
         <div class="q-ml-md text-h7 text-grey-9 text-bold">Calificacion del proveedor</div>
           <div class="q-mb-md q-mt-md" v-if="data.length > 0">
@@ -325,6 +325,7 @@ export default {
         })
         console.log(this.form)
       }
+      this.statusTerminadoProv = false
       this.statusTerminadoclient = false
     },
     terminarTrabajo () {
