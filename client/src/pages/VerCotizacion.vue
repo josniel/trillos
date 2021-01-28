@@ -247,8 +247,8 @@ export default {
     },
     consultaropinion () {
       this.$api.get('opiniones/' + this.id).then(res => {
-        console.log(this.data, 'mostrando data')
         this.data = res
+        console.log(this.data, 'mostrando data')
       })
     },
     getCotization () {
@@ -287,16 +287,20 @@ export default {
               this.posponeBtn = true
             }
           }
-          if (v.status === 'Terminado' && this.rol === 2) {
+          if (v.status === 'Terminado' && this.rol === 2 && !v.calificado) {
             this.statusTerminadoclient = true
-            this.comentarios2 = false
+            this.comentarios2 = true
+          }
+          if (v.status === 'Terminado' && this.rol === 2 && v.calificado) {
+            this.comentarios2 = true
           }
           if (v.status === 'Terminado' && this.rol === 3) {
+            this.comentarios = true
             this.$q.dialog({
               title: '¡Atención!',
               message: 'El trabajo ya fue completado.'
             }).onOk(() => {
-              this.comentarios = true
+
             })
           }
         }

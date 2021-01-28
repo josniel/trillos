@@ -128,6 +128,12 @@ class UserController {
     response.send(user)
   }
 
+  async userByRol({ params, response }) {
+    let rol = request.all()
+    const user = (await User.query().where({roles: rol}).fetch()).toJSON()
+    response.send(user)
+  }
+
   async update({ request, response, params }) {
     let modelo = {
       accion: 'update',

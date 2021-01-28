@@ -71,6 +71,7 @@ addPrefixToGroup(
 
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
+    Route.get("user_by_rol/:rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
 
     Route.post("send_message/:id_cotisation", "ChatController.store") // metod para enviar un mensaje
     Route.post("crear_chat/:id_cotisation", "ChatController.storeChat")

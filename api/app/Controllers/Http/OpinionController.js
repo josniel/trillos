@@ -86,6 +86,9 @@ class OpinionController {
       body.calificador = user._id
       body.calificado = chat_message.proveedor_id === user._id ? chat_message.cliente_id : chat_message.proveedor_id
       const opinion = await Opiniones.create(body)
+      if (user.roles[0] === 2) {
+        let status = await Chatmessage.query().where('_id', params.chat_message_id).update({calificado: true})
+      }
 
 
       response.send(opinion)
