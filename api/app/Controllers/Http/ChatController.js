@@ -133,7 +133,7 @@ class ChatController {
     for (let i = 0; i < cotizaciones.length; i++) {
       let dat = (await Necesidad.query().where({_id: cotizaciones[i].necesidad_id}).fetch()).toJSON()
       cotizaciones[i].datos_necesidad = dat[0]
-      if (cotizaciones[i].fecha_termino && today > cotizaciones[i].fecha_termino) {
+      if (cotizaciones[i].fecha_termino && today > cotizaciones[i].fecha_termino && cotizaciones[i].status !== 'Terminado') {
         let updat = await ChatMessage.query().where('_id', cotizaciones[i]._id).update({status: 'Atrasado'})
       }
     }
@@ -173,6 +173,7 @@ class ChatController {
 
   async updateStatus ({ params, request, response }) {
     var dat = request.all()
+    console.log('dat', dat)
     let cotization = []
     if (dat.status === 'Aprobado') {
       cotization = (await ChatMessage.query().where('_id', params.id_cotisation).fetch()).toJSON()
