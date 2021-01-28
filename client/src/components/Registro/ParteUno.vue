@@ -42,7 +42,6 @@ export default {
     async onSubmit (rol) {
       this.$q.loading.show()
       this.form.roles = rol
-      console.log('form parte uno', this.form)
       this.panel.panel = 'parte_dos'
       this.$q.loading.hide()
     }

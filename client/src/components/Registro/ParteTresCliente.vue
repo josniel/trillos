@@ -88,13 +88,13 @@ export default {
   methods: {
     ...mapMutations('generals', ['login']),
     test () {
-      console.log(this.perfilFile, 'file')
       if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
     },
     async next () {
       this.$v.form.$touch()
       this.$v.perfilFile.$touch()
       if (!this.$v.form.$error && !this.$v.perfilFile.$error) {
+        this.form.enable = true
         var formData = new FormData()
         formData.append('perfilFile', this.perfilFile)
         formData.append('dat', JSON.stringify(this.form))
@@ -114,7 +114,6 @@ export default {
       }
     },
     loguear () {
-      console.log('form completo', this.form)
       this.$api.post('login', this.form).then(res => {
         if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
           const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)

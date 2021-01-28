@@ -224,6 +224,8 @@ export default {
           var formData = new FormData()
           formData.append('perfilFile', this.perfilFile)
           this.form.cantidadArchivos = this.tiendaFiles.length
+          this.form.status = 0
+          this.form.enable = false
           for (let i = 0; i < this.tiendaFiles.length; i++) {
             formData.append('tiendaFiles_' + i, this.tiendaFiles[i])
           }

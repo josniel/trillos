@@ -1,6 +1,6 @@
 <template>
   <div>
-   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-grey-1 q-ma-md" style="border-radius:12px">BIENVENIDO ADMINISTRADOR</div>
+   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO ADMINISTRADOR</div>
    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
@@ -12,10 +12,10 @@
       <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/proveedores')" >
         <q-item>
           <q-item-section avatar>
-            <q-avatar icon="store" class="text-primary" />
+            <q-avatar icon="store" class="text-black" />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-primary text-weight-bolder text-h6">Proveedores</q-item-label>
+            <q-item-label class="text-black text-weight-bolder text-h6">Proveedores</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-icon name="arrow_right" color="primary" />
@@ -26,10 +26,10 @@
       <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/clientes')" >
         <q-item>
           <q-item-section avatar>
-            <q-avatar icon="person" class="text-primary" />
+            <q-avatar icon="person" class="text-black" />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-primary text-weight-bolder text-h6">Clientes</q-item-label>
+            <q-item-label class="text-black text-weight-bolder text-h6">Clientes</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-icon name="arrow_right" color="primary" />
@@ -40,10 +40,10 @@
       <q-card v-ripple class="q-pa-sm q-my-md bordes" >
         <q-item>
           <q-item-section avatar>
-            <q-avatar icon="view_list" class="text-primary" />
+            <q-avatar icon="view_list" class="text-black" />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-primary text-weight-bolder text-h6">Reportes</q-item-label>
+            <q-item-label class="text-black text-weight-bolder text-h6">Reportes</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-icon name="arrow_right" color="primary" />

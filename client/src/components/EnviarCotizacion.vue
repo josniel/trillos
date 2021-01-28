@@ -94,7 +94,6 @@ export default {
         this.carrito.push(this.add)
         this.add = {}
         this.$v.$reset()
-        console.log(this.carrito, 'carrito')
       }
     },
     async enviarCotizacion () {
@@ -104,9 +103,7 @@ export default {
         })
         this.cotizacion.servicios = this.carrito
         this.cotizacion.total = this.totalCarrito
-        console.log('cotizacion', this.cotizacion)
         await this.$api.put('cotizar_necesidad/' + this.ruta, this.cotizacion).then((res) => {
-          console.log('res', res)
           this.$q.loading.hide()
           this.$router.push('/mis_cotizaciones')
         })

@@ -85,7 +85,6 @@ export default {
           this.form = res
           this.categoria_id = this.form.categoria_id
           this.imgsTraidas()
-          console.log('form traido', this.form)
           for (let i = 0; i < this.categorias.length; i++) {
             if (this.categorias[i]._id === this.form.categoria_id) {
               this.categorias[i].select = true
@@ -133,7 +132,6 @@ export default {
       if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.solicitudFiles.$error) {
         this.form.categoria_id = this.categoria_id
         this.form.status = 0
-        console.log('form', this.form)
         this.$q.loading.show({
           message: 'Subiendo Solicitud, Por Favor Espere...'
         })
@@ -154,7 +152,6 @@ export default {
       }
     },
     async actualizarSolicitud () {
-      console.log(this.form)
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
         this.form.categoria_id = this.categoria_id
@@ -176,7 +173,6 @@ export default {
             'Content-Type': undefined
           }
         }).then((res) => {
-          console.log('res', res)
           this.$q.loading.hide()
           this.$router.push('/solicitudes')
         })
@@ -193,7 +189,6 @@ export default {
               select: false
             }
           })
-          console.log(this.categorias, 'Aqui estan todas las categorias')
         }
       })
     },

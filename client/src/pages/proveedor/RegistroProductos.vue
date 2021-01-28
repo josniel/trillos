@@ -65,7 +65,6 @@ export default {
         if (res) {
           this.form = res
           this.categoria_id = this.form.categoria_id
-          console.log('form traido', this.form)
           for (let i = 0; i < this.categorias.length; i++) {
             if (this.categorias[i]._id === this.form.categoria_id) {
               this.categorias[i].select = true
@@ -85,7 +84,6 @@ export default {
       if (this.file) { this.imgPro = URL.createObjectURL(this.file) }
     },
     async agregar () {
-      console.log('form', this.form)
       this.$v.$touch()
       if (this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
         this.$q.notify({
@@ -131,7 +129,6 @@ export default {
             'Content-Type': undefined
           }
         }).then((res) => {
-          console.log('res', res)
           this.$q.loading.hide()
           this.$router.push('/productos')
         })

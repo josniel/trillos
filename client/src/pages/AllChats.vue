@@ -46,7 +46,6 @@ export default {
           this.$api.get('show_all_chats').then(res => {
             if (res) {
               this.data = res
-              console.log('data', this.data)
             }
           })
         }
