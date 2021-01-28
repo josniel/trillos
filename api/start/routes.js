@@ -55,6 +55,7 @@ addPrefixToGroup(
     Route.post('producto', 'UploadController.registrarProducto')
     Route.put('producto/:id', 'ProductoController.update')
     Route.get('producto_by_proveedor/:proveedor_id', 'ProductoController.productoByProveedor')
+    Route.get('calificacion_by_proveedor/:proveedor_id', 'OpinionController.index2')
     Route.delete('producto/:id', 'ProductoController.destroy')
     Route.get('producto', 'ProductoController.index')
     Route.get('producto/:id', 'ProductoController.show')
@@ -80,7 +81,7 @@ addPrefixToGroup(
     Route.get('cotization_by_id/:id_cotisation', 'ChatController.cotizationById')
     Route.put("new_status/:id_cotisation", "ChatController.updateStatus")
     Route.put("fecha_de_termino/:id_cotisation", "ChatController.updateFechaTermino")
-    Route.post("opinion/:id/:quien", "OpinionController.store")
+    Route.post("opinion/:id/:quien/:chat_message_id", "OpinionController.store")
     Route.get("opiniones/:necesidad_id", "OpinionController.index")
 
 

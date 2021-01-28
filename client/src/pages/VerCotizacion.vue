@@ -303,9 +303,9 @@ export default {
       })
     },
     calificar (val) {
-      this.form.necesidad_id = this.id
+      this.form.necesidad_id = this.$route.params.necesidad_id
       if (val === 'proveedor') {
-        this.$api.post('opinion/' + this.id + '/cliente', this.form).then(res => {
+        this.$api.post('opinion/' + this.$route.params.necesidad_id + '/cliente/' + this.id, this.form).then(res => {
           if (res) {
             this.$q.notify({
               message: 'Opinion enviada con Exito',
@@ -315,7 +315,7 @@ export default {
         })
         console.log(this.form)
       } else {
-        this.$api.post('opinion/' + this.id + '/proveedor', this.form).then(res => {
+        this.$api.post('opinion/' + this.$route.params.necesidad_id + '/proveedor/' + this.id, this.form).then(res => {
           if (res) {
             this.$q.notify({
               message: 'Calificacion enviada con Exito',

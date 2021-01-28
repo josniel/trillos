@@ -10,6 +10,7 @@
  */
 const Opiniones = use("App/Models/Opinion")
 const Necesidad = use("App/Models/Necesidad")
+const Chatmessage = use ("App/Models/ChatMessage")
 const moment = require('moment')
 
 
@@ -36,6 +37,19 @@ class OpinionController {
     response.send(formatearFecha)
   }
 
+  async index2 ({ request, response, params, auth }) {
+    let opiniones = (await Opiniones.query().where({calificado: params.id}).fetch()).toJSON()
+    for (let j in opiniones) {
+      var calificacion = calificacion + opiniones[j].rating_tienda
+      var contador = contador + 1
+    }
+    console.log(calificacion, 'calificacion')
+    console.log(contador, 'contador')
+
+    let promedio = calificacion / contador
+    response.send(promedio)
+  }
+
   /**
    * Render a form to be used for creating a new opinion.
    * GET opinions/create
@@ -60,13 +74,12 @@ class OpinionController {
       const user = (await auth.getUser()).toJSON()
       let body = request.only(Opiniones.fillable)
       body.cliente = params.quien === 'cliente' ? true : false
-      if (body.cliente === false){
-        const calificado = (await Opiniones.query().where({necesidad_id: params.id}).with('creador').fetch()).toJSON()
-        console.log(calificado, 'el calificado')
-        console.log(params.id, 'el idddddddddddddddddddd')
-      }
-      body.user_id = user._id
+      let chat_message = await Chatmessage.find(params.chat_message_id)
+      body.calificador = user._id
+      body.calificado = chat_message.proveedor_id === user._id ? chat_message.cliente_id : chat_message.proveedor_id
       const opinion = await Opiniones.create(body)
+
+
       response.send(opinion)
   }
 

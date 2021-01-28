@@ -7,7 +7,7 @@
     <q-separator inset />
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
-        <q-card class="bordes row q-pl-md q-py-md q-pr-xs" v-for="(cotizacion, index) in data" :key="index" @click="$router.push('/cotizacion/' + cotizacion._id)">
+        <q-card class="bordes row q-pl-md q-py-md q-pr-xs" v-for="(cotizacion, index) in data" :key="index" @click="$router.push('/cotizacion/' + cotizacion._id + '/' + cotizacion.necesidad_id )">
             <div class="col-4">
                 <q-img :src=" baseu + cotizacion.datos_necesidad.images[0]" style="height:80px; width:100px" />
             </div>
