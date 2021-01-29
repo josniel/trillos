@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <q-img src="carro.jpg" spinner-color="white" style="height: 250px; width: 100%">
+      <q-img :src="baseu ? baseu : 'carro.jpg'" spinner-color="white" style="height: 250px; width: 100%">
         <div class="row justify-between" style="width: 100%">
           <div class="col-6">
               <div class="text-h6">{{data ? data.full_name : 'Nombre Tienda'}}</div>
@@ -55,11 +55,13 @@
 import BotonesHeader from '../../components/BotonesHeader.vue'
 import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
 import moment from 'moment'
+import env from '../../env'
 export default {
   components: { BotonesHeader, ListadoDeSugerencia },
   data () {
     return {
       id: this.$route.params.id,
+      baseu: '',
       today: null,
       now: null,
       data: {},
@@ -78,6 +80,7 @@ export default {
     getInfo () {
       this.$api.get('user_by_id/' + this.id).then(v => {
         this.data = v
+        this.baseu = env.apiUrl + '/perfil_img/perfil' + this.id
         console.log('proveedor', this.data)
         this.getProduct()
         this.today = moment().day()

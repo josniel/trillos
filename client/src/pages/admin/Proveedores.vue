@@ -10,7 +10,7 @@
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple>
         <div class="row justify-between">
           <div class="col-4">
-            <q-img :src="item.perfil ? baseu + '/' + item.perfil : 'noimgpro.png'" style="width:100px; height: 80px;" />
+            <q-img :src="baseu + item._id" style="width:100px; height: 80px;" />
           </div>
           <div class="col-6">
               <q-scroll-area
@@ -21,11 +21,11 @@
               </q-scroll-area>
               <div>Estatus: <strong>{{item.status}}</strong></div>
           </div>
-          <q-separator vertical color="black" />
-          <div class="column justify-around">
-            <q-btn round flat color="white" size="sm" text-color="black" icon="edit"/>
-            <q-separator color="black" />
-            <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteProv(item._id)" />
+          <div class="col-2 column justify-center">
+            <q-toggle
+                v-model="item.enable"
+                :color="item.enable ? 'primary' : 'red'"
+                />
           </div>
         </div>
       </q-card>
@@ -47,11 +47,11 @@ export default {
   },
   mounted () {
     this.getProveedores()
-    this.baseu = env.apiUrl + '/productos_img'
+    this.baseu = env.apiUrl + '/perfil_img/perfil'
   },
   methods: {
     getProveedores () {
-      this.$api.get('user_by_rol/' + 3).then(res => {
+      this.$api.post('user_by_rol', { rol: [3] }).then(res => {
         if (res) {
           this.data = res
           console.log('data', this.data)

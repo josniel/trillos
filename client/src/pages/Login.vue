@@ -75,7 +75,6 @@ export default {
         this.$api.post('login', this.form).then(res => {
           if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
             // const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
-            console.log(res, 'client')
             if (res.TRI_SESSION_INFO.roles[0] === 3) {
               this.login(res)
               this.$router.push('/inicio_proveedor')

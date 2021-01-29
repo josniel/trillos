@@ -91,7 +91,6 @@ export default {
           await this.$api.get('validate_email/' + this.form.email).then(res => {
             if (res) {
               this.form.password = this.password
-              console.log('form parte 2', this.form)
               if (this.form.roles === 2) {
                 this.panel.panel = 'parte_tres_cliente_datos'
               } else if (this.form.roles === 3) {

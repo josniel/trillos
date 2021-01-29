@@ -20,7 +20,6 @@ export default {
       this.$api.get('categoria').then(res => {
         if (res) {
           this.categorias = res
-          console.log(this.categorias, 'Aqui estan todas las categorias')
         }
       })
     }
