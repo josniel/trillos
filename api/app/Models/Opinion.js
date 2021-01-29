@@ -19,6 +19,12 @@ class Opinion extends Model {
   user_info () {
     return this.hasOne('App/Models/User', 'user_id', '_id')
   }
+  calificado_info () {
+    return this.hasOne('App/Models/User', 'calificado', '_id')
+  }
+  calificador_info () {
+    return this.hasOne('App/Models/User', 'calificador', '_id')
+  }
   creador () {
     return this.hasOne('App/Models/User', 'ownerId', '_id')
   }

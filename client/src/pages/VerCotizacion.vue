@@ -29,7 +29,7 @@
               <div v-for="(item, index) in data" :key="index">
                 <q-item class="q-mt-md">
                   <q-item-section>
-                    <q-item-label>{{item.user_info.full_name}}</q-item-label>
+                    <q-item-label>{{item.calificador_info.full_name}}</q-item-label>
                     <q-item-label caption lines="5">{{item.comentario}}</q-item-label>
                   </q-item-section>
                   <q-item-section side top>
@@ -61,7 +61,7 @@
               <div v-for="(item, index) in data" :key="index">
                 <q-item class="q-mt-md">
                   <q-item-section>
-                    <q-item-label>{{item.user_info.full_name}}</q-item-label>
+                    <q-item-label>{{item.calificador_info.full_name}}</q-item-label>
                   </q-item-section>
                   <q-item-section side top>
                     <div class="column">
@@ -246,9 +246,11 @@ export default {
       })
     },
     consultaropinion () {
-      this.$api.get('opiniones/' + this.id).then(res => {
+      this.form.necesidad_id = this.$route.params.necesidad_id
+      this.$api.get('opiniones/' + this.$route.params.necesidad_id).then(res => {
         this.data = res
         console.log(this.data, 'mostrando data')
+        console.log(this.comentarios, 'comentarios')
       })
     },
     getCotization () {
@@ -289,10 +291,9 @@ export default {
           }
           if (v.status === 'Terminado' && this.rol === 2 && !v.calificado) {
             this.statusTerminadoclient = true
-            this.comentarios2 = true
           }
           if (v.status === 'Terminado' && this.rol === 2 && v.calificado) {
-            this.comentarios2 = true
+            this.comentarios2 = false
           }
           if (v.status === 'Terminado' && this.rol === 3) {
             this.comentarios = true
