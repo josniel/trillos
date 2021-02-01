@@ -244,6 +244,17 @@ class UserController {
       response.send(s)
     }
 
+    async updatedata ({ params, request, response }) {
+      let requestAll = request.all()
+      const validation = await validate(requestAll, User.fieldValidationRules())
+      if (validation.fails()) {
+        response.unprocessableEntity(validation.messages())
+      } else {
+        let body = request.only(User.fillable)
+        const datosnew = await User.where({_id: params.id}).update(body)
+        response.send(datosnew)
+      }
+    }
 
 }
 

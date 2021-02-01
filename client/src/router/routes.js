@@ -30,8 +30,8 @@ const routes = [
       { path: '/mis_chats', component: () => import('pages/AllChats.vue') },
       { path: '/mis_cotizaciones', component: () => import('pages/MisCotizaciones.vue') },
       { path: '/cotizacion/:id/:necesidad_id', component: () => import('pages/VerCotizacion.vue') },
-      { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') }
-
+      { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') },
+      { path: '/Datos', component: () => import('pages/Userdata.vue') }
     ]
   },
   { path: '/login', component: () => import('pages/Login.vue') },

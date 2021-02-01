@@ -4,7 +4,7 @@
       <q-toolbar class="bg-white row justify-between">
         <q-btn round dense flat icon="keyboard_backspace" color="primary" @click="$router.go(-1)"/>
         <q-img src="logo-210x47.png" style="width:140px" />
-        <q-btn flat round dense icon="person" color="primary" />
+        <q-btn flat round dense icon="person" color="primary" @click="$router.push('/Datos')"  />
       </q-toolbar>
     </q-header>
     <q-footer>
@@ -27,6 +27,7 @@ export default {
   name: 'MainLayout',
   data () {
     return {
+      usuario: {},
       rol: null
     }
   },
