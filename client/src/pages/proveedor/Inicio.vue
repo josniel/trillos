@@ -77,7 +77,6 @@ export default {
           this.$api.get('necesidad').then(v => {
             if (v) {
               this.data = v
-              console.log('nece', this.data)
             }
           })
         }

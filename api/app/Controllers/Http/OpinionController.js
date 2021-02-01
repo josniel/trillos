@@ -26,8 +26,6 @@ class OpinionController {
    */
   async index ({ request, response, params, auth }) {
     const user = (await auth.getUser()).toJSON()
-    console.log(user, 'paramssss userr')
-    console.log(params.necesidad_id, 'paramssss')
     let opiniones = (await Opiniones.query().where({necesidad_id: params.necesidad_id, cliente: user.roles[0] === 2 ? false : true}).with('calificador_info').with('calificado_info').fetch()).toJSON()
     let formatearFecha = opiniones.map(v => {
       return {
@@ -44,19 +42,28 @@ class OpinionController {
     let opiniones = (await Opiniones.query().where({calificado: params.proveedor_id}).fetch()).toJSON()
     var calificacion = 0
     var contador = 0
-    console.log(opiniones, 'opiniones')
-    console.log(params.proveedor_id, 'id')
-
 
     for (let j in opiniones) {
       calificacion = (calificacion + opiniones[j].rating_tienda)
       contador = contador + 1
     }
-    console.log(calificacion, 'calificacion')
-    console.log(contador, 'contador')
 
     let promedio = (calificacion / contador)
-    console.log(promedio, 'promedio')
+
+    response.send(promedio)
+  }
+
+  async index3 ({ request, response, params, auth }) {
+    let opiniones = (await Opiniones.query().where({calificado: params.cliente_id}).fetch()).toJSON()
+    var calificacion = 0
+    var contador = 0
+
+    for (let j in opiniones) {
+      calificacion = (calificacion + opiniones[j].rating_cliente)
+      contador = contador + 1
+    }
+
+    let promedio = (calificacion / contador)
 
     response.send(promedio)
   }

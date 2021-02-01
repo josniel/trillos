@@ -24,7 +24,7 @@ class ProductoController {
    */
   async index ({ request, response, view }) {
     let datos = (await Producto.query().where({}).with('datos_proveedor').fetch()).toJSON()
-    let filter = datos.filter(v => v.datos_proveedor.status !== 0 && v.datos_proveedor.enable)
+    let filter = datos.filter(v => v.datos_proveedor.status === 1 && v.datos_proveedor.enable)
     response.send(filter)
   }
 
@@ -55,7 +55,6 @@ class ProductoController {
    */
   async store ({ request, response }) {
     let recibir = request.all()
-    console.log(recibir)
     const validation = await validate(recibir, Producto.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
@@ -80,7 +79,9 @@ class ProductoController {
   }
 
   async productoFiltrado ({ params, request, response, view }) {
-    response.send((await Producto.query().where('categoria_id', params.filtrar).fetch()).toJSON())
+    let datos = (await Producto.query().where('categoria_id', params.filtrar).with('datos_proveedor').fetch()).toJSON()
+    let filter = datos.filter(v => v.datos_proveedor.status === 1 && v.datos_proveedor.enable)
+    response.send(filter)
   }
 
   /**

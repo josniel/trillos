@@ -24,7 +24,8 @@ class NecesidadController {
    */
   async index ({ request, response, auth }) {
     let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
-    response.send(datos)
+    let filter = datos.filter(v => v.creador.enable)
+    response.send(filter)
   }
 
   async necesidadByUserId ({ response, params }) {
@@ -56,7 +57,6 @@ class NecesidadController {
     let recibir = request.all()
     var dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
-    console.log(dat, 'datt2')
     const validation = await validate(dat, Necesidad.fieldValidationRules())
     if (validation.fails()) {
       response.unprocessableEntity(validation.messages())
@@ -79,14 +79,12 @@ class NecesidadController {
           }
           images.push(profilePic.fileName)
         }
-        console.log(images, 'images')
         dat.images = images
 
       }
       let body = dat
       delete body.cantidadArchivos
       body.ownerId = ((await auth.getUser()).toJSON())._id
-      console.log(body, 'body')
       let guardar = await Necesidad.create(body)
       response.send(guardar)
     }
@@ -184,7 +182,9 @@ class NecesidadController {
   }
 
   async necesidadByCategoriaId ({ params, response }) {
-    response.send((await Necesidad.query().where('categoria_id', params.categoria_id).fetch()).toJSON())
+    let datos = (await Necesidad.query().where('categoria_id', params.categoria_id).with('creador').fetch()).toJSON()
+    let filter = datos.filter(v => v.creador.enable)
+    response.send(filter)
   }
 }
 

@@ -249,15 +249,12 @@ export default {
       this.form.necesidad_id = this.$route.params.necesidad_id
       this.$api.get('opiniones/' + this.$route.params.necesidad_id).then(res => {
         this.data = res
-        console.log(this.data, 'mostrando data')
-        console.log(this.comentarios, 'comentarios')
       })
     },
     getCotization () {
       this.$api.get('cotization_by_id/' + this.id).then(v => {
         if (v) {
           this.infoCot = v
-          console.log('v', v)
           this.cotization = v.cotizacion
           this.today = moment().format('YYYY/MM/DD')
           if (v.status !== 'Cotizado') {
@@ -318,7 +315,6 @@ export default {
             })
           }
         })
-        console.log(this.form)
       } else {
         this.$api.post('opinion/' + this.$route.params.necesidad_id + '/proveedor/' + this.id, this.form).then(res => {
           if (res) {
@@ -328,7 +324,6 @@ export default {
             })
           }
         })
-        console.log(this.form)
       }
       this.statusTerminadoProv = false
       this.statusTerminadoclient = false
@@ -338,7 +333,6 @@ export default {
         message: 'Culminando el proceso, Por Favor Espere...'
       })
       this.$api.put('new_status/' + this.id, { status: 'Terminado' }).then((res) => {
-        console.log('res', res)
         this.$q.loading.hide()
         this.statusIniciado = false
         this.statusTerminadoProv = true

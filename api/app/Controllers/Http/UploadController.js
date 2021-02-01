@@ -194,24 +194,25 @@ class UploadController {
 
   async getFileByDirectoryProductos({ params, response, request }) {
     const dir = params.file
-    console.log(dir,'here')
     response.download(Helpers.appRoot('storage/uploads/productos') + `/${dir}`)
   }
 
   async testFile ({ params, response, request }) {
-    console.log(params.file, 'params file')
     response.download(Helpers.appRoot('storage/uploads/tiendaFiles/' + params.file))
   }
 
   async getFileByDirectoryNecesidad ({ params, request, response }) {
     const dir = params.file
-    console.log(dir,'here')
     response.download(Helpers.appRoot('storage/uploads/necesidades') + `/${dir}`)
+  }
+
+  async getFileByDirectoryTienda ({ params, request, response }) {
+    const dir = params.file
+    response.download(Helpers.appRoot('storage/uploads/tiendaFiles') + `/${dir}`)
   }
 
   async getFileByDirectoryPerfil ({ params, request, response }) {
     const dir = params.file
-    console.log(dir,'here')
     response.download(Helpers.appRoot('storage/uploads/perfil') + `/${dir}`)
   }
 

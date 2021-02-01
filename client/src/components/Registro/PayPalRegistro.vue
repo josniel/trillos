@@ -49,7 +49,6 @@ export default {
             const order = await actions.order.capture()
             this.paidFor = true
             await this.registrar()
-            console.log(order)
           },
           onError: err => {
             console.log(err)

@@ -53,7 +53,6 @@ class UserController {
     let requestAll = request.all()
     var dat = request.only(['dat'])
     dat = JSON.parse(dat.dat)
-    console.log(dat, 'datt2')
 
     const validation = await validate(dat, User.fieldValidationRules())
     if (validation.fails()) {
@@ -66,7 +65,6 @@ class UserController {
       let images = []
       if (dat.cantidadArchivos && dat.cantidadArchivos > 0) {
         for (let i = 0; i < dat.cantidadArchivos; i++) {
-          console.log(i, 'i CICLO')
           let codeFile = randomize('Aa0', 30)
           const profilePic = request.file('tiendaFiles_' + i, {
             types: ['image']
@@ -81,7 +79,6 @@ class UserController {
           }
           images.push(profilePic.fileName)
         }
-        console.log(images, 'images')
       }
       let body = dat
       const rol = body.roles
@@ -199,7 +196,6 @@ class UserController {
       })
     })
 
-    console.log(permissions, 'permissions')
     token.full_name = user.full_name
     token.last_name = user.last_name
     token.enable = user.enable
