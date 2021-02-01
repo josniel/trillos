@@ -30,7 +30,8 @@ export default {
       ruta: '',
       categoria: {},
       data: [],
-      baseu: ''
+      baseu: '',
+      ver: true
     }
   },
   mounted () {
@@ -47,14 +48,19 @@ export default {
           } else {
             this.ruta = 'necesidad_by_categoria_id'
             this.baseu = env.apiUrl + '/necesidad_img/'
+            if (v.status === 0) {
+              this.ver = false
+            }
           }
-          this.$api.get(`${this.ruta}/${this.id}`).then(res => {
-            this.data = res
-            this.$api.get('categoria').then(v => {
-              if (v) {
-                this.categoria = v.find(x => x._id === this.id)
-              }
+          if (this.ver) {
+            this.$api.get(`${this.ruta}/${this.id}`).then(res => {
+              this.data = res
             })
+          }
+          this.$api.get('categoria').then(v => {
+            if (v) {
+              this.categoria = v.find(x => x._id === this.id)
+            }
           })
         }
       })

@@ -5,7 +5,9 @@
         <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Ofertas" />
     </div>
     <q-separator inset />
-    <div class="text-h6 q-ma-md text-center">Mis Productos</div>
+    <div class="row justify-center">
+        <div class="text-h6 q-ma-md text-center estilo-titulos">Mis Productos</div>
+    </div>
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple>
         <div class="row justify-between">
@@ -94,5 +96,10 @@ export default {
   border-left: 6px solid $primary;
   background-color: rgba(202, 202, 202, 0.474);
   border-radius: 12px;
+}
+.estilo-titulos {
+  background-color: #fff599;
+  width: 250px;
+  border-radius: 12px
 }
 </style>

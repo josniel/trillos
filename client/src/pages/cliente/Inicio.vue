@@ -12,16 +12,19 @@
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <div class="text-bold q-ml-sm">SUGERENCIAS</div>
+      <div class="text-bold q-ml-sm">MAS POPULARES</div>
     </div>
-    <listado-de-sugerencia :data="data" ruta="cliente" />
+    <listado-mas-populares/>
     <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <div class="text-bold q-ml-sm">MAS POPULARES</div>
+      <div class="text-bold q-ml-sm">PRODUCTOS</div>
    </div>
-    <listado-mas-populares/>
+    <listado-de-sugerencia v-if="data.length" :data="data" ruta="cliente" />
+    <q-card v-else class="shadow-2 q-ma-md q-pa-md">
+      <div class="text-center text-subtitle1">Sin productos disponibles...</div>
+    </q-card>
   </div>
 </template>
 

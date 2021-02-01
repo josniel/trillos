@@ -37,6 +37,20 @@
         </q-item>
       </q-card>
 
+      <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/proveedores_pendientes')" >
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar icon="store" class="text-black" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-black text-weight-bolder text-h6">Pendientes</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon name="arrow_right" color="primary" />
+          </q-item-section>
+        </q-item>
+      </q-card>
+
       <q-card v-ripple class="q-pa-sm q-my-md bordes" >
         <q-item>
           <q-item-section avatar>

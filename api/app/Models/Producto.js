@@ -16,6 +16,9 @@ class Producto extends Model {
     }
     return rules
   }
+  datos_proveedor () {
+    return this.hasOne('App/Models/User', 'proveedor_id', '_id')
+}
 }
 
 module.exports = Producto

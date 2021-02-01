@@ -12,16 +12,19 @@
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <div class="text-bold q-ml-sm">SUGERENCIAS</div>
+      <div class="text-bold q-ml-sm">MAS POPULARES</div>
     </div>
-    <listado-de-sugerencia :data="data" ruta="proveedor"/>
+    <listado-mas-populares/>
     <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <div class="text-bold q-ml-sm">MAS POPULARES</div>
+      <div class="text-bold q-ml-sm">SOLICITUDES</div>
    </div>
-    <listado-mas-populares/>
+   <listado-de-sugerencia v-if="data.length" :data="data" ruta="proveedor"/>
+    <q-card v-else class="shadow-2 q-ma-md q-pa-md">
+      <div class="text-center text-subtitle1">Sin solicitudes disponibles...</div>
+    </q-card>
   </div>
 </template>
 
@@ -45,9 +48,38 @@ export default {
   },
   methods: {
     getSolicitudes () {
-      this.$api.get('necesidad').then(v => {
-        if (v) {
-          this.data = v
+      this.$api.get('user_info').then(res => {
+        if (res.status === 0) {
+          this.data = {}
+          this.$q.dialog({
+            title: 'Atención',
+            message: 'Para cotizar y ver solicitudes debes esperar por la autorización del administrador.',
+            cancel: false,
+            persistent: true
+          }).onOk(() => {
+            // Ok
+          }).onCancel(() => {
+            // cancel
+          })
+        } else if (res.status === 2) {
+          this.data = {}
+          this.$q.dialog({
+            title: 'Atención',
+            message: 'Tu cuenta ha sido rechazada. Debes modificar tu informacion y esperar por respuesta del administrado.',
+            cancel: false,
+            persistent: true
+          }).onOk(() => {
+            // Ok
+          }).onCancel(() => {
+            // cancel
+          })
+        } else {
+          this.$api.get('necesidad').then(v => {
+            if (v) {
+              this.data = v
+              console.log('nece', this.data)
+            }
+          })
         }
       })
     }

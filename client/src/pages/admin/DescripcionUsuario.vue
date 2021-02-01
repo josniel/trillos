@@ -16,6 +16,22 @@
         </q-card>
       </q-img>
 
+      <q-card class="q-pa-xs q-mt-md shadow-up-4 bg-amber-2" style="border-radius:25px">
+        <div class="row" style="width:100%">
+          <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
+          <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.country + ', ' + data.direccion}}</div>
+        </div>
+        <div class="row" style="width:100%">
+          <q-icon class="col-1" name="email" color="blak" style="font-size: 1.5rem;"/>
+          <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.email}}</div>
+        </div>
+        <div class="row" style="width:100%">
+          <q-icon class="col-1" name="phone" color="blak" style="font-size: 1.5rem;"/>
+          <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.phone}}</div>
+        </div>
+        <div class="q-mx-md text-subtitle2">{{data.country === 'Colombia' ? 'DNI: ' : 'RUN: '}}{{data.run_dni}}</div>
+      </q-card>
+
       <q-dialog v-model="dialogStado">
         <q-card class="bg-primary" style="width: 90%">
           <q-card-section class="row justify-between">
@@ -41,8 +57,6 @@
         </q-card>
       </q-dialog>
 
-      <botones-header class="q-ma-md"/>
-
       <q-card class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">Mis Productos</div>
         <listado-de-sugerencia :data="productos" ruta="tienda" class="q-mt-xs"/>
@@ -52,12 +66,11 @@
 </template>
 
 <script>
-import BotonesHeader from '../../components/BotonesHeader.vue'
 import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
 import moment from 'moment'
 import env from '../../env'
 export default {
-  components: { BotonesHeader, ListadoDeSugerencia },
+  components: { ListadoDeSugerencia },
   data () {
     return {
       id: this.$route.params.id,
@@ -81,6 +94,7 @@ export default {
       this.$api.get('user_by_id/' + this.id).then(v => {
         this.data = v
         this.baseu = env.apiUrl + '/perfil_img/perfil' + this.id
+        console.log('proveedor', this.data)
         this.getProduct()
         this.today = moment().day()
         this.now = moment().format('HH:mm')
@@ -96,7 +110,7 @@ export default {
       })
     },
     getProduct () {
-      this.$api.get('producto_by_proveedor/' + this.data._id).then(v => {
+      this.$api.get('producto_by_proveedor/' + this.id).then(v => {
         if (v) {
           this.productos = v
         }

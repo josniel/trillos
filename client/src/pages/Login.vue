@@ -75,7 +75,19 @@ export default {
         this.$api.post('login', this.form).then(res => {
           if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
             // const client = res.TRI_SESSION_INFO.roles.find(value => value === 2)
-            if (res.TRI_SESSION_INFO.roles[0] === 3) {
+            if (res.TRI_SESSION_INFO.enable === false) {
+              this.loading = false
+              this.$q.dialog({
+                title: 'Alerta',
+                message: 'Este usuario ha sido bloqueado por el administrador. Debe ponerse en contracto con nosotros para más información.',
+                cancel: false,
+                persistent: true
+              }).onOk(() => {
+                // ok
+              }).onCancel(() => {
+                // cancel
+              })
+            } else if (res.TRI_SESSION_INFO.roles[0] === 3) {
               this.login(res)
               this.$router.push('/inicio_proveedor')
             } else if (res.TRI_SESSION_INFO.roles[0] === 2) {

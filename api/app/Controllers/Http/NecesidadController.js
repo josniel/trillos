@@ -23,7 +23,7 @@ class NecesidadController {
    * @param {View} ctx.view
    */
   async index ({ request, response, auth }) {
-    let datos = (await Necesidad.query().where({}).with('creador').limit(10).fetch()).toJSON()
+    let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
     response.send(datos)
   }
 

@@ -134,6 +134,24 @@ class UserController {
     response.send(user)
   }
 
+  async userByStatus({ request, params, response }) {
+    let rol = request.all()
+    const user = (await User.query().where({roles: rol.rol, status: 0}).fetch()).toJSON()
+    response.send(user)
+  }
+
+  async userEnable({ params, request, response }) {
+    let dat = request.all()
+    let modificar = await User.query().where('_id', params.id).update({enable: dat.enable})
+    response.send(modificar)
+  }
+
+  async userStatus({ params, request, response }) {
+    let dat = request.all()
+    let modificar = await User.query().where('_id', params.id).update({status: dat.status})
+    response.send(modificar)
+  }
+
   async update({ request, response, params }) {
     let modelo = {
       accion: 'update',
@@ -182,9 +200,9 @@ class UserController {
     })
 
     console.log(permissions, 'permissions')
-    token.name = user.name
-    token.lastName = user.lastName
-    token.rating = user.rating
+    token.full_name = user.full_name
+    token.last_name = user.last_name
+    token.enable = user.enable
     token.email = user.email
     token.verify = user.verify
     let data = {}

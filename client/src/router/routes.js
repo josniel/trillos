@@ -8,6 +8,8 @@ const routes = [
       { path: '/inicio_administrador', component: () => import('pages/admin/Inicio.vue') },
       { path: '/proveedores', component: () => import('pages/admin/Proveedores.vue') },
       { path: '/clientes', component: () => import('pages/admin/Clientes.vue') },
+      { path: '/proveedores_pendientes', component: () => import('pages/admin/Pendientes.vue') },
+      { path: '/descripcionusuario/:id', component: () => import('pages/admin/DescripcionUsuario.vue') },
       // Proveedor
       { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue') },
       { path: '/reportes_proveedor', component: () => import('pages/proveedor/Reportes.vue') },
