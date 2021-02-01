@@ -44,6 +44,7 @@ addPrefixToGroup(
     Route.get('productos_img/:file', 'UploadController.getFileByDirectoryProductos')
     Route.get('necesidad_img/:file', 'UploadController.getFileByDirectoryNecesidad')
     Route.get('perfil_img/:file', 'UploadController.getFileByDirectoryPerfil')
+    Route.get('tienda_img/:file', 'UploadController.getFileByDirectoryTienda')
     Route.get("test_file/:file", "UploadController.testFile")
   })
 );
@@ -57,6 +58,7 @@ addPrefixToGroup(
     Route.put('producto/:id', 'ProductoController.update')
     Route.get('producto_by_proveedor/:proveedor_id', 'ProductoController.productoByProveedor')
     Route.get('calificacion_by_proveedor/:proveedor_id', 'OpinionController.index2')
+    Route.get('calificacion_by_cliente/:cliente_id', 'OpinionController.index3')
     Route.delete('producto/:id', 'ProductoController.destroy')
     Route.get('producto', 'ProductoController.index')
     Route.get('producto/:id', 'ProductoController.show')

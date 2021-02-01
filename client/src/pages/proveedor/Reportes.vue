@@ -67,7 +67,6 @@ export default {
           this.$api.get('producto_by_proveedor/' + id).then(v => {
             if (v) {
               this.data = v
-              console.log('productos', this.data)
             }
           })
         }

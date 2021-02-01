@@ -48,7 +48,7 @@ export default {
           } else {
             this.ruta = 'necesidad_by_categoria_id'
             this.baseu = env.apiUrl + '/necesidad_img/'
-            if (v.status === 0) {
+            if (v.status === 0 || v.status === 2) {
               this.ver = false
             }
           }

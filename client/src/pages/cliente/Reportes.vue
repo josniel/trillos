@@ -67,7 +67,6 @@ export default {
           this.$api.get('necesidad_by_user_id/' + id).then(v => {
             if (v) {
               this.data = v
-              console.log('solicitudes', this.data)
             }
           })
         }

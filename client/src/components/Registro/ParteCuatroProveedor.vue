@@ -88,7 +88,6 @@ export default {
     async getPlans () {
       this.$q.loading.show()
       await this.$api.get('plans').then(res => {
-        console.log(res, 'res de planes')
         this.planes = res
         this.selectPrice(this.planes[0]._id)
       })
@@ -102,7 +101,6 @@ export default {
       // this.product.description = plan.description
       // this.formPlan = plan
       this.form.plan_id = planID
-      console.log(this.form, 'form SELECT PRICE')
     },
     testPadre () {
       console.log('console del test padre')

@@ -6,10 +6,10 @@
     <q-list class="q-mx-sm q-my-md q-gutter-sm" v-if="data.length > 0">
       <q-card class="q-pa-md bordes" v-for="(item, index) in data" :key="index" v-ripple>
         <div class="row justify-between">
-          <div class="col-4">
+          <div class="col-4" @click="$router.push('/descripcionusuario/'+item._id)">
             <q-img :src="baseu + item._id" style="width:100px; height: 80px;" />
           </div>
-          <div class="col-6">
+          <div class="col-6" @click="$router.push('/descripcionusuario/'+item._id)">
               <q-scroll-area
                 horizontal
                 style="height: 33px; width:100%"
