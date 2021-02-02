@@ -18,10 +18,10 @@
 
       <q-scroll-area
           horizontal
-          style="height: 110px; width: 100%;"
+          style="height: 110px"
           class="q-ma-sm"
         >
-          <div class="row" style="width: 100%">
+          <div class="row no-wrap" style="width: 100%">
             <q-card @click="verImg(img)" v-for="(img, index) in data.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
               <q-img :src="baseuTienda + img" spinner-color="white" style="height: 100px; width: 100px" />
             </q-card>
@@ -57,7 +57,7 @@
 
       <q-card class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">Mis Productos</div>
-        <listado-de-sugerencia :data="productos" ruta="tienda" class="q-mt-xs"/>
+        <listado-de-sugerencia :data="productos" :direccion="false" ruta="tienda" class="q-mt-xs"/>
       </q-card>
     </div>
   </div>

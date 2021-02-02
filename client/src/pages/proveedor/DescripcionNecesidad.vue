@@ -3,7 +3,6 @@
       <q-img :src="form.images ? baseu + perfile : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
         <div class="row justify-between" style="width:100%">
             <div class="col-10 text-h6 text-white text-weight-bolder">{{infoClient.full_name && infoClient.last_name ? infoClient.full_name + ' ' + infoClient.last_name : infoClient.full_name}}</div>
-          <q-icon v-if="rol === 3" class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
         </div>
         <div class="row absolute-bottom" style="width:100%">
           <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
@@ -24,9 +23,9 @@
           </q-item>
           <q-scroll-area
           horizontal
-          style="height: 110px; width: 100%;"
+          style="height: 110px;"
         >
-          <div class="row" style="width: 100%">
+          <div class="row no-wrap" style="width: 100%">
             <q-card @click="perfile = img" v-for="(img, index) in form.images" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
               <q-img :src="form.images ? baseu + img : 'noimgpro.png'" spinner-color="white" style="height: 100px; width: 100px" />
             </q-card>
@@ -53,7 +52,6 @@ export default {
       rol: 0,
       perfile: '',
       ruta: 'necesidad',
-      fav: false,
       form: {},
       infoClient: {},
       categoria: {},

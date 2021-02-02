@@ -92,6 +92,7 @@ addPrefixToGroup(
     Route.put("fecha_de_termino/:id_cotisation", "ChatController.updateFechaTermino")
     Route.post("opinion/:id/:quien/:chat_message_id", "OpinionController.store")
     Route.get("opiniones/:necesidad_id", "OpinionController.index")
+    Route.get("mas_populares", "OpinionController.masPopulares") // metodo para obtener las tiendas mejor calificadas
 
 
 
