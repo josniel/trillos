@@ -91,7 +91,7 @@ class OpinionController {
       if (!populares.length) {
         populares = user.filter(v => v.rating_tienda >= 2)
         if (!populares.length) {
-          populares = user.filter(v => v.rating_tienda >= 0)
+          populares = user.filter(v => v.rating_tienda >= 1)
         }
       }
     }

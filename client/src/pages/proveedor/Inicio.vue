@@ -44,7 +44,7 @@ export default {
           this.data = {}
           this.$q.dialog({
             title: 'Atención',
-            message: 'Para cotizar y ver solicitudes debes esperar por la autorización del administrador.',
+            message: 'Para cotizar y ver solicitudes de clientes debes esperar por la autorización del administrador.',
             cancel: false,
             persistent: true
           }).onOk(() => {

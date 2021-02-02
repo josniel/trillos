@@ -15,7 +15,7 @@
             <div v-if="estado" class="text-positive text-h6 absolute-center">Abierta</div>
             <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
           </q-card>
-          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
+          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="favorito()"/>
         </div>
       </q-img>
 
@@ -30,6 +30,22 @@
             </q-card>
           </div>
         </q-scroll-area>
+
+        <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-secondary" style="border-radius:25px">
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.country + ', ' + data.direccion}}</div>
+          </div>
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="email" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.email}}</div>
+          </div>
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="phone" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.phone}}</div>
+          </div>
+          <div class="q-mx-md text-subtitle2">{{data.country === 'Colombia' ? 'DNI: ' : 'RUN: '}}{{data.run_dni}}</div>
+        </q-card>
 
       <q-dialog v-model="dialogStado">
         <q-card class="bg-primary" style="width: 90%">
@@ -95,6 +111,14 @@ export default {
     this.calificacion()
   },
   methods: {
+    favorito () {
+      this.fav = !this.fav
+      this.$api.post('new_favorito/' + this.id, { favorito: this.fav }).then(res => {
+        if (res) {
+          console.log('fav', res)
+        }
+      })
+    },
     verImg (img) {
       this.baseu = env.apiUrl + '/tienda_img/'
       this.perfile = img
@@ -117,6 +141,11 @@ export default {
         } else {
           this.estado = false
         }
+        this.$api.post('favorito/' + this.id).then(res => {
+          if (res) {
+            this.fav = res.favorito
+          }
+        })
       })
     },
     getProduct () {

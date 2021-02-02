@@ -94,6 +94,9 @@ addPrefixToGroup(
     Route.get("opiniones/:necesidad_id", "OpinionController.index")
     Route.get("mas_populares", "OpinionController.masPopulares") // metodo para obtener las tiendas mejor calificadas
 
+    Route.post("new_favorito/:id_proveedor", "FavoritoController.create")
+    Route.post("favorito/:id_proveedor", "FavoritoController.index")
+
 
 
   }).middleware("auth")

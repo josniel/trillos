@@ -14,9 +14,7 @@
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <div class="text-bold q-ml-sm">MAS POPULARES</div>
     </div>
-    <q-scroll-area horizontal style="height: 230px" class="q-ma-sm" >
-      <listado-mas-populares/>
-    </q-scroll-area>
+    <listado-mas-populares/>
     <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>

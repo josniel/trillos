@@ -1,4 +1,5 @@
 <template>
+<q-scroll-area v-if="data.length" horizontal style="height: 230px" class="q-ma-sm" >
   <div class="row no-wrap">
    <q-card @click="$router.push('/tienda/' + img._id)" v-for="(img, index) in data" class="shadow-3 bg-secondary q-ml-md" style="border-radius:12px; width: 150px" :key="index">
     <q-img class="q-mr-sm" :src="baseu + img._id" spinner-color="white" style="height: 190px; width: 150px" >
@@ -10,6 +11,7 @@
     <div class="text-subtitle1 text-center">{{img.full_name}}</div>
   </q-card>
   </div>
+  </q-scroll-area>
 </template>
 
 <script>

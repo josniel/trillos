@@ -17,7 +17,7 @@
           <div @click="$router.push('/descripcionproducto/' + item._id)" class="col-6">
               <q-scroll-area
                 horizontal
-                style="height: 33px; width:100%"
+                style="height: 27px"
               >
                 <div class="text-subtitle2 text-weight-bolder">{{item.name}}</div>
               </q-scroll-area>

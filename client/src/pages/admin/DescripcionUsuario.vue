@@ -29,7 +29,7 @@
           </div>
         </q-scroll-area>
 
-      <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-amber-2" style="border-radius:25px">
+      <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-secondary" style="border-radius:25px">
         <div class="row" style="width:100%">
           <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
           <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.country + ', ' + data.direccion}}</div>
