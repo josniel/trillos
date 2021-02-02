@@ -10,10 +10,13 @@
             <q-rating v-model="ratingTienda" size="2em" color="yellow" readonly/>
           </div>
         </div>
-        <q-card @click="dialogStado = true" class="q-ma-xs bg-grey-4 absolute-bottom" style="width:30%; height: 30px; border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-          <div v-if="estado" class="text-positive text-h6 absolute-center">Abierta</div>
-          <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
-        </q-card>
+        <div class="row justify-between absolute-bottom bg-transparent">
+          <q-card @click="dialogStado = true" class="q-ma-xs bg-grey-4" style="width:30%; height: 30px; border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+            <div v-if="estado" class="text-positive text-h6 absolute-center">Abierta</div>
+            <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
+          </q-card>
+          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
+        </div>
       </q-img>
 
       <q-scroll-area
@@ -83,6 +86,7 @@ export default {
       img: '',
       estado: false,
       dialogStado: false,
+      fav: false,
       ratingTienda: 0
     }
   },
