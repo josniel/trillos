@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%">
+      <q-img :src="baseu + perfile" spinner-color="white" style="height: 250px; width: 100%">
         <div class="row justify-between" style="width: 100%">
           <div class="col-6">
               <div class="text-h6">{{data ? data.full_name : 'Nombre Tienda'}}</div>
@@ -15,6 +15,18 @@
           <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
         </q-card>
       </q-img>
+
+      <q-scroll-area
+          horizontal
+          style="height: 110px; width: 100%;"
+          class="q-ma-sm"
+        >
+          <div class="row" style="width: 100%">
+            <q-card @click="verImg(img)" v-for="(img, index) in data.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
+              <q-img :src="baseuTienda + img" spinner-color="white" style="height: 100px; width: 100px" />
+            </q-card>
+          </div>
+        </q-scroll-area>
 
       <q-dialog v-model="dialogStado">
         <q-card class="bg-primary" style="width: 90%">
@@ -41,7 +53,7 @@
         </q-card>
       </q-dialog>
 
-      <botones-header class="q-ma-md"/>
+      <botones-header class="q-mx-md q-my-xs"/>
 
       <q-card class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">Mis Productos</div>
@@ -62,6 +74,8 @@ export default {
     return {
       id: this.$route.params.id,
       baseu: '',
+      baseuTienda: '',
+      perfile: '',
       today: null,
       now: null,
       data: {},
@@ -77,10 +91,16 @@ export default {
     this.calificacion()
   },
   methods: {
+    verImg (img) {
+      this.baseu = env.apiUrl + '/tienda_img/'
+      this.perfile = img
+    },
     getInfo () {
       this.$api.get('user_by_id/' + this.id).then(v => {
         this.data = v
-        this.baseu = env.apiUrl + '/perfil_img/perfil' + this.id
+        this.perfile = this.id
+        this.baseu = env.apiUrl + '/perfil_img/perfil'
+        this.baseuTienda = env.apiUrl + '/tienda_img/'
         this.getProduct()
         this.today = moment().day()
         this.now = moment().format('HH:mm')

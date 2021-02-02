@@ -65,7 +65,7 @@ export default {
           this.data = {}
           this.$q.dialog({
             title: 'Atención',
-            message: 'Tu cuenta ha sido rechazada. Debes modificar tu informacion y esperar por respuesta del administrado.',
+            message: 'Tu cuenta ha sido rechazada. Debes modificar tu información de usuario y esperar por respuesta del administrador.',
             cancel: false,
             persistent: true
           }).onOk(() => {
