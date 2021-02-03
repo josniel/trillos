@@ -143,7 +143,6 @@
   </div>
 </template>
 <script>
-import { required, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
 import env from '../env'
 export default {
   data () {
@@ -151,8 +150,6 @@ export default {
       datosusuario: false,
       datosproveedor: false,
       form: {},
-      repeatPassword: '',
-      password: '',
       perfilFile: null,
       delivery: false,
       imgPerfil: '',
@@ -170,24 +167,11 @@ export default {
     this.getUser()
     this.baseu = env.apiUrl + '/perfil_img/'
     this.baseu2 = env.apiUrl + '/tienda_img/'
-    console.log(this.baseu2, 'el baseu')
   },
   validations () {
     return {
       form: {
-        full_name: { required, maxLength: maxLength(40) },
-        last_name: { required },
-        country: { required },
-        direccion: { required },
-        run_dni: { required },
-        phone: { required },
-        hora_inicio: { required },
-        hora_fin: { required }
-      },
-      repeatPassword: { sameAsPassword: sameAs('password') },
-      password: { required, maxLength: maxLength(256), minLength: minLength(6) },
-      perfilFile: { required },
-      dias: { required }
+      }
     }
   },
   methods: {

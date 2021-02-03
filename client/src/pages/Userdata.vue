@@ -73,7 +73,7 @@
                     </div>
                   </div>
             <div class="row justify-center q-pa-sm">
-                <q-btn color="primary" label="Actualizar Datos" @click="modificar_datos(form._id)"/>
+                  <q-btn color="primary" label="Actualizar Datos" @click="notifi = true, id = form._id , estatus = rol"/>
             </div>
           </q-card>
     </div>
@@ -237,10 +237,27 @@
                     </div>
                   </div>
               <div class="row justify-center q-pa-sm">
-                  <q-btn color="primary" label="Actualizar Datos" @click="modificar_datos(form._id)"/>
+                  <q-btn color="primary" label="Actualizar Datos" @click="notifi = true, id = form._id , estatus = rol"/>
               </div>
            </q-card>
+
     </div>
+    <q-dialog v-model="notifi" >
+      <q-card style="width: 300px">
+        <q-card-section>
+          <div v-if="estatus === 3" class="text-h6">¿Estas seguro de Actualizar los datos?
+            <div class="q-mt-md q-ml-sm text-caption text-grey-9">Atencion si a modificado campos distintos al de contraseña, implica que tu cuenta pasara a un estado de revision, hasta que el admin apruebe los cambios</div>
+          </div>
+            <div v-if="estatus === 2" class="text-h6">¿Estas seguro de Actualizar los datos?</div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-md row justify-center items-center">
+          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos()" push v-close-popup />
+          <q-btn v-if="estatus === 2" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos()" push v-close-popup />
+          <q-btn class="q-ma-sm" label="Cerrar" color="grey" v-close-popup />
+        </q-card-section>
+      </q-card>
+      </q-dialog>
     </div>
   </div>
 </template>
@@ -255,6 +272,7 @@ export default {
       form: {},
       repeatPassword: '',
       password: '',
+      notifi: false,
       perfilFile: null,
       imgPerfil: '',
       baseu: '',
@@ -265,6 +283,8 @@ export default {
       tiendaFiles: [],
       imgTienda: [],
       id_datos: '',
+      estatus: 8,
+      id: '',
       options_dias: [
         {
           label: 'Lunes',
@@ -301,7 +321,6 @@ export default {
     this.getUser()
     this.baseu = env.apiUrl + '/perfil_img/'
     this.baseu2 = env.apiUrl + '/tienda_img/'
-    console.log(this.baseu2, 'el baseu')
   },
   validations () {
     return {
@@ -335,17 +354,39 @@ export default {
           this.datosusuario = true
         }
         console.log(this.form, 'formulario2')
+        console.log(this.rol, 'el rol')
       })
     },
-    modificar_datos (id) {
-      this.$api.put('datosnew/' + id, this.form).then(res => {
-        if (res) {
+    modificar_datos () {
+      if (this.password) {
+        if (!this.$v.password.$error && !this.$v.repeatPassword.$error) {
+          this.form.password = this.password
+          this.$api.put('datosnew/' + this.id, this.form).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Datos Modificados con exito',
+                color: 'positive'
+              })
+            }
+          })
+        } else {
           this.$q.notify({
-            message: 'Datos Modificados con exito',
-            color: 'positive'
+            message: 'las contraseñas no son iguales',
+            color: 'negative'
           })
         }
-      })
+      } else {
+        if (!this.password) {
+          this.$api.put('datosnew/' + this.id, this.form).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Datos Modificados con exito',
+                color: 'positive'
+              })
+            }
+          })
+        }
+      }
     },
     tienda () {
       var img = ''
