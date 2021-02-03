@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <q-img :src="baseu" spinner-color="white" style="height: 250px; width: 100%">
+      <q-img :src="baseu + perfile" spinner-color="white" style="height: 250px; width: 100%">
         <div class="row justify-between" style="width: 100%">
           <div class="col-6">
               <div class="text-h6">{{data ? data.full_name : 'Nombre Tienda'}}</div>
@@ -10,11 +10,42 @@
             <q-rating v-model="ratingTienda" size="2em" color="yellow" readonly/>
           </div>
         </div>
-        <q-card @click="dialogStado = true" class="q-ma-xs bg-grey-4 absolute-bottom" style="width:30%; height: 30px; border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-          <div v-if="estado" class="text-positive text-h6 absolute-center">Abierta</div>
-          <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
-        </q-card>
+        <div class="row justify-between absolute-bottom bg-transparent">
+          <q-card @click="dialogStado = true" class="q-ma-xs bg-grey-4" style="width:30%; height: 30px; border-top-left-radius:25px;border-top-right-radius:25px;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
+            <div v-if="estado" class="text-positive text-h6 absolute-center">Abierta</div>
+            <div v-else class="text-negative text-h6 absolute-center">Cerrada</div>
+          </q-card>
+          <q-icon class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="favorito()"/>
+        </div>
       </q-img>
+
+      <q-scroll-area
+          horizontal
+          style="height: 110px"
+          class="q-ma-sm"
+        >
+          <div class="row no-wrap" style="width: 100%">
+            <q-card @click="verImg(img)" v-for="(img, index) in data.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
+              <q-img :src="baseuTienda + img" spinner-color="white" style="height: 100px; width: 100px" />
+            </q-card>
+          </div>
+        </q-scroll-area>
+
+        <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-secondary" style="border-radius:25px">
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.country + ', ' + data.direccion}}</div>
+          </div>
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="email" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.email}}</div>
+          </div>
+          <div class="row" style="width:100%">
+            <q-icon class="col-1" name="phone" color="blak" style="font-size: 1.5rem;"/>
+            <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.phone}}</div>
+          </div>
+          <div class="q-mx-md text-subtitle2">{{data.country === 'Colombia' ? 'DNI: ' : 'RUN: '}}{{data.run_dni}}</div>
+        </q-card>
 
       <q-dialog v-model="dialogStado">
         <q-card class="bg-primary" style="width: 90%">
@@ -41,11 +72,11 @@
         </q-card>
       </q-dialog>
 
-      <botones-header class="q-ma-md"/>
+      <botones-header class="q-mx-md q-my-xs"/>
 
       <q-card class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">Mis Productos</div>
-        <listado-de-sugerencia :data="productos" ruta="tienda" class="q-mt-xs"/>
+        <listado-de-sugerencia :data="productos" :direccion="false" ruta="tienda" class="q-mt-xs"/>
       </q-card>
     </div>
   </div>
@@ -62,6 +93,8 @@ export default {
     return {
       id: this.$route.params.id,
       baseu: '',
+      baseuTienda: '',
+      perfile: '',
       today: null,
       now: null,
       data: {},
@@ -69,6 +102,7 @@ export default {
       img: '',
       estado: false,
       dialogStado: false,
+      fav: false,
       ratingTienda: 0
     }
   },
@@ -77,10 +111,24 @@ export default {
     this.calificacion()
   },
   methods: {
+    favorito () {
+      this.fav = !this.fav
+      this.$api.post('new_favorito/' + this.id, { favorito: this.fav }).then(res => {
+        if (res) {
+          console.log('fav', res)
+        }
+      })
+    },
+    verImg (img) {
+      this.baseu = env.apiUrl + '/tienda_img/'
+      this.perfile = img
+    },
     getInfo () {
       this.$api.get('user_by_id/' + this.id).then(v => {
         this.data = v
-        this.baseu = env.apiUrl + '/perfil_img/perfil' + this.id
+        this.perfile = this.id
+        this.baseu = env.apiUrl + '/perfil_img/perfil'
+        this.baseuTienda = env.apiUrl + '/tienda_img/'
         this.getProduct()
         this.today = moment().day()
         this.now = moment().format('HH:mm')
@@ -93,6 +141,11 @@ export default {
         } else {
           this.estado = false
         }
+        this.$api.post('favorito/' + this.id).then(res => {
+          if (res) {
+            this.fav = res.favorito
+          }
+        })
       })
     },
     getProduct () {

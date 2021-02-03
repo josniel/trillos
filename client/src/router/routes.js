@@ -12,14 +12,12 @@ const routes = [
       { path: '/descripcionusuario/:id', component: () => import('pages/admin/DescripcionUsuario.vue') },
       // Proveedor
       { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue') },
-      { path: '/reportes_proveedor', component: () => import('pages/proveedor/Reportes.vue') },
       { path: '/productos', component: () => import('pages/proveedor/Productos.vue') },
       { path: '/registroproductos', component: () => import('pages/proveedor/RegistroProductos.vue') },
       { path: '/editar_producto/:id', component: () => import('pages/proveedor/RegistroProductos.vue') },
       { path: '/descripcionsolicitud/:id', component: () => import('pages/proveedor/DescripcionNecesidad.vue') },
       // Cliente
       { path: '/inicio_cliente', component: () => import('pages/cliente/Inicio.vue') },
-      { path: '/reportes_cliente', component: () => import('pages/cliente/Reportes.vue') },
       { path: '/solicitudes', component: () => import('pages/cliente/Necesidades.vue') },
       { path: '/registronecesidades', component: () => import('pages/cliente/RegistroNecesidades.vue') },
       { path: '/editar_solicitud/:id', component: () => import('pages/cliente/RegistroNecesidades.vue') },
@@ -32,8 +30,8 @@ const routes = [
       { path: '/cotizacion/:id/:necesidad_id', component: () => import('pages/VerCotizacion.vue') },
       { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') },
       { path: '/Datos', component: () => import('pages/Datauser.vue') },
-      { path: '/Datosedit', component: () => import('pages/Userdata.vue') }
-
+      { path: '/Datosedit', component: () => import('pages/Userdata.vue') },
+      { path: '/reportes', component: () => import('pages/Reportes.vue') }
     ]
   },
   { path: '/login', component: () => import('pages/Login.vue') },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-between q-ma-sm">
-        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Reportes" to="/reportes_proveedor" />
+        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Reportes" to="/reportes" />
         <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Ofertas" />
     </div>
     <q-separator inset />
@@ -17,7 +17,7 @@
           <div @click="$router.push('/descripcionproducto/' + item._id)" class="col-6">
               <q-scroll-area
                 horizontal
-                style="height: 33px; width:100%"
+                style="height: 27px"
               >
                 <div class="text-subtitle2 text-weight-bolder">{{item.name}}</div>
               </q-scroll-area>

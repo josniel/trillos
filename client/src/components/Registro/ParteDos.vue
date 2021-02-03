@@ -3,7 +3,7 @@
   <div class="column">
     <animation-transition :animation-in-type="AnimationType.BOUNCEINDOWN" :animation-out-type="AnimationType.ROLLOUT">
       <div class="animated-body row justify-center" v-show="show">
-        <img src="favicon.ico" alt="Logo" style="width: 90%;height:260px">
+        <img src="logo-400x400.png" alt="Logo" style="width: 90%;height:260px">
       </div>
     </animation-transition>
     <div class="row q-pa-sm">

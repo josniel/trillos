@@ -11,6 +11,7 @@
 const Opiniones = use("App/Models/Opinion")
 const Necesidad = use("App/Models/Necesidad")
 const Chatmessage = use ("App/Models/ChatMessage")
+const User = use("App/Models/User")
 const moment = require('moment')
 
 
@@ -66,6 +67,35 @@ class OpinionController {
     let promedio = (calificacion / contador)
 
     response.send(promedio)
+  }
+
+  async masPopulares ({ params, request, response }) {
+    const user = (await User.query().where({roles: [3]}).fetch()).toJSON()
+
+    for (let i = 0; i < user.length; i++) {
+      let opiniones = (await Opiniones.query().where({calificado: user[i]._id}).fetch()).toJSON()
+      var calificacion = 0
+      var contador = 0
+      for (let j in opiniones) {
+        calificacion = (calificacion + opiniones[j].rating_tienda)
+        contador = contador + 1
+      }
+      let promedio = (calificacion / contador)
+      user[i].rating_tienda = promedio
+    }
+    console.log(user)
+
+    let populares = user.filter(v => v.rating_tienda >= 4)
+    if (!populares.length) {
+      populares = user.filter(v => v.rating_tienda >= 3)
+      if (!populares.length) {
+        populares = user.filter(v => v.rating_tienda >= 2)
+        if (!populares.length) {
+          populares = user.filter(v => v.rating_tienda >= 1)
+        }
+      }
+    }
+    response.send(populares)
   }
 
   /**

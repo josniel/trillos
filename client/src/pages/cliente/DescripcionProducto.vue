@@ -1,10 +1,7 @@
 <template>
   <div class="bg-secondary" style="height:100%">
       <q-img :src="form.fileName ? baseu : 'noimgpro.png'" spinner-color="white" style="height: 250px; width: 100%;border-bottom-right-radius:25px;border-bottom-left-radius:25px">
-        <div class="row justify-between" style="width:100%">
-          <div class="col-10 text-h6 text-white text-weight-bolder">{{infoProv.full_name ? infoProv.full_name : 'Nombre de Tienda'}}</div>
-          <q-icon v-if="rol === 2" class="col-2" :name="fav ? 'favorite' : 'favorite_border'" color="red" style="font-size: 2rem;" @click="fav = !fav"/>
-        </div>
+          <div class="text-h6 text-white text-weight-bolder" style="width: 100%">{{infoProv.full_name ? infoProv.full_name : 'Nombre de Tienda'}}</div>
       </q-img>
       <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
           <q-item>
@@ -35,7 +32,6 @@ export default {
       id: this.$route.params.id,
       rol: 0,
       ruta: 'producto',
-      fav: false,
       form: {},
       infoProv: {},
       categoria: {},

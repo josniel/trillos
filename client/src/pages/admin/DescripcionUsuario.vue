@@ -19,17 +19,17 @@
       <q-scroll-area
           v-if="rol === 3"
           horizontal
-          style="height: 110px; width: 100%;"
+          style="height: 110px;"
           class="q-ma-sm"
         >
-          <div class="row" style="width: 100%">
+          <div class="row no-wrap" style="width: 100%">
             <q-card @click="verImg(img)" v-for="(img, index) in data.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
               <q-img :src="baseuTienda + img" spinner-color="white" style="height: 100px; width: 100px" />
             </q-card>
           </div>
         </q-scroll-area>
 
-      <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-amber-2" style="border-radius:25px">
+      <q-card class="q-pa-xs q-mt-sm shadow-up-4 bg-secondary" style="border-radius:25px">
         <div class="row" style="width:100%">
           <q-icon class="col-1" name="room" color="blak" style="font-size: 1.5rem;"/>
           <div class="q-pl-xs q-pt-xs text-subtitle2">{{data.country + ', ' + data.direccion}}</div>
@@ -72,7 +72,7 @@
 
       <q-card v-if="data.roles" class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">{{rol === 3 ? 'Mis Productos' : 'Mis Solicitudes'}}</div>
-        <listado-de-sugerencia :data="misDatos" :ruta="data.roles[0] !== 3 ? 'proveedor' : 'cliente'" class="q-mt-xs"/>
+        <listado-de-sugerencia :data="misDatos" :direccion="false" :ruta="data.roles[0] !== 3 ? 'proveedor' : 'cliente'" class="q-mt-xs"/>
       </q-card>
     </div>
   </div>
