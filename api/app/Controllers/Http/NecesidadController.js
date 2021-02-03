@@ -1,5 +1,6 @@
 'use strict'
 const Necesidad = use("App/Models/Necesidad")
+const ChatMessage = use("App/Models/ChatMessage")
 const { validate } = use("Validator")
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
@@ -24,7 +25,8 @@ class NecesidadController {
    */
   async index ({ request, response, auth }) {
     let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
-    let filter = datos.filter(v => v.creador.enable)
+    console.log(datos)
+    let filter = datos.filter(v => v.creador.enable && !v.cotizado)
     response.send(filter)
   }
 
@@ -183,7 +185,7 @@ class NecesidadController {
 
   async necesidadByCategoriaId ({ params, response }) {
     let datos = (await Necesidad.query().where('categoria_id', params.categoria_id).with('creador').fetch()).toJSON()
-    let filter = datos.filter(v => v.creador.enable)
+    let filter = datos.filter(v => v.creador.enable && !v.cotizado)
     response.send(filter)
   }
 }

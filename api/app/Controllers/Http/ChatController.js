@@ -175,9 +175,10 @@ class ChatController {
     var dat = request.all()
     let cotization = []
     if (dat.status === 'Aprobado') {
-      cotization = (await ChatMessage.query().where('_id', params.id_cotisation).fetch()).toJSON()
-      let otherNeed = await ChatMessage.query().where('necesidad_id', cotization[0].necesidad_id).update({status: 'Rechazado'})
+      let cot = await ChatMessage.query().where('_id', params.id_cotisation).first()
+      let otherNeed = await ChatMessage.query().where('necesidad_id', cot.necesidad_id).update({status: 'Rechazado'})
       cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
+      let necesidad = await Necesidad.query().where({_id: cot.necesidad_id}).update({cotizado: true})
     } else {
       cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
     }
