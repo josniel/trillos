@@ -359,7 +359,7 @@ export default {
     },
     modificar_datos () {
       if (this.password) {
-        if (!this.$v.password.$error && !this.$v.repeatPassword.$error) {
+        if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
           this.form.password = this.password
           this.$api.put('datosnew/' + this.id, this.form).then(res => {
             if (res) {
@@ -377,14 +377,23 @@ export default {
         }
       } else {
         if (!this.password) {
-          this.$api.put('datosnew/' + this.id, this.form).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Datos Modificados con exito',
-                color: 'positive'
-              })
-            }
-          })
+          if (!this.$v.form.$error) {
+            this.$api.put('datosnew/' + this.id, this.form).then(res => {
+              if (res) {
+                this.$q.notify({
+                  message: 'Datos Modificados con exito',
+                  color: 'positive'
+                })
+              }
+            })
+          }
+          /* if () {
+            this.$api.put('update_status/' + this.id, { status: 0 }).then(res => {
+              if (res) {
+                this.getProveedores()
+              }
+            })
+          } */
         }
       }
     },

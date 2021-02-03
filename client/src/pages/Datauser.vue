@@ -168,12 +168,6 @@ export default {
     this.baseu = env.apiUrl + '/perfil_img/'
     this.baseu2 = env.apiUrl + '/tienda_img/'
   },
-  validations () {
-    return {
-      form: {
-      }
-    }
-  },
   methods: {
     getUser () {
       this.$api.get('user_info').then(v => {
@@ -192,66 +186,6 @@ export default {
         }
         console.log(this.form, 'formulario2')
       })
-    },
-    modificar_datos (id) {
-      this.$api.put('datosnew/' + id, this.form).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Datos Modificados con exito',
-            color: 'positive'
-          })
-        }
-      })
-    },
-    tienda () {
-      var img = ''
-      var cc = {}
-      if (this.tiendaFiles.length > 0) {
-        cc = this.tiendaFiles[this.tiendaFiles.length - 1]
-        img = URL.createObjectURL(cc)
-        this.imgTienda.push(img)
-      }
-    },
-    test () {
-      if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
-    },
-    async next () {
-      this.form.dias = this.dias
-      this.$v.form.$touch()
-      this.$v.dias.$touch()
-      this.$v.perfilFile.$touch()
-      if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error) {
-        if (this.tiendaFiles.length > 0) {
-          var formData = new FormData()
-          formData.append('perfilFile', this.perfilFile)
-          this.form.cantidadArchivos = this.tiendaFiles.length
-          this.form.status = 0
-          this.form.enable = true
-          for (let i = 0; i < this.tiendaFiles.length; i++) {
-            formData.append('tiendaFiles_' + i, this.tiendaFiles[i])
-          }
-          formData.append('dat', JSON.stringify(this.form))
-          await this.$api.post('register', formData, {
-            headers: {
-              'Content-Type': undefined
-            }
-          }).then(res => {
-            if (res) {
-              this.$q.notify({
-                message: 'Ya formas parte de Trillos, Bienvenido',
-                color: 'positive'
-              })
-              this.loguear()
-            }
-          })
-        } else {
-          this.$q.dialog({
-            message: 'Debes subir fotos de la tienda.',
-            persistent: true
-          }).onOk(() => {
-          })
-        }
-      }
     }
   }
 }

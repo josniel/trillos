@@ -247,7 +247,13 @@ class UserController {
         response.unprocessableEntity(validation.messages())
       } else {
         let body = request.only(User.fillable)
+        let contraseña = body.password
+        delete body.password
+        // body.status = 0
         const datosnew = await User.where({_id: params.id}).update(body)
+        const editarcontraseña= await User.find(params.id)
+        editarcontraseña.password = contraseña
+        await editarcontraseña.save()
         response.send(datosnew)
       }
     }
