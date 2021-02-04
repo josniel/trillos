@@ -51,7 +51,7 @@
         </q-item>
       </q-card>
 
-      <q-card v-ripple class="q-pa-sm q-my-md bordes" >
+      <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/reportes_usuarios')" >
         <q-item>
           <q-item-section avatar>
             <q-avatar icon="view_list" class="text-black" />

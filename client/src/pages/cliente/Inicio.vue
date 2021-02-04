@@ -9,9 +9,16 @@
    <botones-header/>
    <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO CLIENTE</div>
    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
-      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
-      <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
+      <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
+      <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
+      <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
+      <div class="text-bold q-ml-sm">MIS FAVORITOS</div>
+    </div>
+    <listado-de-favoritos/>
+   <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
+      <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
+      <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
+      <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
       <div class="text-bold q-ml-sm">MAS POPULARES</div>
     </div>
     <listado-mas-populares/>
@@ -30,13 +37,15 @@
 
 <script>
 import BotonesHeader from '../../components/BotonesHeader.vue'
+import ListadoDeFavoritos from '../../components/ListadoDeFavoritos.vue'
 import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
 import ListadoMasPopulares from '../../components/ListadoMasPopulares.vue'
 export default {
   components: {
     BotonesHeader,
     ListadoDeSugerencia,
-    ListadoMasPopulares
+    ListadoMasPopulares,
+    ListadoDeFavoritos
   },
   data () {
     return {

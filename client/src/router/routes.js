@@ -10,6 +10,7 @@ const routes = [
       { path: '/clientes', component: () => import('pages/admin/Clientes.vue') },
       { path: '/proveedores_pendientes', component: () => import('pages/admin/Pendientes.vue') },
       { path: '/descripcionusuario/:id', component: () => import('pages/admin/DescripcionUsuario.vue') },
+      { path: '/reportes_usuarios', component: () => import('pages/admin/Reportes.vue') },
       // Proveedor
       { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue') },
       { path: '/productos', component: () => import('pages/proveedor/Productos.vue') },

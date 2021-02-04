@@ -67,7 +67,10 @@ class FavoritoController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params, request, response, auth }) {
+    const user_id = ((await auth.getUser()).toJSON())._id
+    let favoritos = (await Favoritos.query().where({ id_cliente: user_id }).with('datos_tienda').fetch()).toJSON()
+    response.send(favoritos)
   }
 
   /**

@@ -7,7 +7,9 @@
           <div class="q-pl-sm q-pt-xs text-caption">{{img.direccion}}</div>
         </div>
       </q-img>
+      <q-scroll-area horizontal style="height: 25px" class="q-ma-xs" >
       <div class="text-subtitle1 text-center">{{img.name}}</div>
+      </q-scroll-area>
     </q-card>
   </div>
 </template>

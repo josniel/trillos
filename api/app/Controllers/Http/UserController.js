@@ -115,6 +115,12 @@ class UserController {
     }
   }
 
+  async allUser({ request, response, auth }) {
+    let allUsers = (await User.query().where({}).fetch()).toJSON()
+    let users = allUsers.filter(v => v.email !== 'admin@triyus.com')
+    response.send(users)
+  }
+
   async userInfo({ request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     response.send(user)
