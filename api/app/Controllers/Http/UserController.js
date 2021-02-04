@@ -241,21 +241,16 @@ class UserController {
     }
 
     async updatedata ({ params, request, response }) {
-      let requestAll = request.all()
-      const validation = await validate(requestAll, User.fieldValidationRules())
-      if (validation.fails()) {
-        response.unprocessableEntity(validation.messages())
-      } else {
-        let body = request.only(User.fillable)
-        let contraseña = body.password
-        delete body.password
-        // body.status = 0
-        const datosnew = await User.where({_id: params.id}).update(body)
-        const editarcontraseña= await User.find(params.id)
-        editarcontraseña.password = contraseña
-        await editarcontraseña.save()
-        response.send(datosnew)
-      }
+      let body = request.only(User.fillable)
+      console.log(body, 'datossssssssss')
+      let contraseña = body.password
+      delete body.password
+      // body.status = 0
+      const datosnew = await User.query().where({_id: params.id}).update(body)
+      const editarcontraseña= await User.find(params.id)
+      editarcontraseña.password = contraseña
+      await editarcontraseña.save()
+      response.send(datosnew)
     }
 
 }

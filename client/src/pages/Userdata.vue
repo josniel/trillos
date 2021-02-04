@@ -4,7 +4,7 @@
     <div class="row justify-center">
         <div class="text-h6 q-ma-md text-center estilo-titulos">Datos de Perfil</div>
         <div v-if="datosusuario">
-            <q-card class="bg-white full-width q-pa-xl q-ma-sm shadow-3">
+            <q-card class="bg-amber-1 q-pa-xl q-ma-md shadow-3">
                 <div class="q-ml-md text-h7 text-grey-9 text-bold">Datos del Cliente</div>
                   <div class="row q-pa-sm">
                     <div class="col-xs-12 col-sm-6 q-mb-lg col-md-6 col-lg-6">
@@ -73,7 +73,7 @@
                     </div>
                   </div>
             <div class="row justify-center q-pa-sm">
-                  <q-btn color="primary" label="Actualizar Datos" @click="notifi = true, id = form._id , estatus = rol"/>
+                  <q-btn color="primary" label="Editar Perfil" @click="notifi = true, id = form._id , estatus = rol"/>
             </div>
           </q-card>
     </div>
@@ -83,7 +83,7 @@
                 <div class="q-ml-md text-h7 text-grey-9 text-bold">Datos del Proveedor</div>
                   <div class="row q-pa-sm">
                     <div class="col-xs-12 col-sm-6 q-mb-lg col-md-6 col-lg-6">
-                      <q-input v-model="form.email" type="email" label="Email" outlined disable dense/>
+                      <q-input v-model="form2.email" type="email" label="Email" outlined disable dense/>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                       <q-input v-model="password" label="Contraseña" outlined dense
@@ -99,39 +99,39 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form.full_name" label="Nombre de la Empresa" outlined dense
-                        error-message="Ingrese su nombre"
-                        :error="$v.form.full_name.$error" @blur="$v.form.full_name.$touch()"
+                      <q-input v-model="form2.full_name" label="Nombre de la Empresa" outlined dense
+                        error-message="Ingrese el nombre de la Empresa"
+                        :error="$v.form2.full_name.$error" @blur="$v.form.full_name.$touch()"
                       />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-select v-model="form.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese su País" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
+                      <q-select v-model="form2.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese su País" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <q-input :disable="form.country ? false : true" v-model="form.run_dni" :label="form.country === 'Chile' ? 'Ingrese RUN' : form.country === 'Colombia' ? 'Ingrese DNI' : 'Debes seleccionar un país'" outlined dense
+                        <q-input :disable="form2.country ? false : true" v-model="form2.run_dni" :label="form2.country === 'Chile' ? 'Ingrese RUN' : form2.country === 'Colombia' ? 'Ingrese DNI' : 'Debes seleccionar un país'" outlined dense
                           error-message="Ingrese RUN O DNI"
-                          :error="$v.form.run_dni.$error" @blur="$v.form.run_dni.$touch()"
+                          :error="$v.form2.run_dni.$error" @blur="$v.form2.run_dni.$touch()"
                         />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form.direccion" label="Dirección" outlined dense
+                      <q-input v-model="form2.direccion" label="Dirección" outlined dense
                         error-message="Ingrese su Dirección"
-                        :error="$v.form.direccion.$error" @blur="$v.form.direccion.$touch()"
+                        :error="$v.form2.direccion.$error" @blur="$v.form2.direccion.$touch()"
                       />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form.phone" type="tel" label="Telefono" outlined dense
+                      <q-input v-model="form2.phone" type="tel" label="Telefono" outlined dense
                         error-message="Ingrese el número de su Teléfono"
-                        :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()" />
+                        :error="$v.form2.phone.$error" @blur="$v.form2.phone.$touch()" />
                     </div>
 
                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <q-toggle
-                          v-model="form.delivery"
+                          v-model="form2.delivery"
                           label="Activar delivery"
                           icon="delivery_dining"
                         />
@@ -143,7 +143,7 @@
                         :error="$v.perfilFile.$error" @blur="$v.perfilFile.$touch()">
                         <template v-slot:prepend>
                           <q-avatar>
-                            <img  :src="baseu + 'perfil' + form._id">
+                            <img  :src="baseu + 'perfil' + form2._id">
                           </q-avatar>
                         </template>
                         <template v-slot:append>
@@ -164,24 +164,9 @@
                         </div>
                       </div>
                       </q-card-section>
-                      <q-separator />
-                      <q-card-section class="row justify-around">
-                        <div v-if="!imgTienda.length" class="text-subtitle2 text-grey text-center">No hay fotos de la tienda</div>
-                        <div v-else v-ripple v-for="(item, index) in imgTienda" :key="index" class="col-5 q-pa-sm">
-                          <q-img
-                            :src="imgTienda.length > 0 ? imgTienda[index] : 'favicon.ico'"
-                            style="width:120px"
-                          />
-                        </div>
-                        <div v-for="(item, index) in form.tiendaFiles" :key="index" class="col-5 q-pa-sm" >
-                            <q-img
-                              :src="baseu2 + item"
-                            />
-                        </div>
-                      </q-card-section>
                     </q-card>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
-                      <q-select outlined v-model="form.dias" :options="options_dias" label="Días laborables" multiple emit-value map-options
+                      <q-select outlined v-model="form2.dias" :options="options_dias" label="Días laborables" multiple emit-value map-options
                         error-message="Ingrese los días laborables de la empresa"
                         :error="$v.dias.$error" @blur="$v.dias.$touch()"
                        >
@@ -202,13 +187,13 @@
                   </div>
                     <div class="text-subtitle2 q-mt-sm">Horario</div>
                     <div class="q-gutter-sm row justify-between">
-                      <q-input label="Hora de inicio" class="col-5" v-model="form.hora_inicio" mask="time" :rules="['time']"
+                      <q-input label="Hora de inicio" class="col-5" v-model="form2.hora_inicio" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de inicio laboral"
-                        :error="$v.form.hora_inicio.$error" @blur="$v.form.hora_inicio.$touch()" >
+                        :error="$v.form2.hora_inicio.$error" @blur="$v.form2.hora_inicio.$touch()" >
                         <template v-slot:append>
                           <q-icon name="access_time" class="cursor-pointer">
                             <q-popup-proxy transition-show="scale" transition-hide="scale">
-                              <q-time v-model="form.hora_inicio">
+                              <q-time v-model="form2.hora_inicio">
                                 <div class="row items-center justify-end">
                                   <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
@@ -218,13 +203,13 @@
                         </template>
                       </q-input>
 
-                      <q-input label="Hora de cierre" class="col-5" v-model="form.hora_fin" mask="time" :rules="['time']"
+                      <q-input label="Hora de cierre" class="col-5" v-model="form2.hora_fin" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de cierre laboral"
-                        :error="$v.form.hora_fin.$error" @blur="$v.form.hora_fin.$touch()">
+                        :error="$v.form2.hora_fin.$error" @blur="$v.form2.hora_fin.$touch()">
                         <template v-slot:append>
                           <q-icon name="access_time" class="cursor-pointer">
                             <q-popup-proxy transition-show="scale" transition-hide="scale">
-                              <q-time v-model="form.hora_fin">
+                              <q-time v-model="form2.hora_fin">
                                 <div class="row items-center justify-end">
                                   <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
@@ -237,7 +222,7 @@
                     </div>
                   </div>
               <div class="row justify-center q-pa-sm">
-                  <q-btn color="primary" label="Actualizar Datos" @click="notifi = true, id = form._id , estatus = rol"/>
+                  <q-btn color="primary" label="Editar Perfil" @click="notifi = true, id = form2._id , estatus = rol"/>
               </div>
            </q-card>
 
@@ -246,13 +231,13 @@
       <q-card style="width: 300px">
         <q-card-section>
           <div v-if="estatus === 3" class="text-h6">¿Estas seguro de Actualizar los datos?
-            <div class="q-mt-md q-ml-sm text-caption text-grey-9">Atencion si a modificado campos distintos al de contraseña, implica que tu cuenta pasara a un estado de revision, hasta que el admin apruebe los cambios</div>
+            <div class="q-mt-md q-ml-sm text-caption text-grey-9">"Atencion" si a modificado campos distintos al de contraseña, implicaria que el estatus de su cuenta caiga en revision hasta que el admin apruebe los cambios</div>
           </div>
             <div v-if="estatus === 2" class="text-h6">¿Estas seguro de Actualizar los datos?</div>
         </q-card-section>
 
         <q-card-section class="q-pa-md row justify-center items-center">
-          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos()" push v-close-popup />
+          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datosproveedor()" push v-close-popup />
           <q-btn v-if="estatus === 2" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos()" push v-close-popup />
           <q-btn class="q-ma-sm" label="Cerrar" color="grey" v-close-popup />
         </q-card-section>
@@ -270,6 +255,8 @@ export default {
       datosusuario: false,
       datosproveedor: false,
       form: {},
+      form2: {},
+      espejo: {},
       repeatPassword: '',
       password: '',
       notifi: false,
@@ -282,8 +269,8 @@ export default {
       dias: [],
       tiendaFiles: [],
       imgTienda: [],
-      id_datos: '',
       estatus: 8,
+      var: false,
       id: '',
       options_dias: [
         {
@@ -330,6 +317,13 @@ export default {
         country: { required },
         direccion: { required },
         run_dni: { required },
+        phone: { required }
+      },
+      form2: {
+        full_name: { required, maxLength: maxLength(40) },
+        country: { required },
+        direccion: { required },
+        run_dni: { required },
         phone: { required },
         hora_inicio: { required },
         hora_fin: { required }
@@ -345,19 +339,20 @@ export default {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
-          this.form = v
         }
         if (this.rol === 3) {
           this.datosproveedor = true
+          this.form2 = v
+          this.espejo = v
         }
         if (this.rol === 2) {
+          this.form = v
           this.datosusuario = true
         }
-        console.log(this.form, 'formulario2')
-        console.log(this.rol, 'el rol')
       })
     },
     modificar_datos () {
+      this.$v.form.$touch()
       if (this.password) {
         if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
           this.form.password = this.password
@@ -387,6 +382,47 @@ export default {
               }
             })
           }
+        }
+      }
+    },
+
+    modificar_datosproveedor () {
+      this.$v.form2.$touch()
+      if (this.password) {
+        if (!this.$v.form2.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+          this.form2.password = this.password
+          this.$api.put('datosnew/' + this.id, this.form2).then(res => {
+            if (res) {
+              this.$q.notify({
+                message: 'Datos Modificados con exito',
+                color: 'positive'
+              })
+            }
+          })
+        } else {
+          this.$q.notify({
+            message: 'Verifica los datos',
+            color: 'negative'
+          })
+        }
+      } else {
+        this.$v.form2.$touch()
+        if (!this.password) {
+          if (!this.$v.form2.$error) {
+            this.$api.put('datosnew/' + this.id, this.form2).then(res => {
+              if (res) {
+                this.$q.notify({
+                  message: 'Datos Modificados con exito',
+                  color: 'positive'
+                })
+              }
+            })
+          } else {
+            this.$q.notify({
+              message: 'Verifica los datos',
+              color: 'negative'
+            })
+          }
           /* if () {
             this.$api.put('update_status/' + this.id, { status: 0 }).then(res => {
               if (res) {
@@ -397,6 +433,7 @@ export default {
         }
       }
     },
+
     tienda () {
       var img = ''
       var cc = {}
@@ -431,11 +468,6 @@ export default {
             }
           }).then(res => {
             if (res) {
-              this.$q.notify({
-                message: 'Ya formas parte de Trillos, Bienvenido',
-                color: 'positive'
-              })
-              this.loguear()
             }
           })
         } else {
