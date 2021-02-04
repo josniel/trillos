@@ -140,8 +140,6 @@
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section>
           <div class="q-px-xs text-subtitle1">Califícanos y deja un comentario.</div>
@@ -173,8 +171,6 @@
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section>
           <div class="q-px-xs text-subtitle1">Debes calificar al cliente.</div>

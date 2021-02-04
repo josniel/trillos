@@ -20,7 +20,7 @@ class FavoritoController {
    */
   async index ({ response, auth, params }) {
     const user_id = ((await auth.getUser()).toJSON())._id
-    let favorito = (await Favoritos.query().where({ id_tienda: params.id_proveedor, id_cliente: user_id }).first()).toJSON()
+    let favorito = (await Favoritos.query().where({ id_tienda: params.id_proveedor, id_cliente: user_id }).first())
     response.send(favorito)
   }
 

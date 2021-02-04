@@ -11,7 +11,6 @@ class Opinion extends Model {
     const rules = {
       comentario: "string",
       rating_tienda: "number",
-      necesidad_id: "string",
       rating_cliente: "string"
         }
     return rules
