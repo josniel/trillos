@@ -79,7 +79,7 @@
     </div>
 
     <div v-if="datosproveedor">
-            <q-card class="bg-white full-width q-pa-xl q-ma-sm shadow-3">
+            <q-card class="bg-amber-1 q-pa-xl q-ma-md shadow-3">
                 <div class="q-ml-md text-h7 text-grey-9 text-bold">Datos del Proveedor</div>
                   <div class="row q-pa-sm">
                     <div class="col-xs-12 col-sm-6 q-mb-lg col-md-6 col-lg-6">
@@ -151,7 +151,7 @@
                         </template>
                       </q-file>
                     </div>
-                    <q-card style="width: 100%" class="shadow-11 q-mt-sm">
+                    <q-card style="width: 100%" class="bg-amber-1 shadow-11 q-mt-sm">
                       <q-card-section>
                         <div>Agrega fotos de la tienda</div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
@@ -353,6 +353,7 @@ export default {
     },
     modificar_datos () {
       this.$v.form.$touch()
+      console.log(this.form, 'pendiente')
       if (this.password) {
         if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
           this.form.password = this.password
