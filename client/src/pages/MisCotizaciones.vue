@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="row justify-between q-ma-sm">
-        <div class="q-ml-sm text-h6">Mis Cotizaciones</div>
-        <q-btn no-caps class="shadow-11" icon-right="forum" color="primary" text-color="black" label="Chats" to="/mis_chats" />
-    </div>
+    <div class="q-my-md q-ml-md text-h6">Mis Cotizaciones</div>
     <q-separator inset />
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">

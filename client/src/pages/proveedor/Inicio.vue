@@ -15,7 +15,7 @@
       <div class="text-bold q-ml-sm">SOLICITUDES</div>
    </div>
    <listado-de-sugerencia v-if="data.length" :data="data" :direccion="true" ruta="proveedor"/>
-    <q-card v-else class="shadow-2 q-ma-md q-pa-md">
+    <q-card v-else class="shadow-11 q-ma-md q-pa-md">
       <div class="text-center text-subtitle1">Sin solicitudes disponibles...</div>
     </q-card>
   </div>

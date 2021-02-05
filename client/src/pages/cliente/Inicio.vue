@@ -14,7 +14,10 @@
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
       <div class="text-bold q-ml-sm">MIS FAVORITOS</div>
     </div>
-    <listado-de-favoritos/>
+    <listado-de-favoritos v-if="dataFav.length" :dataFav="dataFav"/>
+    <q-card v-else class="shadow-11 q-my-sm q-mx-md q-pa-xs">
+      <div class="text-center text-subtitle1">Añade una Tienda a tus favoritos...</div>
+    </q-card>
    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
       <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
       <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
@@ -29,7 +32,7 @@
       <div class="text-bold q-ml-sm">PRODUCTOS</div>
    </div>
     <listado-de-sugerencia v-if="data.length" :data="data" :direccion="false" ruta="cliente" />
-    <q-card v-else class="shadow-2 q-ma-md q-pa-md">
+    <q-card v-else class="shadow-11 q-my-sm q-mx-md q-pa-sm">
       <div class="text-center text-subtitle1">Sin productos disponibles...</div>
     </q-card>
   </div>
@@ -49,16 +52,25 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: [],
+      dataFav: []
     }
   },
   mounted () {
     this.cargarProductos()
+    this.tiendasFavoritas()
   },
   methods: {
     cargarProductos () {
       this.$api.get('producto').then(res => {
         this.data = res
+      })
+    },
+    tiendasFavoritas () {
+      this.$api.get('mis_favoritos').then(res => {
+        if (res) {
+          this.dataFav = res
+        }
       })
     }
   }
