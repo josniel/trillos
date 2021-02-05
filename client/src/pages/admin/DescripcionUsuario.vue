@@ -70,7 +70,7 @@
         </q-card>
       </q-dialog>
 
-      <q-card v-if="data.roles" class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
+      <q-card v-if="data.roles" class="bordes q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">{{rol === 3 ? 'Mis Productos' : 'Mis Solicitudes'}}</div>
         <listado-de-sugerencia :data="misDatos" :direccion="false" :ruta="data.roles[0] !== 3 ? 'proveedor' : 'cliente'" class="q-mt-xs"/>
       </q-card>
@@ -168,5 +168,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+.bordes {
+  border-top: 6px solid $primary
+}
 </style>

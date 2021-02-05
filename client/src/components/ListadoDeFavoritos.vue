@@ -34,7 +34,6 @@ export default {
         if (res) {
           this.data = res
           this.baseu = env.apiUrl + '/perfil_img/perfil'
-          console.log('data', this.data)
         }
       })
     }
