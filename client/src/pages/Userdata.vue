@@ -4,13 +4,18 @@
     <div class="row justify-center">
         <div class="text-h6 q-ma-md text-center estilo-titulos">Datos de Perfil</div>
         <div v-if="datosusuario">
-            <q-card class="bg-amber-1 q-pa-xl q-ma-md shadow-3">
-                <div class="q-ml-md text-h7 text-grey-9 text-bold">Datos del Cliente</div>
-                  <div class="row q-pa-sm">
-                    <div class="col-xs-12 col-sm-6 q-mb-lg col-md-6 col-lg-6">
-                      <q-input v-model="form.email" type="email" label="Email" outlined disable dense/>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+           <q-card class="bg-amber-1 q-pa-lg q-ma-md shadow-3">
+                <div class="row justify-center items-center">
+                        <div class="column">
+                          <q-avatar size="180px">
+                            <img  :src="baseu + 'perfil' + form._id">
+                            <q-file borderless v-model="perfilFile" class="absolute-center button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1">
+                              <q-icon name="edit" class="absolute-center" size="20px" color="white" />
+                            </q-file>
+                          </q-avatar>
+                        </div>
+
+                    <div class="col-xs-12 col-sm-6 q-ma-sm col-md-6 col-lg-6">
                       <q-input v-model="password" label="Contraseña" outlined dense
                         error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
                         :error="$v.password.$error" @blur="$v.password.$touch()" />
@@ -57,35 +62,58 @@
                         error-message="Ingrese el número de su Teléfono"
                         :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()" />
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" hint="Foto de Perfil" outlined label="" @input="test"
-                          error-message="Debes subir una foto de perfil"
-                          :error="$v.perfilFile.$error" @blur="$v.perfilFile.$touch()">
-                          <template v-slot:prepend>
-                            <q-avatar>
-                              <img  :src="baseu + 'perfil' + form._id">
-                            </q-avatar>
-                          </template>
-                          <template v-slot:append>
-                            <q-icon name="close" color="negative" @click.stop="perfilFile = null" class="cursor-pointer" />
-                          </template>
-                        </q-file>
-                    </div>
+
                   </div>
             <div class="row justify-center q-pa-sm">
-                  <q-btn color="primary" label="Editar Perfil" @click="notifi = true, id = form._id , estatus = rol"/>
+                  <q-btn color="primary" label="Guardar Cambios" @click="notifi = true, id = form._id , estatus = rol"/>
             </div>
           </q-card>
     </div>
 
     <div v-if="datosproveedor">
-            <q-card class="bg-amber-1 q-pa-xl q-ma-md shadow-3">
-                <div class="q-ml-md text-h7 text-grey-9 text-bold">Datos del Proveedor</div>
-                  <div class="row q-pa-sm">
-                    <div class="col-xs-12 col-sm-6 q-mb-lg col-md-6 col-lg-6">
-                      <q-input v-model="form2.email" type="email" label="Email" outlined disable dense/>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <q-card class="bg-amber-1 q-pa-lg q-ma-md shadow-3">
+                <div class="row justify-center items-center">
+                        <div class="column">
+                          <q-avatar size="180px">
+                            <img  :src="baseu + 'perfil' + form2._id">
+                            <q-file borderless v-model="perfilFile" class="absolute-center button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1">
+                              <q-icon name="edit" class="absolute-center" size="20px" color="white" />
+                            </q-file>
+                          </q-avatar>
+                        </div>
+
+                    <q-card style="width: 100%" class="shadow-11 bg-amber-1 q-mt-xl">
+                      <q-separator />
+                      <div class="q-mt-sm column">
+                        <div class="row">
+                          <div class="q-mt-sm q-px-md" v-ripple v-for="(item, index) in form2.tiendaFiles" :key="index" >
+                            <q-avatar square  size="100px">
+                              <q-img
+                                :src="baseu2 + item"
+                                />
+                                <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round color="negative" @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
+                            </q-avatar>
+                          </div>
+
+                        </div>
+                        <div class="row justify-center items-center">
+                          <div class="column">
+                            <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-amber-1" style="height:100px;border-radius:12px;width:140px">
+                              <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Imagen</div>
+                              <q-avatar size="50px">
+                                <div style="z-index:1">
+                                  <q-file borderless v-model="tiendaFiles" class="button-camera" @input="addImg()" accept=".jpg, image/*">
+                                    <q-icon name="add" class="absolute-center" size="20px" color="white" />
+                                  </q-file>
+                                </div>
+                              </q-avatar>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </q-card>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
                       <q-input v-model="password" label="Contraseña" outlined dense
                         error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
                         :error="$v.password.$error" @blur="$v.password.$touch()" @input="cambioClave = true"/>
@@ -142,34 +170,6 @@
                         />
                      </div>
 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" outlined label="Foto perfil de la tienda" @input="test"
-                        error-message="Ingrese una foto de perfil para su tienda"
-                        :error="$v.perfilFile.$error" @blur="$v.perfilFile.$touch()">
-                        <template v-slot:prepend>
-                          <q-avatar>
-                            <img  :src="baseu + 'perfil' + form2._id">
-                          </q-avatar>
-                        </template>
-                        <template v-slot:append>
-                          <q-icon name="close" color="negative" @click.stop="perfilFile = null" class="cursor-pointer" />
-                        </template>
-                      </q-file>
-                    </div>
-                    <q-card style="width: 100%" class="bg-amber-1 shadow-11 q-mt-sm">
-                      <q-card-section>
-                        <div>Agrega fotos de la tienda</div>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
-                        <div class="col-10">
-                            <q-file max-files="5" style="width: 100%" @input="tienda" accept=".jpg, image/*" multiple append v-model="tiendaFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ">
-                            </q-file>
-                        </div>
-                        <div class="col-2 row justify-center">
-                          <q-icon size="md" name="close" color="negative" @click="tiendaFiles = [], imgTienda = []" class="cursor-pointer" />
-                        </div>
-                      </div>
-                      </q-card-section>
-                    </q-card>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
                       <q-select outlined v-model="form2.dias" :options="options_dias" label="Días laborables" multiple emit-value map-options
                         error-message="Ingrese los días laborables de la empresa"
@@ -225,12 +225,11 @@
                       </q-input>
 
                     </div>
-                  </div>
+                </div>
               <div class="row justify-center q-pa-sm">
-                  <q-btn color="primary" label="Editar Perfil" @click="notifi = true, id = form2._id , estatus = rol"/>
+                  <q-btn color="primary" label="Guardar Cambios" @click="notifi = true, id = form2._id , estatus = rol"/>
               </div>
            </q-card>
-
     </div>
     <q-dialog v-model="notifi" >
       <q-card style="width: 300px">
@@ -251,6 +250,24 @@
         </q-card-section>
       </q-card>
       </q-dialog>
+
+      <q-dialog v-model="eliminarimg" >
+      <q-card style="width: 300px">
+        <q-card-section>
+          <div class="row justify-center text-center items-center">
+            <div v-if="estatus === 3" class="text-h6">¡Atención!
+              <div class="text-caption row justify-center items-center">¿Estas seguro de Borrar esta Imagen?</div>
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-md row justify-center items-center">
+          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Eliminar" color="primary" @click="deleteimg()" push v-close-popup />
+          <q-btn class="q-ma-sm" label="Cerrar" color="grey" v-close-popup />
+        </q-card-section>
+      </q-card>
+      </q-dialog>
+
     </div>
   </div>
 </template>
@@ -260,6 +277,7 @@ import env from '../env'
 export default {
   data () {
     return {
+      nameImgBorrar: '',
       datosusuario: false,
       datosproveedor: false,
       form: {},
@@ -267,6 +285,7 @@ export default {
       repeatPassword: '',
       password: '',
       notifi: false,
+      eliminarimg: false,
       perfilFile: null,
       imgPerfil: '',
       baseu: '',
@@ -401,8 +420,6 @@ export default {
     modificar_datosproveedor () {
       this.form2.cambioSoloClave = this.cambioSoloClave
       this.form2.cambioClave = this.cambioClave
-      console.log(this.form2.cambioSoloClave, 'cambio solo clave')
-      console.log(this.form2.cambioClave, 'cambio clave2')
       this.$v.form2.$touch()
       if (this.password) {
         if (!this.$v.form2.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
@@ -439,60 +456,57 @@ export default {
               color: 'negative'
             })
           }
-          /* if () {
-            this.$api.put('update_status/' + this.id, { status: 0 }).then(res => {
-              if (res) {
-                this.getProveedores()
-              }
-            })
-          } */
         }
       }
     },
 
-    tienda () {
-      var img = ''
-      var cc = {}
-      if (this.tiendaFiles.length > 0) {
-        cc = this.tiendaFiles[this.tiendaFiles.length - 1]
-        img = URL.createObjectURL(cc)
-        this.imgTienda.push(img)
-      }
-    },
-    test () {
-      if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
-    },
-    async next () {
-      this.form.dias = this.dias
-      this.$v.form.$touch()
-      this.$v.dias.$touch()
-      this.$v.perfilFile.$touch()
-      if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error) {
-        if (this.tiendaFiles.length > 0) {
+    async addImg () {
+      console.log('add img', this.tiendaFiles)
+      if (this.form2.tiendaFiles.length >= 5) {
+        this.$q.notify({
+          message: 'no se pueden agregar mas imagenes',
+          color: 'negative'
+        })
+      } else {
+        if (this.tiendaFiles) {
           var formData = new FormData()
-          formData.append('perfilFile', this.perfilFile)
-          this.form.cantidadArchivos = this.tiendaFiles.length
-          this.form.status = 0
-          this.form.enable = true
-          for (let i = 0; i < this.tiendaFiles.length; i++) {
-            formData.append('tiendaFiles_' + i, this.tiendaFiles[i])
-          }
-          formData.append('dat', JSON.stringify(this.form))
-          await this.$api.post('register', formData, {
+          var files = []
+          files[0] = this.tiendaFiles
+          formData.append('files', files[0])
+          await this.$api.post('subir_archivo_proveedor', formData, {
             headers: {
               'Content-Type': undefined
             }
-          }).then(res => {
-            if (res) {
-            }
-          })
-        } else {
-          this.$q.dialog({
-            message: 'Debes subir fotos de la tienda.',
-            persistent: true
-          }).onOk(() => {
+          }).then((res) => {
+            console.log(res, 'respuesta')
+            this.form2.tiendaFiles = res.tiendaFiles
           })
         }
+      }
+    },
+
+    async deleteimg () {
+      console.log(this.nameImgBorrar, 'name eliminar')
+      this.$api.get('eliminar_imagen_tienda/' + this.nameImgBorrar).then(res => {
+        this.form2.tiendaFiles = res.tiendaFiles
+      })
+    },
+    async perfil_img () {
+      console.log('add perfil img', this.perfilFile)
+      if (this.perfilFile) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.perfilFile
+        formData.append('files', files[0])
+        await this.$api.post('perfil_imagen', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log(res, 'respuesta')
+          this.form2 = res
+        })
+        location.reload()
       }
     }
   }
@@ -509,5 +523,17 @@ export default {
   background-color: #fff599;
   width: 250px;
   border-radius: 12px
+}
+.button-camera {
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 540;
+  font-size: 0px;
+  color: white;
+  background-color: $primary;
+  border-radius: 30px;
+  border: 1px solid #7e7e7e;
+  height:40px;
+  width:40px
 }
 </style>
