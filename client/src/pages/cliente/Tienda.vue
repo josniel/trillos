@@ -113,11 +113,7 @@ export default {
   methods: {
     favorito () {
       this.fav = !this.fav
-      this.$api.post('new_favorito/' + this.id, { favorito: this.fav }).then(res => {
-        if (res) {
-          console.log('fav', res)
-        }
-      })
+      this.$api.post('new_favorito/' + this.id, { favorito: this.fav })
     },
     verImg (img) {
       this.baseu = env.apiUrl + '/tienda_img/'

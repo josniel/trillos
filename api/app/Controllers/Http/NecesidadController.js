@@ -25,7 +25,6 @@ class NecesidadController {
    */
   async index ({ request, response, auth }) {
     let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
-    console.log(datos)
     let filter = datos.filter(v => v.creador.enable && !v.cotizado)
     response.send(filter)
   }

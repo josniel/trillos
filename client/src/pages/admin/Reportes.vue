@@ -63,7 +63,6 @@ export default {
       })
     },
     filter (val) {
-      console.log(val)
       if (val === 'semanal') {
         this.btn = ['primary', 'white', 'white', 'white']
         this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).week() === moment().week())
