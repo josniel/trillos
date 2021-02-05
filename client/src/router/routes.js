@@ -32,7 +32,8 @@ const routes = [
       { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') },
       { path: '/Datos', component: () => import('pages/Datauser.vue') },
       { path: '/Datosedit', component: () => import('pages/Userdata.vue') },
-      { path: '/reportes', component: () => import('pages/Reportes.vue') }
+      { path: '/reportes', component: () => import('pages/Reportes.vue') },
+      { path: '/ver_reporte/:id/:id_cotizacion', component: () => import('pages/VerReporte.vue') }
     ]
   },
   { path: '/login', component: () => import('pages/Login.vue') },

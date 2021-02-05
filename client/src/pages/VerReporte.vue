@@ -10,7 +10,7 @@
         </div>
       </q-img>
 
-      <q-card class="q-pa-md bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
+      <q-card class="q-px-md q-py-sm bg-secondary shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
           <q-item>
             <q-item-section>
               <q-item-label class="text-h6 text-weight-bolder">{{form.name}}</q-item-label>
@@ -33,33 +33,56 @@
         </q-scroll-area>
       </q-card>
 
-      <q-card class="bordes q-pa-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;min-height:240px">
+      <q-card class="bordes q-pa-md shadow-up-4" style="border-radius:25px">
         <div class="text-subtitle2 q-ml-md q-pt-xs">Descripción</div>
         <div class="q-pa-md">{{form.descripcion}}</div>
-        <div v-if="rol === 3" class="row justify-center q-pa-sm q-mt-md">
-          <q-btn color="primary" label="Iniciar cotización" @click="iraChat(form._id)"/>
+      </q-card>
+
+      <q-card class="q-px-sm q-pt-xs q-pb-md shadow-up-4" style="border-top-left-radius:25px;border-top-right-radius:25px;min-height:240px">
+        <div class="text-primary text-center text-bold q-my-md text-h5">* Cotización *</div>
+        <q-separator inset />
+        <div class="column q-ma-md">
+          <div class="row items-center">
+            <div class="text-subtitle2 text-grey-9 q-ml-sm">* Servicios *</div>
+          </div>
+          <div class="row justify-center">
+            <div class="col-6 title-table q-pa-xs">Servicio</div>
+            <div class="col-6 title-table q-pa-xs">Precio</div>
+          </div>
+          <div class="row justify-center q-mt-sm" v-for="(item, index) in cotization.servicios" :key="index">
+            <div class="col-6 title-table-product q-pa-xs">{{item.servicio}}</div>
+            <div class="col-6 title-table-product q-pa-xs">{{item.precio}}</div>
+          </div>
+        </div>
+        <q-separator inset />
+        <div class="row justify-around q-my-md">
+          <div class="text-h6 text-primary">Total</div>
+          <div class="text-h6 text-primary">$ {{cotization.total}}</div>
         </div>
       </q-card>
   </div>
 </template>
 
 <script>
-import env from '../../env'
+import env from '../env'
 export default {
   data () {
     return {
       id: this.$route.params.id,
+      idCot: this.$route.params.id_cotizacion,
       rol: 0,
       perfile: '',
       ruta: 'necesidad',
       form: {},
       infoClient: {},
+      cotization: {},
       categoria: {},
       baseu: ''
     }
   },
   mounted () {
     this.cargarSolicitud()
+    this.getCotization()
     this.baseu = env.apiUrl + '/necesidad_img/'
   },
   methods: {
@@ -82,24 +105,17 @@ export default {
         }
       })
     },
-    iraChat (id) {
-      this.$api.get('user_info').then(res => {
-        if (res) {
-          var info = {}
-          info.proveedor_id = res._id
-          info.cliente_id = this.infoClient._id
-          this.$api.post('crear_chat/' + id, info).then(v => {
-            if (v) {
-              this.$router.push('/chat/' + v._id)
-            }
-          })
-        }
-      })
-    },
     cargarCategoria () {
       this.$api.get('categoria').then(v => {
         if (v) {
           this.categoria = v.find(x => x._id === this.form.categoria_id)
+        }
+      })
+    },
+    getCotization () {
+      this.$api.get('cotization_by_id/' + this.idCot).then(v => {
+        if (v) {
+          this.cotization = v.cotizacion
         }
       })
     }
@@ -110,5 +126,17 @@ export default {
 <style scoped lang="scss">
 .bordes {
   border-top: 6px solid $primary
+}
+.title-table {
+  border-radius: 12px;
+  background-color: #b3e3f4;
+  color: #529cb3;
+  border: 1px solid grey;
+}
+.title-table-product {
+  border-radius: 12px;
+  background-color: #888585;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
 }
 </style>

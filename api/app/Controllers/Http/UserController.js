@@ -248,9 +248,6 @@ class UserController {
 
     async updatedata ({ params, request, response }) {
       let body = request.only(User.fillable)
-      console.log(body, 'datossssssssss')
-      console.log(body.cambioSoloClave, 'cambiosoloclave')
-      console.log(body.cambioClave, 'cambioclave')
       let verificacion = body.cambioSoloClave
       let cambioClave = body.cambioClave
       let contraseña = body.password

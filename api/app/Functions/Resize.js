@@ -11,7 +11,6 @@ exports.resizeFile = async (fileBase64) => {
     mkdirp.sync(`${Helpers.appRoot('storage')}/uploads/tmp/`)
     var profilePic = Helpers.appRoot('storage/uploads/tmp/') + 'tmpFile'+ i +'.' + matches[1]
     var profilePic2 = Helpers.appRoot('storage/uploads/tmp/') + 'tmpFileResize'+ i +'.' + matches[1]
-    console.log(profilePic2)
     await fs.writeFile(profilePic, decode, {encoding: 'base64'}, (err) => {
       if (err) throw err
       sharp(profilePic).rotate().resize({ width: 300, height: 160 }).toFile(profilePic2, function(err) {

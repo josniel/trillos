@@ -83,7 +83,6 @@ class OpinionController {
       let promedio = (calificacion / contador)
       user[i].rating_tienda = promedio
     }
-    console.log(user)
 
     let populares = user.filter(v => v.rating_tienda >= 4)
     if (!populares.length) {

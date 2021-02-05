@@ -74,7 +74,7 @@
 
       <botones-header class="q-mx-md q-my-xs"/>
 
-      <q-card class="q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
+      <q-card class="bordes q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">Mis Productos</div>
         <listado-de-sugerencia :data="productos" :direccion="false" ruta="tienda" class="q-mt-xs"/>
       </q-card>
@@ -113,11 +113,7 @@ export default {
   methods: {
     favorito () {
       this.fav = !this.fav
-      this.$api.post('new_favorito/' + this.id, { favorito: this.fav }).then(res => {
-        if (res) {
-          console.log('fav', res)
-        }
-      })
+      this.$api.post('new_favorito/' + this.id, { favorito: this.fav })
     },
     verImg (img) {
       this.baseu = env.apiUrl + '/tienda_img/'
@@ -166,5 +162,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+.bordes {
+  border-top: 6px solid $primary
+}
 </style>

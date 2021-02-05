@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row justify-around q-ma-sm">
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semanal" @click="filter('semanal')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Mensual" @click="filter('mensual')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semestral" @click="filter('semestral')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Anual" @click="filter('anual')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[0]" text-color="black" label="Semanal" @click="filter('semanal')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[1]" text-color="black" label="Mensual" @click="filter('mensual')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[2]" text-color="black" label="Semestral" @click="filter('semestral')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[3]" text-color="black" label="Anual" @click="filter('anual')" />
     </div>
     <q-separator inset />
     <div class="row justify-center">
@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       baseu: '',
+      btn: ['white', 'white', 'white', 'white'],
       today: null,
       allData: [],
       data: []
@@ -63,10 +64,19 @@ export default {
     },
     filter (val) {
       if (val === 'semanal') {
+        this.btn = ['primary', 'white', 'white', 'white']
         this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).week() === moment().week())
+      } else if (val === 'mensual') {
+        this.btn = ['white', 'primary', 'white', 'white']
+        this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).month() === moment().month())
+      } else if (val === 'anual') {
+        this.btn = ['white', 'white', 'white', 'primary']
+        this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year())
+      } else if (val === 'semestral') {
+        this.btn = ['white', 'white', 'primary', 'white']
+        var monthToday = moment().subtract(6, 'month')
+        this.data = this.allData.filter(v => moment(v.created_at) >= monthToday)
       }
-      console.log('filtrar', val)
-      console.log('data', moment().week())
     }
   }
 }
