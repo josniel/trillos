@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row justify-around q-ma-sm">
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semanal" @click="filter('semanal')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Mensual" @click="filter('mensual')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Semestral" @click="filter('semestral')" />
-        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" color="primary" text-color="black" label="Anual" @click="filter('anual')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[0]" text-color="black" label="Semanal" @click="filter('semanal')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[1]" text-color="black" label="Mensual" @click="filter('mensual')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[2]" text-color="black" label="Semestral" @click="filter('semestral')" />
+        <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[3]" text-color="black" label="Anual" @click="filter('anual')" />
     </div>
     <q-separator inset />
     <div class="row justify-center">
@@ -12,11 +12,11 @@
     </div>
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
-        <q-card class="bordes row q-pl-md q-py-md q-pr-xs" v-for="(cotizacion, index) in data" :key="index">
+        <q-card @click="$router.push('/ver_reporte/'+cotizacion.necesidad_id+'/'+cotizacion._id)" class="bordes row q-pl-md q-py-md q-pr-xs" v-for="(cotizacion, index) in data" :key="index">
             <div class="col-4">
                 <q-img :src=" baseu + cotizacion.datos_necesidad.images[0]" style="height:80px; width:100px" />
             </div>
-            <div class="col-7">
+            <div class="col-8">
               <div class="text-black text-bold text-subtitle1 q-pl-sm">{{cotizacion.datos_necesidad.name}}</div>
               <q-scroll-area
                 horizontal
@@ -25,6 +25,7 @@
                 >
                 <div class="text-caption q-pl-sm">{{cotizacion.datos_cliente ? cotizacion.datos_cliente.full_name + ' ' + cotizacion.datos_cliente.last_name : cotizacion.datos_proveedor.full_name}}</div>
               </q-scroll-area>
+              <div class="text-caption q-pl-sm">Finalizó: <strong>{{cotizacion.fecha_termino}}</strong></div>
             </div>
         </q-card>
     </div>
@@ -37,11 +38,12 @@
 
 <script>
 import env from '../env'
-// import moment from 'moment'
+import moment from 'moment'
 export default {
   data () {
     return {
       baseu: '',
+      btn: ['white', 'white', 'white', 'white'],
       today: null,
       ratingProduc: 3,
       allData: [],
@@ -58,12 +60,24 @@ export default {
         if (res) {
           this.allData = res.filter(v => v.status === 'Terminado')
           this.data = this.allData
-          console.log('reportes', this.data)
         }
       })
     },
     filter (val) {
-      console.log('filtrar', val)
+      if (val === 'semanal') {
+        this.btn = ['primary', 'white', 'white', 'white']
+        this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).week() === moment().week())
+      } else if (val === 'mensual') {
+        this.btn = ['white', 'primary', 'white', 'white']
+        this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).month() === moment().month())
+      } else if (val === 'anual') {
+        this.btn = ['white', 'white', 'white', 'primary']
+        this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year())
+      } else if (val === 'semestral') {
+        this.btn = ['white', 'white', 'primary', 'white']
+        var monthToday = moment().subtract(6, 'month')
+        this.data = this.allData.filter(v => moment(v.created_at) >= monthToday)
+      }
     }
   }
 }

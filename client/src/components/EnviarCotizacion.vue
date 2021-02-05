@@ -17,7 +17,6 @@
             <q-icon name="monetization_on" />
           </template>
         </q-input>
-        <q-input autogrow class="col-12" v-model="add.descripcion" label="Descripción del servicio" dense outlined error-message="Requerido" :error="$v.add.descripcion.$error" @blur="$v.add.descripcion.$touch()" ></q-input>
       </div>
       <div class="row justify-end q-mt-xs">
         <q-btn label="agregar" dense style="padding:1px; border-radius:12px;width:150px" color="primary" push glossy @click="addCarrito(add)"/>
@@ -69,8 +68,7 @@ export default {
     return {
       add: {
         servicio: { required },
-        precio: { required },
-        descripcion: { required }
+        precio: { required }
       }
     }
   },
