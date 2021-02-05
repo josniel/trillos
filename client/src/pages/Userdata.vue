@@ -88,7 +88,7 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                       <q-input v-model="password" label="Contraseña" outlined dense
                         error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
-                        :error="$v.password.$error" @blur="$v.password.$touch()" />
+                        :error="$v.password.$error" @blur="$v.password.$touch()" @input="cambioClave = true"/>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                       <q-input v-model="repeatPassword" label="Repita su Contraseña" outlined dense
@@ -102,17 +102,19 @@
                       <q-input v-model="form2.full_name" label="Nombre de la Empresa" outlined dense
                         error-message="Ingrese el nombre de la Empresa"
                         :error="$v.form2.full_name.$error" @blur="$v.form.full_name.$touch()"
+                        @input="cambioSoloClave = false"
                       />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-select v-model="form2.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese su País" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
+                      <q-select v-model="form2.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese su País" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="cambioSoloClave = false" />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <q-input :disable="form2.country ? false : true" v-model="form2.run_dni" :label="form2.country === 'Chile' ? 'Ingrese RUN' : form2.country === 'Colombia' ? 'Ingrese DNI' : 'Debes seleccionar un país'" outlined dense
                           error-message="Ingrese RUN O DNI"
                           :error="$v.form2.run_dni.$error" @blur="$v.form2.run_dni.$touch()"
+                          @input="cambioSoloClave = false"
                         />
                     </div>
 
@@ -120,13 +122,15 @@
                       <q-input v-model="form2.direccion" label="Dirección" outlined dense
                         error-message="Ingrese su Dirección"
                         :error="$v.form2.direccion.$error" @blur="$v.form2.direccion.$touch()"
+                        @input="cambioSoloClave = false"
                       />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                       <q-input v-model="form2.phone" type="tel" label="Telefono" outlined dense
                         error-message="Ingrese el número de su Teléfono"
-                        :error="$v.form2.phone.$error" @blur="$v.form2.phone.$touch()" />
+                        :error="$v.form2.phone.$error" @blur="$v.form2.phone.$touch()" @input="cambioSoloClave = false" />
+
                     </div>
 
                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -134,6 +138,7 @@
                           v-model="form2.delivery"
                           label="Activar delivery"
                           icon="delivery_dining"
+                          @input="cambioSoloClave = false"
                         />
                      </div>
 
@@ -189,11 +194,11 @@
                     <div class="q-gutter-sm row justify-between">
                       <q-input label="Hora de inicio" class="col-5" v-model="form2.hora_inicio" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de inicio laboral"
-                        :error="$v.form2.hora_inicio.$error" @blur="$v.form2.hora_inicio.$touch()" >
+                        :error="$v.form2.hora_inicio.$error" @blur="$v.form2.hora_inicio.$touch()" @input="cambioSoloClave = false" >
                         <template v-slot:append>
                           <q-icon name="access_time" class="cursor-pointer">
                             <q-popup-proxy transition-show="scale" transition-hide="scale">
-                              <q-time v-model="form2.hora_inicio">
+                              <q-time v-model="form2.hora_inicio" @input="cambioSoloClave = false">
                                 <div class="row items-center justify-end">
                                   <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
@@ -205,11 +210,11 @@
 
                       <q-input label="Hora de cierre" class="col-5" v-model="form2.hora_fin" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de cierre laboral"
-                        :error="$v.form2.hora_fin.$error" @blur="$v.form2.hora_fin.$touch()">
+                        :error="$v.form2.hora_fin.$error" @blur="$v.form2.hora_fin.$touch()" @input="cambioSoloClave = false">
                         <template v-slot:append>
                           <q-icon name="access_time" class="cursor-pointer">
                             <q-popup-proxy transition-show="scale" transition-hide="scale">
-                              <q-time v-model="form2.hora_fin">
+                              <q-time v-model="form2.hora_fin" @input="cambioSoloClave = false">
                                 <div class="row items-center justify-end">
                                   <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
@@ -230,10 +235,13 @@
     <q-dialog v-model="notifi" >
       <q-card style="width: 300px">
         <q-card-section>
-          <div v-if="estatus === 3" class="text-h6">¿Estas seguro de Actualizar los datos?
-            <div class="q-mt-md q-ml-sm text-caption text-grey-9">"Atencion" si a modificado campos distintos al de contraseña, implicaria que el estatus de su cuenta caiga en revision hasta que el admin apruebe los cambios</div>
+          <div class="row justify-center text-center items-center">
+            <div v-if="estatus === 3" class="text-h6">¡Atención!
+              <div v-if="this.cambioSoloClave === false" class="text-caption row justify-center items-center">"Si a modificado campos distintos al de la "contraseña", implicará que el estatus de su cuenta caiga en un estado de revision hasta que el admin encargado apruebe dichos cambios"</div>
+              <div v-if="this.cambioSoloClave === true" class="text-caption row justify-center items-center">¿Estas seguro de Actualizar los datos?</div>
+            </div>
+              <div v-if="estatus === 2" class="text-h6">¿Estas seguro de Actualizar los datos?</div>
           </div>
-            <div v-if="estatus === 2" class="text-h6">¿Estas seguro de Actualizar los datos?</div>
         </q-card-section>
 
         <q-card-section class="q-pa-md row justify-center items-center">
@@ -256,7 +264,6 @@ export default {
       datosproveedor: false,
       form: {},
       form2: {},
-      espejo: {},
       repeatPassword: '',
       password: '',
       notifi: false,
@@ -272,6 +279,8 @@ export default {
       estatus: 8,
       var: false,
       id: '',
+      cambioSoloClave: true,
+      cambioClave: false,
       options_dias: [
         {
           label: 'Lunes',
@@ -308,6 +317,8 @@ export default {
     this.getUser()
     this.baseu = env.apiUrl + '/perfil_img/'
     this.baseu2 = env.apiUrl + '/tienda_img/'
+    console.log(this.cambioSoloClave, 'cambio solo clave')
+    console.log(this.cambioClave, 'cambio clave')
   },
   validations () {
     return {
@@ -388,6 +399,10 @@ export default {
     },
 
     modificar_datosproveedor () {
+      this.form2.cambioSoloClave = this.cambioSoloClave
+      this.form2.cambioClave = this.cambioClave
+      console.log(this.form2.cambioSoloClave, 'cambio solo clave')
+      console.log(this.form2.cambioClave, 'cambio clave2')
       this.$v.form2.$touch()
       if (this.password) {
         if (!this.$v.form2.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {

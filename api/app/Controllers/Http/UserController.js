@@ -249,14 +249,27 @@ class UserController {
     async updatedata ({ params, request, response }) {
       let body = request.only(User.fillable)
       console.log(body, 'datossssssssss')
+      console.log(body.cambioSoloClave, 'cambiosoloclave')
+      console.log(body.cambioClave, 'cambioclave')
+      let verificacion = body.cambioSoloClave
+      let cambioClave = body.cambioClave
       let contraseña = body.password
       delete body.password
-      // body.status = 0
-      const datosnew = await User.query().where({_id: params.id}).update(body)
-      const editarcontraseña= await User.find(params.id)
-      editarcontraseña.password = contraseña
-      await editarcontraseña.save()
-      response.send(datosnew)
+      delete body.cambioSoloClave
+      if (verificacion) {
+        const editarcontraseña = await User.find(params.id)
+        editarcontraseña.password = contraseña
+        await editarcontraseña.save()
+      } else {
+        body.status = 0
+        await User.query().where({_id: params.id}).update(body)
+        if (cambioClave) {
+          const editarcontraseña = await User.find(params.id)
+          editarcontraseña.password = contraseña
+          await editarcontraseña.save()
+        }
+      }
+      response.send(body)
     }
 
 }
