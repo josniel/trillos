@@ -98,6 +98,10 @@ addPrefixToGroup(
     Route.post("new_favorito/:id_proveedor", "FavoritoController.create")
     Route.post("favorito/:id_proveedor", "FavoritoController.index")
     Route.get("mis_favoritos", "FavoritoController.show")
+    Route.post("subir_archivo_proveedor" ,'UploadController.subirimgtienda')
+    Route.get("eliminar_imagen_tienda/:id" ,'UploadController.eliminarigmtienda')
+    Route.post('perfil_imagen', 'UploadController.newimagen')
+
 
 
 

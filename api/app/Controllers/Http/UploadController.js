@@ -58,6 +58,85 @@ class UploadController {
     response.download(Helpers.appRoot('storage/uploads') + `/${fileName}`)
   }
 
+   async subirimgtienda ({ request, response, auth }) {
+    let codeFile = randomize('Aa0', 30)
+    let user = await auth.getUser()
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/tiendaFiles')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/tiendaFiles'), {
+          name: codeFile,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let proveedor = await User.find(user._id)
+        if (proveedor.tiendaFiles) {
+          proveedor.tiendaFiles.push(codeFile)
+        } else {
+          proveedor.tiendaFiles = []
+          proveedor.tiendaFiles.push(codeFile)
+        }
+        proveedor.status = 0
+        await proveedor.save()
+        console.log(proveedor, 'proveedor buscar')
+        response.send(proveedor)
+      }
+    }
+  }
+
+  async newimagen ({ request, response, auth }) {
+    let user = await auth.getUser()
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: 'perfil' + user._id,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let proveedor = await User.find(user._id)
+        proveedor.status = 0
+        proveedor = await proveedor.save()
+        console.log(proveedor, 'proveedor buscar')
+        user = await auth.getUser()
+        response.send(user)
+      }
+    }
+  }
+
+  async eliminarigmtienda({ params, response, auth }) {
+    let user = await auth.getUser()
+    let proveedor = await User.find(user._id)
+    fs.unlink(`storage/uploads/tiendaFiles/${params.id}`, (err) => {
+      if (err) throw err;
+      console.log(`${params.id} eliminado por el proveedor`);
+    })
+    proveedor.status = 0
+    let buscarInd = proveedor.tiendaFiles.findIndex(v => v === params.id)
+    proveedor.tiendaFiles.splice(buscarInd, 1)
+    console.log (buscarInd, 'POSICION BUSCAIND')
+    await proveedor.save()
+    response.send(proveedor)
+  }
+
   /**
    * Show a list of all uploads.
    * GET uploads
