@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar class="bg-white row justify-between">
-        <q-btn round dense flat icon="keyboard_backspace" color="primary" @click="$router.go(-1)"/>
+        <q-btn round dense flat icon="keyboard_backspace" color="primary" @click="regresar()"/>
         <q-img src="logo-210x47.png" style="width:140px" />
         <q-btn flat round dense :icon="rol !== 1 ? 'person' : ''" color="primary" @click="rol !== 1 ? $router.push('/Datos') : ''"  />
       </q-toolbar>
@@ -18,7 +18,7 @@
     </q-footer>
     <q-page-container>
       <router-view />
-      <q-page-sticky v-if="rol != 1" position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky v-if="rol != 1 && mostrarBoton" position="bottom-right" :offset="[18, 18]">
         <q-btn fab icon="forum" color="primary" to="/mis_chats" />
       </q-page-sticky>
     </q-page-container>
@@ -26,7 +26,13 @@
 </template>
 
 <script>
+
 export default {
+  computed: {
+    mostrarBoton () {
+      return this.$route.meta.botonchat
+    }
+  },
   name: 'MainLayout',
   data () {
     return {
@@ -44,6 +50,10 @@ export default {
           this.rol = v.roles[0]
         }
       })
+    },
+    regresar () {
+      this.$router.go(-1)
+      location.reload()
     }
   }
 }

@@ -79,15 +79,18 @@
 
                           <div class="q-mt-sm column">
                             <div  class="q-mt-md q-pl-md text-grey-10">Fotos que posee la tienda:</div>
-                              <div class="row">
-                                <div class="q-mt-sm q-px-sm" v-ripple v-for="(item, index) in form.tiendaFiles" :key="index" >
-                                  <q-avatar square  size="80px">
-                                    <q-img
-                                      :src="baseu2 + item"
-                                      />
-                                  </q-avatar>
-                                </div>
+                              <q-card class="q-pa-md bg-amber-1 shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
+                              <q-scroll-area
+                              horizontal
+                              style="height: 110px;"
+                            >
+                              <div class="row no-wrap" style="width: 100%">
+                                <q-card v-for="(item, index) in form.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
+                                  <q-img :src="form.tiendaFiles ? baseu2 + item : 'noimgpro.png'" spinner-color="white" style="height: 100px; width: 100px" />
+                                </q-card>
                               </div>
+                            </q-scroll-area>
+                          </q-card>
                           </div>
 
                         <div v-if="delivery">

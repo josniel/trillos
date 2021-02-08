@@ -85,17 +85,20 @@
                     <q-card style="width: 100%" class="shadow-11 bg-amber-1 q-mt-xl">
                       <q-separator />
                       <div class="q-mt-sm column">
-                        <div class="row">
-                          <div class="q-mt-sm q-px-md" v-ripple v-for="(item, index) in form2.tiendaFiles" :key="index" >
-                            <q-avatar square  size="100px">
-                              <q-img
-                                :src="baseu2 + item"
-                                />
-                                <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round color="negative" @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
-                            </q-avatar>
-                          </div>
+                        <q-card class="q-pa-md bg-amber-1 shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
+                              <q-scroll-area
+                              horizontal
+                              style="height: 110px;"
+                            >
+                              <div class="row no-wrap" style="width: 100%">
+                                <q-card v-for="(item, index) in form2.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
+                                  <q-img :src="form2.tiendaFiles ? baseu2 + item : 'noimgpro.png'" spinner-color="white" style="height: 100px; width: 100px" />
+                                   <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round color="negative" @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
+                                </q-card>
+                              </div>
+                            </q-scroll-area>
+                          </q-card>
 
-                        </div>
                         <div class="row justify-center items-center">
                           <div class="column">
                             <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-amber-1" style="height:100px;border-radius:12px;width:140px">

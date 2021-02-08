@@ -3,6 +3,7 @@ const routes = [
   {
     path: '/index',
     component: () => import('layouts/MainLayout.vue'),
+    meta: { botonchat: true },
     children: [
       // Administrador
       { path: '/inicio_administrador', component: () => import('pages/admin/Inicio.vue') },
@@ -12,28 +13,28 @@ const routes = [
       { path: '/descripcionusuario/:id', component: () => import('pages/admin/DescripcionUsuario.vue') },
       { path: '/reportes_usuarios', component: () => import('pages/admin/Reportes.vue') },
       // Proveedor
-      { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue') },
-      { path: '/productos', component: () => import('pages/proveedor/Productos.vue') },
-      { path: '/registroproductos', component: () => import('pages/proveedor/RegistroProductos.vue') },
-      { path: '/editar_producto/:id', component: () => import('pages/proveedor/RegistroProductos.vue') },
-      { path: '/descripcionsolicitud/:id', component: () => import('pages/proveedor/DescripcionNecesidad.vue') },
+      { path: '/inicio_proveedor', component: () => import('pages/proveedor/Inicio.vue'), meta: { botonchat: true } },
+      { path: '/productos', component: () => import('pages/proveedor/Productos.vue'), meta: { botonchat: true } },
+      { path: '/registroproductos', component: () => import('pages/proveedor/RegistroProductos.vue'), meta: { botonchat: true } },
+      { path: '/editar_producto/:id', component: () => import('pages/proveedor/RegistroProductos.vue'), meta: { botonchat: true } },
+      { path: '/descripcionsolicitud/:id', component: () => import('pages/proveedor/DescripcionNecesidad.vue'), meta: { botonchat: true } },
       // Cliente
-      { path: '/inicio_cliente', component: () => import('pages/cliente/Inicio.vue') },
-      { path: '/solicitudes', component: () => import('pages/cliente/Necesidades.vue') },
-      { path: '/registronecesidades', component: () => import('pages/cliente/RegistroNecesidades.vue') },
-      { path: '/editar_solicitud/:id', component: () => import('pages/cliente/RegistroNecesidades.vue') },
-      { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue') },
-      { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue') },
+      { path: '/inicio_cliente', component: () => import('pages/cliente/Inicio.vue'), meta: { botonchat: true } },
+      { path: '/solicitudes', component: () => import('pages/cliente/Necesidades.vue'), meta: { botonchat: true } },
+      { path: '/registronecesidades', component: () => import('pages/cliente/RegistroNecesidades.vue'), meta: { botonchat: true } },
+      { path: '/editar_solicitud/:id', component: () => import('pages/cliente/RegistroNecesidades.vue'), meta: { botonchat: true } },
+      { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue'), meta: { botonchat: true } },
+      { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue'), meta: { botonchat: true } },
       // Generales
-      { path: '/chat/:id', component: () => import('pages/Chat.vue') },
-      { path: '/mis_chats', component: () => import('pages/AllChats.vue') },
-      { path: '/mis_cotizaciones', component: () => import('pages/MisCotizaciones.vue') },
-      { path: '/cotizacion/:id/:necesidad_id', component: () => import('pages/VerCotizacion.vue') },
-      { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue') },
-      { path: '/Datos', component: () => import('pages/Datauser.vue') },
-      { path: '/Datosedit', component: () => import('pages/Userdata.vue') },
-      { path: '/reportes', component: () => import('pages/Reportes.vue') },
-      { path: '/ver_reporte/:id/:id_cotizacion', component: () => import('pages/VerReporte.vue') }
+      { path: '/chat/:id', component: () => import('pages/Chat.vue'), meta: { botonchat: false } },
+      { path: '/mis_chats', component: () => import('pages/AllChats.vue'), meta: { botonchat: false } },
+      { path: '/mis_cotizaciones', component: () => import('pages/MisCotizaciones.vue'), meta: { botonchat: true } },
+      { path: '/cotizacion/:id/:necesidad_id', component: () => import('pages/VerCotizacion.vue'), meta: { botonchat: true } },
+      { path: '/filtrar_categorias/:id', component: () => import('pages/FiltradoCategorias.vue'), meta: { botonchat: true } },
+      { path: '/Datos', component: () => import('pages/Datauser.vue'), meta: { botonchat: true } },
+      { path: '/Datosedit', component: () => import('pages/Userdata.vue'), meta: { botonchat: true } },
+      { path: '/reportes', component: () => import('pages/Reportes.vue'), meta: { botonchat: true } },
+      { path: '/ver_reporte/:id/:id_cotizacion', component: () => import('pages/VerReporte.vue'), meta: { botonchat: true } }
     ]
   },
   { path: '/login', component: () => import('pages/Login.vue') },
