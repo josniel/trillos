@@ -238,7 +238,7 @@
         <q-card-section>
           <div class="row justify-center text-center items-center">
             <div v-if="estatus === 3" class="text-h6">¡Atención!
-              <div v-if="this.cambioSoloClave === false" class="text-caption row justify-center items-center">"Si a modificado campos distintos al de la "contraseña", implicará que el estatus de su cuenta caiga en un estado de revision hasta que el admin encargado apruebe dichos cambios"</div>
+              <div v-if="this.cambioSoloClave === false" class="text-caption row justify-center items-center">Ha modificado campos distintos al de "contraseña", su cuenta entrará en estado de revisión hasta ser aprobada por el administrador.</div>
               <div v-if="this.cambioSoloClave === true" class="text-caption row justify-center items-center">¿Estas seguro de Actualizar los datos?</div>
             </div>
               <div v-if="estatus === 2" class="text-h6">¿Estas seguro de Actualizar los datos?</div>
@@ -246,8 +246,8 @@
         </q-card-section>
 
         <q-card-section class="q-pa-md row justify-center items-center">
-          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datosproveedor()" push v-close-popup />
-          <q-btn v-if="estatus === 2" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos()" push v-close-popup />
+          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datosproveedor(), $router.go(-1)" push />
+          <q-btn v-if="estatus === 2" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos(), $router.go(-1)" push />
           <q-btn class="q-ma-sm" label="Cerrar" color="grey" v-close-popup />
         </q-card-section>
       </q-card>

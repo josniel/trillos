@@ -31,6 +31,7 @@ export default {
     return {
       baseu: '',
       ratingProduc: 3,
+      ver: true,
       data: []
     }
   },
@@ -43,11 +44,16 @@ export default {
       this.$api.get('user_info').then(v => {
         if (v) {
           this.rol = v.roles[0]
-          this.$api.get('show_all_chats').then(res => {
-            if (res) {
-              this.data = res
-            }
-          })
+          if (this.rol === 3 && (v.status === 0 || v.status === 2)) {
+            this.ver = false
+          }
+          if (this.ver) {
+            this.$api.get('show_all_chats').then(res => {
+              if (res) {
+                this.data = res
+              }
+            })
+          }
         }
       })
     }
