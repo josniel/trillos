@@ -167,7 +167,9 @@ class ChatController {
    */
   async updateCotization ({ params, request, response }) {
     var dat = request.all()
-    let cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({cotizacion: dat, status: 'Cotizado'})
+    var stu = dat.status
+    delete dat.status
+    let cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({cotizacion: dat, status: stu})
     response.send(cotization)
   }
 
@@ -200,6 +202,9 @@ class ChatController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    let eliminar = await ChatMessage.find(params.id)
+    eliminar.delete()
+    response.send(eliminar)
   }
 }
 

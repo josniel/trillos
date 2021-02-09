@@ -8,7 +8,7 @@
         <q-card class="bordes row" @click="$router.push('/chat/' + chat._id)" v-for="(chat, index) in data" :key="index">
             <div class="col-3">
               <q-icon size="60px" class="text-black q-px-md q-pt-sm" name="account_circle" />
-              <div class="text-center text-grey text-bold text-caption q-pb-xs">{{chat.status}}</div>
+              <div class="text-center text-grey text-bold text-caption q-pb-xs">{{chat.status !== 'Presupuesto' ? chat.status : 'Pendiente'}}</div>
             </div>
             <div class="col-9">
               <div class="text-black text-bold text-subtitle1 q-pt-sm">{{rol === 2 ? chat.datos_proveedor.full_name : chat.datos_cliente.full_name + ' ' + chat.datos_cliente.last_name}}</div>

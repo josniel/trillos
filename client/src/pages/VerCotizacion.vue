@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-primary text-center text-bold q-my-md text-h5">* Cotización *</div>
+    <div class="text-primary text-center text-bold q-my-md text-h5">{{infoCot.status !== 'Presupuesto' ? '* Cotización *' : '* Presupuesto *'}}</div>
     <q-separator inset />
     <div class="column q-ma-md">
       <div class="row items-center">
@@ -22,63 +22,53 @@
     </div>
 
     <div v-if="comentarios">
-      <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
-        <div class="q-ml-md text-h7 text-grey-9 text-bold">Opinion del cliente</div>
-          <div class="q-mb-md q-mt-md" v-if="data.length > 0">
-            <q-list class="q-mt-sm q-mb-lg">
-              <div v-for="(item, index) in data" :key="index">
+      <q-card class="bg-white bordes q-pa-md q-ma-sm shadow-11" style="border-radius:25px">
+        <div class="text-h7 text-grey-9 text-bold text-center">* Opinión del cliente *</div>
+          <div class="q-mb-md q-mt-md" v-if="data">
+              <div class="q-mt-sm q-mb-lg">
                 <q-item class="q-mt-md">
                   <q-item-section>
-                    <q-item-label>{{item.calificador_info.full_name}}</q-item-label>
-                    <q-item-label caption lines="5">{{item.comentario}}</q-item-label>
+                    <q-item-label>{{data.calificador_info ? data.calificador_info.full_name : ''}}</q-item-label>
+                    <q-item-label caption lines="5">{{data.comentario}}</q-item-label>
                   </q-item-section>
                   <q-item-section side top>
-                    <div class="column">
-                      <q-item-label caption>{{item.created_at}}</q-item-label>
-                      <div class="row justify-end q-mt-md items-center">
-                        <div class="text-subtitle1 text-bold"> {{item.rating_tienda}} </div>
-                        <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
-                      </div>
+                    <div class="row justify-end q-mt-md items-center">
+                      <div class="text-subtitle1 text-bold"> {{data.rating_tienda}} </div>
+                      <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
                     </div>
                   </q-item-section>
                 </q-item>
+                <div class="text-caption text-grey-7 text-right">{{data.created_at}}</div>
               </div>
-            </q-list>
           </div>
           <div v-else>
-            <div class="absolute-center-bottom text-subtitle1">
-              Actualmente sin opinion del cliente...
+            <div class="text-center q-pt-md text-caption">
+              Actualmente sin Calificar...
             </div>
           </div>
         </q-card>
     </div>
 
     <div v-if="comentarios2">
-      <q-card class="bg-white full-width q-pa-xl q-ma-md shadow-3">
-        <div class="q-ml-md text-h7 text-grey-9 text-bold">Calificacion del proveedor</div>
-          <div class="q-mb-md q-mt-md" v-if="data.length > 0">
-            <q-list class="q-mt-sm q-mb-lg">
-              <div v-for="(item, index) in data" :key="index">
-                <q-item class="q-mt-md">
-                  <q-item-section>
-                    <q-item-label>{{item.calificador_info.full_name}}</q-item-label>
-                  </q-item-section>
-                  <q-item-section side top>
-                    <div class="column">
-                      <q-item-label caption>{{item.created_at}}</q-item-label>
-                      <div class="row justify-end q-mt-md items-center">
-                        <div class="text-subtitle1 text-bold"> {{item.rating_cliente}} </div>
-                        <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
-                      </div>
-                    </div>
-                  </q-item-section>
-                </q-item>
-              </div>
-            </q-list>
+      <q-card class="bg-white bordes q-pa-md q-ma-sm shadow-11" style="border-radius:25px">
+        <div class="text-h7 text-grey-9 text-bold text-center">* Calificación del proveedor *</div>
+          <div class="q-mb-md q-mt-md" v-if="data">
+            <q-item class="q-my-md">
+              <q-item-section>
+                <q-item-label class="text-bold">{{data.calificador_info ? data.calificador_info.full_name : ''}}</q-item-label>
+              </q-item-section>
+              <q-item-section side top>
+                <div class="row justify-end q-mt-sm items-center">
+                  <div class="text-subtitle1 text-bold"> {{data.rating_cliente}} </div>
+                  <q-icon name="star" color="orange" class="q-ml-sm" size="30px" />
+                </div>
+              </q-item-section>
+            </q-item>
+            <div class="text-caption text-grey-7 text-right">{{data.created_at}}</div>
           </div>
           <div v-else>
-            <div class="absolute-center-bottom text-subtitle1">
-              Actualmente sin Calificacion del proveedor...
+            <div class="text-center q-pt-md text-caption">
+              Actualmente sin Calificar...
             </div>
           </div>
         </q-card>
@@ -210,7 +200,7 @@ export default {
       statusTerminadoProv: false,
       statusTerminadoclient: false,
       posponeBtn: false,
-      btnClient: true,
+      btnClient: false,
       rating_tienda: 0,
       rating_cliente: 0,
       infoCot: {},
@@ -218,7 +208,7 @@ export default {
       fecha_termino: '',
       fecha: '',
       rol: 0,
-      data: [],
+      data: {},
       comentarios: false,
       comentarios2: false,
       cotization: {
@@ -244,7 +234,7 @@ export default {
     consultaropinion () {
       this.form.necesidad_id = this.$route.params.necesidad_id
       this.$api.get('opiniones/' + this.$route.params.necesidad_id).then(res => {
-        this.data = res
+        this.data = res[0]
       })
     },
     getCotization () {
@@ -253,13 +243,13 @@ export default {
           this.infoCot = v
           this.cotization = v.cotizacion
           this.today = moment().format('YYYY/MM/DD')
-          if (v.status !== 'Cotizado') {
-            this.btnClient = false
+          if (v.status === 'Cotizado') {
+            this.btnClient = true
           }
-          if (v.status === 'Rechazado') {
+          if (v.status === 'Rechazado' && this.rol === 3) {
             this.$q.dialog({
               title: '¡Atención!',
-              message: 'Esta cotización ha sido rechazada.'
+              message: 'Esta cotización ha sido rechazada. Puedes volver a cotizar si lo deseas.'
             }).onOk(() => {
 
             })
@@ -286,16 +276,10 @@ export default {
             this.statusTerminadoclient = true
           }
           if (v.status === 'Terminado' && this.rol === 2 && v.calificado) {
-            this.comentarios2 = false
+            this.comentarios2 = true
           }
           if (v.status === 'Terminado' && this.rol === 3) {
             this.comentarios = true
-            this.$q.dialog({
-              title: '¡Atención!',
-              message: 'El trabajo ya fue completado.'
-            }).onOk(() => {
-
-            })
           }
         }
       })
@@ -370,6 +354,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.bordes {
+  border-top: 6px solid $primary
+}
 .title-table {
   border-radius: 12px;
   background-color: #b3e3f4;

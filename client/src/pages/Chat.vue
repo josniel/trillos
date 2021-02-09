@@ -3,28 +3,17 @@
     <div v-if="cotizarBtn" class="row justify-end full-width q-pa-sm">
       <q-btn no-caps class="shadow-11" color="primary" text-color="black" label="Cotizar" @click="cotizar = true" />
     </div>
-    <q-separator v-if="cotizarBtn" />
+    <div v-if="verCotizacion" class="row justify-end full-width q-pa-sm">
+      <q-btn no-caps class="shadow-11" color="primary" text-color="black" :label="data.status === 'Cotizado' ? 'Ver Cotización' : 'Ver Presupuesto'" @click="$router.push('/cotizacion/' + data.id_cotization + '/presupuesto')" />
+    </div>
+    <q-separator v-if="cotizarBtn || verCotizacion" />
 
-    <q-dialog v-model="cotizar" transition-show="slide-up" transition-hide="slide-down" >
-      <enviar-cotizacion :ruta="id" />
+    <q-dialog persistent v-model="cotizar" transition-show="slide-up" transition-hide="slide-down" >
+      <enviar-cotizacion :ruta="id" accion="cotizar" />
     </q-dialog>
 
-    <q-dialog v-model="verCotizacion" transition-show="slide-up" transition-hide="slide-down" >
-      <q-card>
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Atención</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-
-        <q-card-section>
-          El proveedor ha cotizado su solicitud.
-        </q-card-section>
-
-        <q-card-section class="row justify-center">
-          <q-btn no-caps label="Ver Cotizacion" color="primary" @click="$router.push('/cotizacion/' + data.id_cotization)" />
-        </q-card-section>
-      </q-card>
+    <q-dialog persistent v-model="presupuesto" transition-show="slide-up" transition-hide="slide-down" >
+      <enviar-cotizacion @presupuesto="presupuesto = false" :ruta="id" accion="presupuesto" />
     </q-dialog>
 
     <div class="q-pa-sm" style="width: 100%; max-width: 400px">
@@ -73,6 +62,7 @@ export default {
       cotizarBtn: false,
       cotizar: false,
       verCotizacion: false,
+      presupuesto: false,
       form: {},
       info: {},
       date: moment().format('DD-MMMM-YYYY'),
@@ -99,8 +89,20 @@ export default {
               this.data = v
               if (this.data.status === 'Pendiente' && this.rol === 3) {
                 this.cotizarBtn = true
+                this.presupuesto = true
               }
-              if (this.data.status === 'Cotizado' && this.rol === 2) {
+              if ((this.data.status === 'Presupuesto' || this.data.status === 'Cotizado' || this.data.status === 'Rechazado') && this.rol === 3) {
+                this.cotizarBtn = true
+              }
+              if (this.data.status === 'Rechazado' && this.rol === 3) {
+                this.$q.dialog({
+                  title: '¡Atención!',
+                  message: 'La cotización ha sido rechazada.'
+                }).onOk(() => {
+
+                })
+              }
+              if ((this.data.status === 'Cotizado' || this.data.status === 'Presupuesto') && this.rol === 2) {
                 this.verCotizacion = true
               }
             }

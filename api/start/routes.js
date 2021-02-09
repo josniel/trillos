@@ -84,6 +84,7 @@ addPrefixToGroup(
 
     Route.post("send_message/:id_cotisation", "ChatController.store") // metod para enviar un mensaje
     Route.post("crear_chat/:id_cotisation", "ChatController.storeChat")
+    Route.delete('chat/:id', 'ChatController.destroy')
     Route.get("show_all_messages/:id_cotisation", "ChatController.showAllMessages")
     Route.get("show_all_chats", "ChatController.showAllChats")
     Route.put("cotizar_necesidad/:id_cotisation", "ChatController.updateCotization")
