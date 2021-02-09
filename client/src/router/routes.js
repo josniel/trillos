@@ -26,7 +26,6 @@ const routes = [
       { path: '/tienda/:id', component: () => import('pages/cliente/Tienda.vue'), meta: { botonchat: true } },
       { path: '/descripcionproducto/:id', component: () => import('pages/cliente/DescripcionProducto.vue'), meta: { botonchat: false } },
       // Generales
-      { path: '/chat/:id', component: () => import('pages/Chat.vue'), meta: { botonchat: false } },
       { path: '/mis_chats', component: () => import('pages/AllChats.vue'), meta: { botonchat: false } },
       { path: '/mis_cotizaciones', component: () => import('pages/MisCotizaciones.vue'), meta: { botonchat: true } },
       { path: '/cotizacion/:id/:necesidad_id', component: () => import('pages/VerCotizacion.vue'), meta: { botonchat: false } },
@@ -37,6 +36,7 @@ const routes = [
       { path: '/ver_reporte/:id/:id_cotizacion', component: () => import('pages/VerReporte.vue'), meta: { botonchat: false } }
     ]
   },
+  { path: '/chat/:id', component: () => import('pages/Chat.vue') },
   { path: '/login', component: () => import('pages/Login.vue') },
   { path: '/registro', component: () => import('pages/Registro.vue') },
   {
