@@ -18,9 +18,7 @@
     </q-footer>
     <q-page-container>
       <router-view />
-      <q-page-sticky v-if="rol != 1 && mostrarBoton" position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="forum" color="primary" to="/mis_chats" />
-      </q-page-sticky>
+        <q-btn v-if="rol != 1 && mostrarBoton" class="float" fab icon="forum" color="primary" to="/mis_chats" />
     </q-page-container>
   </q-layout>
 </template>
@@ -53,8 +51,20 @@ export default {
     },
     regresar () {
       this.$router.go(-1)
-      location.reload()
     }
   }
 }
 </script>
+<style>
+.float{
+position:fixed;
+width:55px;
+height:55px;
+bottom:80px;
+right:10px;
+background-color:#0C9;
+color:#FFF;
+border-radius:50px;
+text-align:center;
+}
+</style>
