@@ -10,7 +10,7 @@
                           <q-avatar size="180px">
                             <img  :src="baseu + 'perfil' + form._id">
                             <q-file borderless v-model="perfilFile" class="absolute-center button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1">
-                              <q-icon name="edit" class="absolute-center" size="20px" color="white" />
+                              <q-icon name="photo_camera" class="absolute-center" size="20px" color="white" />
                             </q-file>
                           </q-avatar>
                         </div>
@@ -77,15 +77,14 @@
                           <q-avatar size="180px">
                             <img  :src="baseu + 'perfil' + form2._id">
                             <q-file borderless v-model="perfilFile" class="absolute-center button-camera" @input="perfil_img()" accept=".jpg, image/*" style="z-index:1">
-                              <q-icon name="edit" class="absolute-center" size="20px" color="white" />
+                              <q-icon name="photo_camera" class="absolute-center" size="20px" color="white" />
                             </q-file>
                           </q-avatar>
                         </div>
 
-                    <q-card style="width: 100%" class="shadow-11 bg-amber-1 q-mt-xl">
-                      <q-separator />
+                    <q-card style="width: 100%" class="shadow-11 bg-amber-1 q-mt-md">
                       <div class="q-mt-sm column">
-                        <q-card class="q-pa-md bg-amber-1 shadow-up-3 q-mt-sm" style="border-top-left-radius:25px;border-top-right-radius:25px">
+                        <q-card class="q-pa-md bg-amber-1 shadow-up-3 q-mt-sm" style="border-radius:25px">
                               <q-scroll-area
                               horizontal
                               style="height: 110px;"
@@ -93,7 +92,7 @@
                               <div class="row no-wrap" style="width: 100%">
                                 <q-card v-for="(item, index) in form2.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
                                   <q-img :src="form2.tiendaFiles ? baseu2 + item : 'noimgpro.png'" spinner-color="white" style="height: 100px; width: 100px" />
-                                   <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round color="negative" @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
+                                   <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
                                 </q-card>
                               </div>
                             </q-scroll-area>
