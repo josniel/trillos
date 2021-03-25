@@ -92,7 +92,7 @@ class ChatController {
       if (cotizaciones[i].created_at_message) {
         cotizaciones[i].created_at_message = moment(cotizaciones[i].created_at_message).lang('es').calendar()
       }
-      
+
     }
     response.send(cotizaciones)
   }
@@ -137,7 +137,13 @@ class ChatController {
         let updat = await ChatMessage.query().where('_id', cotizaciones[i]._id).update({status: 'Atrasado'})
       }
     }
-    response.send(cotizaciones)
+    let formatearFecha = cotizaciones.map(v => {
+      return {
+        ...v,
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
   }
 
   async cotizationById ({ response, params }) {

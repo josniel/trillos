@@ -5,6 +5,15 @@
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[1]" text-color="black" label="Mensual" @click="filter('mensual')" />
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[2]" text-color="black" label="Semestral" @click="filter('semestral')" />
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[3]" text-color="black" label="Anual" @click="filter('anual')" />
+        <q-select clearable outlined  class="col-5 q-mb-sm"  v-model="estado" :options="dataestado" option-label="estado" option-value="estado" label="filtrado por estado" map-options emit-value @input="getData_estado()" />
+        <q-input outlined  class="col-5 q-mb-sm" v-model="monto" label="ingrese un monto" @input="getData_monto()" />
+        <q-input v-model="date" outlined  class="col-5 q-mb-sm" filled type="date" hint="ingrese una fecha" @input="getData_fecha()" />
+        <q-input outlined  class="col-5 q-mb-sm" v-model="nombre" label="ingrese una palabra" @input="getData_nombre()">
+         <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+        </q-input>
+
     </div>
     <q-separator inset />
     <div class="row justify-center">
@@ -43,6 +52,21 @@ export default {
   data () {
     return {
       baseu: '',
+      date: '',
+      estado: null,
+      monto: null,
+      nombre: null,
+      dataestado: [
+        {
+          estado: 'cotizados'
+        },
+        {
+          estado: 'iniciados'
+        },
+        {
+          estado: 'terminados'
+        }
+      ],
       btn: ['white', 'white', 'white', 'white'],
       today: null,
       ratingProduc: 3,
@@ -60,6 +84,49 @@ export default {
         if (res) {
           this.allData = res.filter(v => v.status === 'Terminado')
           this.data = this.allData
+        }
+      })
+    },
+    getData_estado () {
+      this.$api.get('show_all_cotizations').then(res => {
+        if (res) {
+          if (this.estado === 'terminados') {
+            this.allData = res.filter(v => v.status === 'Terminado')
+          } else if (this.estado === 'iniciados') {
+            this.allData = res.filter(v => v.status === 'Iniciado')
+          } else if (this.estado === 'cotizados') {
+            this.allData = res.filter(v => v.status === 'Cotizado')
+          }
+          this.data = this.allData
+          console.log(this.data, 'datasss3333')
+        }
+      })
+    },
+    getData_monto () {
+      this.$api.get('show_all_cotizations').then(res => {
+        if (res) {
+          this.allData = res.filter(v => v.cotizacion.total === parseInt(this.monto))
+          this.data = this.allData
+          console.log(this.monto, 'monto ingresado')
+        }
+      })
+    },
+    getData_nombre () {
+      this.$api.get('show_all_cotizations').then(res => {
+        if (res) {
+          this.allData = res.filter(v => v.datos_necesidad.name === this.nombre)
+          this.data = this.allData
+          console.log(this.monto, 'monto ingresado')
+        }
+      })
+    },
+    getData_fecha () {
+      this.$api.get('show_all_cotizations').then(res => {
+        if (res) {
+          this.allData = res.filter(v => v.fechaCreacion === moment(this.date).format('DD/MM/YYYY'))
+          this.data = this.allData
+          console.log(this.data, 'el beta')
+          console.log(this.date, 'fecha ingresada')
         }
       })
     },
