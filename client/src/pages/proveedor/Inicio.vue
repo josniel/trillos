@@ -14,7 +14,32 @@
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <div class="text-bold q-ml-sm">SOLICITUDES</div>
    </div>
-   <listado-de-sugerencia v-if="data.length" :data="data" :direccion="true" ruta="proveedor"/>
+   <div class="q-pl-xl row justify-end">
+      <q-btn-toggle
+        v-model="model"
+        push
+        rounded
+        glossy
+        toggle-color="primary"
+        :options="[
+          {value: 'one', slot: 'one'},
+          {value: 'two', slot: 'two'},
+          ]">
+        <template v-slot:one>
+          <div class="row items-center no-wrap">
+            <q-icon name="view_module"/>
+          </div>
+        </template>
+
+        <template v-slot:two>
+          <div class="row items-center no-wrap">
+            <q-icon name="list_alt"/>
+          </div>
+        </template>
+      </q-btn-toggle>
+    </div>
+
+   <listado-de-sugerencia v-if="data.length" :data="data" :direccion="true" :listado="model" ruta="proveedor"/>
     <q-card v-else class="shadow-11 q-ma-md q-pa-md">
       <div class="text-center text-subtitle1">Sin solicitudes disponibles...</div>
     </q-card>
@@ -31,7 +56,10 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: {},
+      listado: true,
+      model: 'one',
+      listado2: false
     }
   },
   mounted () {
