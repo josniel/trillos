@@ -69,17 +69,19 @@
           </q-card-section>
         </q-card>
       </q-dialog>
-
+      <div class="column items-center justify-center">
+        <q-btn class="q-mt-sm" color="primary" text-color="black" label="Editar perfil" @click="$router.push('/editarusuario/' + id)"/>
+      </div>
       <q-card v-if="data.roles" class="bordes q-pa-xs q-mt-md shadow-up-4" style="border-radius:25px">
         <div class="q-mx-md text-h6">{{rol === 3 ? 'Mis Productos' : 'Mis Solicitudes'}}</div>
-        <listado-de-sugerencia :data="misDatos" :direccion="false" :ruta="data.roles[0] !== 3 ? 'proveedor' : 'cliente'" class="q-mt-xs"/>
+        <listado-de-sugerencia @actualizarData="actualizarData" :data="misDatos" :direccion="false" :soy="data.roles[0] === 3 ? 'proveedor' : 'cliente'" :ruta="data.roles[0] !== 3 ? 'proveedor' : 'cliente'" class="q-mt-xs"/>
       </q-card>
     </div>
   </div>
 </template>
 
 <script>
-import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
+import ListadoDeSugerencia from '../../components/ListadoDeSugerencia2.vue'
 import moment from 'moment'
 import env from '../../env'
 export default {
@@ -105,6 +107,13 @@ export default {
     this.getInfo()
   },
   methods: {
+    actualizarData () {
+      if (this.rol === 3) {
+        this.getProduct()
+      } else {
+        this.getSolicituds()
+      }
+    },
     verImg (img) {
       this.baseu = env.apiUrl + '/tienda_img/'
       this.perfile = img
@@ -112,6 +121,7 @@ export default {
     getInfo () {
       this.$api.get('user_by_id/' + this.id).then(v => {
         this.data = v
+        console.log(this.data, 'dataaaaaaaaaaaaaaa')
         this.rol = v.roles[0]
         this.perfile = this.id
         this.baseu = env.apiUrl + '/perfil_img/perfil'

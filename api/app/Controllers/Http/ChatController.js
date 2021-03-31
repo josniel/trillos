@@ -188,7 +188,7 @@ class ChatController {
       cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
       let necesidad = await Necesidad.query().where({_id: cot.necesidad_id}).update({cotizado: true})
     } else {
-      cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status})
+      cotization = await ChatMessage.query().where('_id', params.id_cotisation).update({status: dat.status, motivo: dat.motivo})
     }
     response.send(cotization)
   }

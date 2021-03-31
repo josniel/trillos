@@ -93,6 +93,39 @@ class UploadController {
     }
   }
 
+  async subirimgtiendaById ({ request, response, params }) {
+    let codeFile = randomize('Aa0', 30)
+    let user = await User.find(params.user_id)
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/tiendaFiles')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/tiendaFiles'), {
+          name: codeFile,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let proveedor = await User.find(user._id)
+        if (proveedor.tiendaFiles) {
+          proveedor.tiendaFiles.push(codeFile)
+        } else {
+          proveedor.tiendaFiles = []
+          proveedor.tiendaFiles.push(codeFile)
+        }
+        await proveedor.save()
+        response.send(proveedor)
+      }
+    }
+  }
+
   async newimagen ({ request, response, auth }) {
     let user = await auth.getUser()
     var profilePic = request.file('files', {
@@ -122,6 +155,30 @@ class UploadController {
     }
   }
 
+  async newimagenById ({ request, response, params }) {
+    let user = await User.find(params.user_id)
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/perfil')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/perfil'), {
+          name: 'perfil' + user._id,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        response.send(user)
+      }
+    }
+  }
+
   async eliminarigmtienda({ params, response, auth }) {
     let user = await auth.getUser()
     let proveedor = await User.find(user._id)
@@ -130,6 +187,20 @@ class UploadController {
       console.log(`${params.id} eliminado por el proveedor`);
     })
     proveedor.status = 0
+    let buscarInd = proveedor.tiendaFiles.findIndex(v => v === params.id)
+    proveedor.tiendaFiles.splice(buscarInd, 1)
+    console.log (buscarInd, 'POSICION BUSCAIND')
+    await proveedor.save()
+    response.send(proveedor)
+  }
+
+  async eliminarigmtiendaById ({ params, response }) {
+    let user = await User.find(params.user_id)
+    let proveedor = await User.find(user._id)
+    fs.unlink(`storage/uploads/tiendaFiles/${params.id}`, (err) => {
+      if (err) throw err;
+      console.log(`${params.id} eliminado por el proveedor`);
+    })
     let buscarInd = proveedor.tiendaFiles.findIndex(v => v === params.id)
     proveedor.tiendaFiles.splice(buscarInd, 1)
     console.log (buscarInd, 'POSICION BUSCAIND')

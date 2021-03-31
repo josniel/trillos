@@ -10,7 +10,7 @@
     <q-select class="q-mx-md q-mb-md" color="grey" bg-color="yellow-2" filled v-model="form.necesidad" :options="options" label="Tiempo del servicio" dense :error="$v.form.necesidad.$error" error-message="Este campo es requerido" @blur="$v.form.necesidad.$touch()"/>
     <q-card class="shadow-13 q-ma-md bg-yellow-2" style="border-radius:25px">
           <q-card-section>
-            <div>Fotos referentes a tu solicitud (Opcional)</div>
+            <div>Fotos referentes a tu solicitud (Obligatorio)</div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 row justify-between">
             <div class="col-10">
                 <q-file max-files="5" style="width: 100%" @input="filesSolicitud" accept=".jpg, image/*" multiple append v-model="solicitudFiles" hint="Pueden ser hasta 5 fotos" outlined label="CLICK AQUÍ" :error="$v.solicitudFiles.$error" error-message="Este campo es requerido" @blur="$v.solicitudFiles.$touch()">

@@ -20,7 +20,12 @@
       <div class="text-h6 text-primary">Total</div>
       <div class="text-h6 text-primary">$ {{cotization.total}}</div>
     </div>
-
+      <div v-if="statusTerminadoclient" class="column items-center justify-center">
+        <q-btn label="Calificar" color="primary" push glossy style="width:110px;height:40px" @click="modelcliente=true" />
+      </div>
+      <div v-if="statusTerminadoProv" class="column items-center justify-center">
+        <q-btn label="Calificar" color="primary" push glossy style="width:110px;height:40px" @click="modelproveedor=true" />
+      </div>
     <div v-if="comentarios">
       <q-card class="bg-white bordes q-pa-md q-ma-sm shadow-11" style="border-radius:25px">
         <div class="text-h7 text-grey-9 text-bold text-center">* Opinión del cliente *</div>
@@ -111,7 +116,7 @@
     <q-dialog v-model="statusIniciado" style="width:100%">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6 text-bold text-primary">{{fecha > today ? 'Proceso Atrasado' : 'Proceso Iniciado'}}</div>
+          <div class="text-h6 text-bold text-primary">{{ today > fecha ? 'Proceso Atrasado' : 'Proceso Iniciado'}}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
@@ -126,10 +131,12 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog persistent v-model="statusTerminadoclient" style="width:100%">
+    <q-dialog persistent v-model="modelcliente" style="width:100%">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section>
           <div class="q-px-xs text-subtitle1">Califícanos y deja un comentario.</div>
@@ -157,10 +164,12 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog persistent v-model="statusTerminadoProv" style="width:100%">
+    <q-dialog persistent v-model="modelproveedor" style="width:100%">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6 text-bold text-primary">Trabajo Finalizado</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section>
           <div class="q-px-xs text-subtitle1">Debes calificar al cliente.</div>
@@ -182,7 +191,6 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-
   </div>
 </template>
 
@@ -199,6 +207,8 @@ export default {
       statusIniciado: false,
       statusTerminadoProv: false,
       statusTerminadoclient: false,
+      modelcliente: false,
+      modelproveedor: false,
       posponeBtn: false,
       btnClient: false,
       rating_tienda: 0,
@@ -243,13 +253,14 @@ export default {
           this.infoCot = v
           this.cotization = v.cotizacion
           this.today = moment().format('YYYY/MM/DD')
+          console.log(this.infoCot, 'datos de la cotizacion')
           if (v.status === 'Cotizado') {
             this.btnClient = true
           }
           if (v.status === 'Rechazado' && this.rol === 3) {
             this.$q.dialog({
               title: '¡Atención!',
-              message: 'Esta cotización ha sido rechazada. Puedes volver a cotizar si lo deseas.'
+              message: `Esta cotización ha sido rechazada. Puedes volver a cotizar si lo deseas. Por motivo de: ${this.infoCot.motivo}`
             }).onOk(() => {
 
             })
@@ -278,6 +289,9 @@ export default {
           if (v.status === 'Terminado' && this.rol === 2 && v.calificado) {
             this.comentarios2 = true
           }
+          if (v.status === 'Terminado' && this.rol === 3 && !v.calificado) {
+            this.statusTerminadoProv = true
+          }
           if (v.status === 'Terminado' && this.rol === 3) {
             this.comentarios = true
           }
@@ -305,8 +319,6 @@ export default {
           }
         })
       }
-      this.statusTerminadoProv = false
-      this.statusTerminadoclient = false
     },
     terminarTrabajo () {
       this.$q.loading.show({
@@ -330,11 +342,15 @@ export default {
     rechazarCot () {
       this.$q.dialog({
         title: 'Confirma',
-        message: '¿Seguro deseas rechazar esta cotización?',
+        message: '¿Seguro deseas rechazar esta cotización? ingrese el motivo del rechazo',
         cancel: true,
-        persistent: true
-      }).onOk(() => {
-        this.$api.put('new_status/' + this.id, { status: 'Rechazado' }).then((res) => {
+        persistent: true,
+        prompt: {
+          motivo: ''
+        }
+      }).onOk(data => {
+        this.$api.put('new_status/' + this.id, { status: 'Rechazado', motivo: data }).then((res) => {
+          console.log(data, 'el motivo')
           this.$router.push('/mis_cotizaciones')
         })
       }).onCancel(() => {

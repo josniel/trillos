@@ -5,13 +5,20 @@
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[1]" text-color="black" label="Mensual" @click="filter('mensual')" />
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[2]" text-color="black" label="Semestral" @click="filter('semestral')" />
         <q-btn no-caps class="shadow-11 col-5 q-mb-sm" :color="btn[3]" text-color="black" label="Anual" @click="filter('anual')" />
+        <q-checkbox class="justify-center" v-model="rango" label="Por rango"/>
+        <div class="row justify-center" v-if="rango">
+        <q-input class="shadow-2 col-6 q-mb-sm " v-model="date1" filled type="date" />
+        <q-input class="shadow-2 col-6 q-mb-sm" v-model="date2" filled type="date" />
+        <q-btn color="primary" text-color="black" label="Filtrar" @click="filterfecha()" />
+        </div>
     </div>
     <q-separator inset />
     <div class="row justify-center">
-        <div class="text-h6 q-ma-md text-center estilo-titulos">Mis Reportes</div>
+        <div class="text-h6 q-ma-md text-center estilo-titulos">Total de Reportes: {{data.length}} </div>
     </div>
 
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
+        <div v-if="mostrar">
         <q-card @click="$router.push('/descripcionusuario/'+user._id)" class="bordes row q-pl-md q-py-md q-pr-xs" v-for="(user, index) in data" :key="index">
             <div class="col-4">
                 <q-img :src=" baseu + user._id" style="height:80px; width:100px" />
@@ -28,6 +35,7 @@
               </div>
             </div>
         </q-card>
+        </div>
     </div>
 
     <q-card v-else class="shadow-2 q-ma-md q-pa-md">
@@ -46,7 +54,11 @@ export default {
       btn: ['white', 'white', 'white', 'white'],
       today: null,
       allData: [],
-      data: []
+      data: [],
+      date1: '',
+      date2: '',
+      mostrar: false,
+      rango: false
     }
   },
   mounted () {
@@ -59,23 +71,35 @@ export default {
         if (res) {
           this.allData = res
           this.data = this.allData
+          console.log(this.data, 'los datossss')
         }
       })
     },
     filter (val) {
       if (val === 'semanal') {
+        this.mostrar = true
         this.btn = ['primary', 'white', 'white', 'white']
         this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).week() === moment().week())
       } else if (val === 'mensual') {
+        this.mostrar = true
         this.btn = ['white', 'primary', 'white', 'white']
         this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year() && moment(v.created_at).month() === moment().month())
       } else if (val === 'anual') {
+        this.mostrar = true
         this.btn = ['white', 'white', 'white', 'primary']
         this.data = this.allData.filter(v => moment(v.created_at).year() === moment().year())
       } else if (val === 'semestral') {
+        this.mostrar = true
         this.btn = ['white', 'white', 'primary', 'white']
         var monthToday = moment().subtract(6, 'month')
         this.data = this.allData.filter(v => moment(v.created_at) >= monthToday)
+      }
+    },
+    filterfecha () {
+      this.btn = ['white', 'white', 'white', 'white']
+      if (this.rango) {
+        this.mostrar = true
+        this.data = this.allData.filter(v => v.fechaCreacion >= moment(this.date1).format('DD/MM/YYYY') && v.fechaCreacion <= moment(this.date2).format('DD/MM/YYYY'))
       }
     }
   }

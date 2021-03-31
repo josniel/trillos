@@ -7,7 +7,7 @@
       <div class="text-bold q-ml-sm">ENCUENTRA POR CATEGORÍA</div>
     </div>
    <botones-header/>
-   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO CLIENTE</div>
+   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO {{this.user.full_name}}</div>
    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
@@ -53,11 +53,14 @@ export default {
   data () {
     return {
       data: [],
+      user: {
+      },
       dataFav: []
     }
   },
   mounted () {
     this.cargarProductos()
+    this.estaLogueado()
     this.tiendasFavoritas()
   },
   methods: {
@@ -65,6 +68,13 @@ export default {
       this.$api.get('producto').then(res => {
         this.data = res
       })
+    },
+    estaLogueado () {
+      const logueo = JSON.parse(localStorage.getItem('TRI_SESSION_INFO'))
+      console.log(logueo, 'usuario')
+      if (logueo) {
+        this.user = JSON.parse(localStorage.getItem('TRI_SESSION_INFO'))
+      }
     },
     tiendasFavoritas () {
       this.$api.get('mis_favoritos').then(res => {

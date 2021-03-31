@@ -83,32 +83,6 @@ export default {
     changeFile () {
       if (this.file) { this.imgPro = URL.createObjectURL(this.file) }
     },
-    async agregar () {
-      this.$v.$touch()
-      if (this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
-        this.$q.notify({
-          message: 'Debes seleccionar una categoria',
-          color: 'red'
-        })
-      }
-      if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.file.$error) {
-        this.form.categoria_id = this.categoria_id
-        this.$q.loading.show({
-          message: 'Subiendo Producto, Por Favor Espere...'
-        })
-        var formData = new FormData()
-        formData.append('files', this.file)
-        formData.append('dat', JSON.stringify(this.form))
-        await this.$api.post('producto', formData, {
-          headers: {
-            'Content-Type': undefined
-          }
-        }).then((res) => {
-          this.$q.loading.hide()
-          this.$router.push('/productos')
-        })
-      }
-    },
     async actualizarProducto () {
       this.$v.form.$touch()
       if (!this.$v.form.$error) {
@@ -130,7 +104,11 @@ export default {
           }
         }).then((res) => {
           this.$q.loading.hide()
-          this.$router.push('/productos')
+          this.$q.notify({
+            message: 'Datos Modificados con exito',
+            color: 'positive'
+          })
+          this.$router.go(-1)
         })
       }
     },

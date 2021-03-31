@@ -7,6 +7,8 @@ var randomize = require('randomatic');
 const User = use("App/Models/User")
 const Role = use("App/Models/Role")
 const { validate } = use("Validator")
+const moment = require('moment')
+
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -118,7 +120,13 @@ class UserController {
   async allUser({ request, response, auth }) {
     let allUsers = (await User.query().where({}).fetch()).toJSON()
     let users = allUsers.filter(v => v.email !== 'admin@triyus.com')
-    response.send(users)
+    let formatearFecha = users.map(v => {
+      return {
+        ...v,
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
   }
 
   async userInfo({ request, response, auth }) {

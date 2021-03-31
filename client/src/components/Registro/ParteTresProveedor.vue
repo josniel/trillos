@@ -11,14 +11,26 @@
         <q-select v-model="form.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese País de la empresa" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-input
+          v-model="form.empresaemail"
+          type="email"
+          label="Email de la Empresa"
+          outlined
+          dense
+          error-message="Ingrese un email válido"
+          :error="$v.form.empresaemail.$error"
+          @blur="$v.form.empresaemail.$touch()"
+        />
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input v-model="form.direccion" label="Dirección" outlined dense
           error-message="Ingrese Dirección de la empresa"
           :error="$v.form.direccion.$error" @blur="$v.form.direccion.$touch()"
         />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input :disable="form.country ? false : true" v-model="form.run_dni" :label="form.country === 'Chile' ? 'Ingrese RUN' : form.country === 'Colombia' ? 'Ingrese DNI' : 'Debes seleccionar un país'" outlined dense
-          error-message="Ingrese RUN O DNI"
+        <q-input :disable="form.country ? false : true" v-model="form.run_dni" :label="form.country === 'Chile' ? 'Ingrese RUN' : form.country === 'Colombia' ? 'Ingrese CUIT' : 'Debes seleccionar un país'" outlined dense
+          error-message="Ingrese RUN O CUIT"
           :error="$v.form.run_dni.$error" @blur="$v.form.run_dni.$touch()"
         />
       </div>
@@ -27,6 +39,14 @@
             error-message="Ingrese Teléfono de la empresa"
             :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()" />
         </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-pb-md">
+        <q-input v-model="pagina" label="Pagina de la Empresa" outlined dense
+        />
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-pb-md">
+        <q-input v-model="observaciones" label="Observaciones de la Empresa" outlined dense
+        />
+      </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" outlined label="Foto perfil de la tienda" @input="test"
               error-message="Ingrese una foto de perfil para su tienda"
@@ -146,6 +166,8 @@ export default {
       perfilFile: null,
       dias: [],
       tiendaFiles: [],
+      pagina: '',
+      observaciones: '',
       imgPerfil: '',
       imgTienda: [],
       baseu: '',
@@ -186,6 +208,7 @@ export default {
       form: {
         full_name: { required, maxLength: maxLength(40) },
         country: { required },
+        empresaemail: { required },
         direccion: { required },
         run_dni: { required },
         phone: { required },
@@ -219,6 +242,8 @@ export default {
       this.$v.dias.$touch()
       this.$v.perfilFile.$touch()
       if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error) {
+        this.form.pagina = this.pagina
+        this.form.observaciones = this.observaciones
         if (this.tiendaFiles.length > 0) {
           var formData = new FormData()
           formData.append('perfilFile', this.perfilFile)
