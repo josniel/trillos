@@ -25,7 +25,9 @@
       <q-dialog persistent v-model="presupuesto" transition-show="slide-up" transition-hide="slide-down" >
         <enviar-cotizacion @presupuesto="presupuesto = false" :ruta="id" accion="presupuesto" />
       </q-dialog>
-
+      <div class="column items-center justify-center">
+      <div class="text-subtitle1">{{data.nombre_necesidad}}</div>
+      </div>
       <div class="q-pa-sm" style="width: 100%; max-width: 400px">
         <q-chat-message
           :label="date"
@@ -71,6 +73,7 @@ export default {
       id: this.$route.params.id,
       text: '',
       rol: 0,
+      data2: '',
       cotizarBtn: false,
       cotizar: false,
       verCotizacion: false,
@@ -99,6 +102,7 @@ export default {
           this.$api.get('show_all_messages/' + this.id).then(v => {
             if (v) {
               this.data = v
+              console.log(v, 'data de v')
               if (this.data.status === 'Pendiente' && this.rol === 3) {
                 this.cotizarBtn = true
                 this.presupuesto = true

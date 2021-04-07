@@ -7,11 +7,16 @@
     <div v-if="data.length > 0" class="q-pa-md q-gutter-md">
         <q-card class="bordes row" @click="$router.push('/chat/' + chat._id)" v-for="(chat, index) in data" :key="index">
             <div class="col-3">
-              <q-icon size="60px" class="text-black q-px-md q-pt-sm" name="account_circle" />
+              <q-avatar class="q-pl-sm" size="60px">
+                <q-img :src="chat.necesidad_info.images.length > 0 ? baseu + chat.necesidad_info.images[0] : 'noimgpro.png'" />
+              </q-avatar>
               <div class="text-center text-grey text-bold text-caption q-pb-xs">{{chat.status !== 'Presupuesto' ? chat.status : 'Pendiente'}}</div>
             </div>
             <div class="col-9">
               <div class="text-black text-bold text-subtitle1 q-pt-sm">{{rol === 2 ? chat.datos_proveedor.full_name : chat.datos_cliente.full_name + ' ' + chat.datos_cliente.last_name}}</div>
+              <div class="row">
+              <div class="text-caption">{{chat.necesidad_info.name}}</div>
+              </div>
               <div class="text-caption q-px-sm">{{chat.last_message}}</div>
               <div class="absolute-bottom text-amber-8 text-subtitle1 text-right q-pr-sm">{{chat.created_at_message}}</div>
             </div>
@@ -32,12 +37,14 @@ export default {
       baseu: '',
       ratingProduc: 3,
       ver: true,
-      data: []
+      data: [],
+      data2: [],
+      id: ''
     }
   },
   mounted () {
     this.getRecords()
-    this.baseu = env.apiUrl + '/necesidad_img'
+    this.baseu = env.apiUrl + '/necesidad_img/'
   },
   methods: {
     getRecords () {

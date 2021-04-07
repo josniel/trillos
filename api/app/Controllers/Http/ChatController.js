@@ -84,9 +84,9 @@ class ChatController {
     let rol = user.roles[0]
     let cotizaciones = []
     if (rol === 2) {
-      cotizaciones = (await ChatMessage.query().where('cliente_id',user._id).with('datos_proveedor').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where('cliente_id',user._id).with('datos_proveedor').with('necesidad_info').fetch()).toJSON()
     } else {
-      cotizaciones = (await ChatMessage.query().where('proveedor_id',user._id).with('datos_cliente').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where('proveedor_id',user._id).with('datos_cliente').with('necesidad_info').fetch()).toJSON()
     }
     for (let i = 0; i < cotizaciones.length; i++) {
       if (cotizaciones[i].created_at_message) {
@@ -100,13 +100,14 @@ class ChatController {
   async showAllMessages ({ params, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     const id_user = user._id
-    let cotisation = (await ChatMessage.query().where('_id',params.id_cotisation).fetch()).toJSON()
+    let cotisation = (await ChatMessage.query().where('_id',params.id_cotisation).with('necesidad_info').fetch()).toJSON()
     let send = {
       datos_proveedor: cotisation[0].proveedor_id,
       datos_cliente: cotisation[0].cliente_id,
       messages: [],
       status: cotisation[0].status,
-      id_cotization: cotisation[0]._id
+      id_cotization: cotisation[0]._id,
+      nombre_necesidad: cotisation[0].necesidad_info.name
     }
     let messages = (await Chat.where({cotisazion_id: params.id_cotisation}).with('datos_user').fetch()).toJSON()
     send.messages = messages

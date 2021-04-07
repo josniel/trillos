@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="row justify-center q-mt-md">
-        <q-btn label="enviar" color="primary" push glossy style="width:150px;height:45px" @click="accion === 'cotizar' ? enviarCotizacion() : enviarPresupuesto()" />
+        <q-btn label="enviar" color="primary" push glossy style="width:150px;height:45px" @click="accion === 'cotizar' ? confirmarenvio() : enviarPresupuesto()" />
       </div>
     </q-card-section>
   </q-card>
@@ -94,6 +94,18 @@ export default {
         if (v) {
           this.carrito = v.cotizacion.servicios
         }
+      })
+    },
+    confirmarenvio () {
+      this.$q.dialog({
+        title: 'Atencion',
+        message: '¿Está seguro de enviar esta cotizacion?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.enviarCotizacion()
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
       })
     },
     addCarrito (miObjeto) {

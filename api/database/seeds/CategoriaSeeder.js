@@ -16,27 +16,27 @@ const Categoria = use("App/Models/Categoria")
 const categoriaData = [
   {
     id: 1,
-    name: 'Pintura de Automóvil',
+    name: 'Taller Pintura o carrocería',
     icons: "format_paint"
   },
   {
     id: 2,
-    name: 'Gruas',
+    name: 'Repuestos o Autopartes',
     icons: "local_shipping"
   },
   {
     id: 3,
-    name: 'Repuesto de Vehiculos',
+    name: 'Gomería o Neumáticos',
     icons: "settings"
   },
   {
     id: 4,
-    name: 'Desabolladura',
+    name: 'Taller Mecánica',
     icons: "build"
   },
   {
     id: 5,
-    name: 'Asistencia Remota',
+    name: 'Taller Electricidad',
     icons: "support_agent"
   }
 

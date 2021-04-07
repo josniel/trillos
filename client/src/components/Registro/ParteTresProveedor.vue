@@ -8,7 +8,7 @@
         />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-select v-model="form.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese País de la empresa" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
+        <q-select v-model="form.country" label="País" outlined dense :options="['Argentina', 'Chile']" error-message="Ingrese País de la empresa" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input
@@ -29,7 +29,7 @@
         />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input :disable="form.country ? false : true" v-model="form.run_dni" :label="form.country === 'Chile' ? 'Ingrese RUN' : form.country === 'Colombia' ? 'Ingrese CUIT' : 'Debes seleccionar un país'" outlined dense
+        <q-input :disable="form.country ? false : true" v-model="form.run_dni" :label="form.country === 'Chile' ? 'Ingrese RUN' : form.country === 'Argentina' ? 'Ingrese CUIT' : 'Debes seleccionar un país'" outlined dense
           error-message="Ingrese RUN O CUIT"
           :error="$v.form.run_dni.$error" @blur="$v.form.run_dni.$touch()"
         />
@@ -261,7 +261,7 @@ export default {
           }).then(res => {
             if (res) {
               this.$q.notify({
-                message: 'Ya formas parte de Trillos, Bienvenido',
+                message: 'Ya formas parte de Triyus, Bienvenido',
                 color: 'positive'
               })
               this.loguear()

@@ -10,6 +10,9 @@ class ChatMessage extends Model {
     datos_proveedor () {
         return this.hasOne('App/Models/User', 'proveedor_id', '_id')
     }
+    necesidad_info () {
+      return this.hasOne('App/Models/Necesidad', 'necesidad_id', '_id')
+  }
 }
 
 module.exports = ChatMessage

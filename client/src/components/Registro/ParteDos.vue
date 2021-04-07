@@ -1,5 +1,5 @@
 <template>
-<q-card class="q-ma-md q-pa-md">
+<div class="q-ma-md q-pa-md">
   <div class="column">
     <animation-transition :animation-in-type="AnimationType.BOUNCEINDOWN" :animation-out-type="AnimationType.ROLLOUT">
       <div class="animated-body row justify-center" v-show="show">
@@ -21,25 +21,33 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input
+          :type="isPwd ? 'password' : 'text'"
           v-model="password"
           label="Contraseña"
           outlined
           dense
           error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
           :error="$v.password.$error"
-          @blur="$v.password.$touch()"
-        />
+          @blur="$v.password.$touch()">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer" color="primary" @click="isPwd = !isPwd" />
+          </template>
+        </q-input>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input
+          :type="isPwd2 ? 'password' : 'text'"
           v-model="repeatPassword"
           label="Repita su Contraseña"
           outlined
           dense
           error-message="Las contraseñas deben ser iguales"
           :error="$v.repeatPassword.$error"
-          @blur="$v.repeatPassword.$touch()"
-        />
+          @blur="$v.repeatPassword.$touch()" >
+          <template v-slot:append>
+            <q-icon :name="isPwd2 ? 'visibility' : 'visibility_off'" class="cursor-pointer" color="primary" @click="isPwd2 = !isPwd2" />
+          </template>
+          </q-input>
       </div>
     </div>
     <div class="row">
@@ -48,7 +56,7 @@
       <q-btn @click="next()" color="primary" push label="Siguiente" glossy/>
     </div>
     </div>
-</q-card>
+</div>
 </template>
 
 <script>
@@ -62,6 +70,8 @@ export default {
   data () {
     return {
       repeatPassword: '',
+      isPwd: true,
+      isPwd2: true,
       password: '',
       AnimationType: AnimationVueTransitionType,
       show: false

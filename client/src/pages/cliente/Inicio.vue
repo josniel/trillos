@@ -8,7 +8,7 @@
     </div>
    <botones-header/>
    <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO {{this.user.full_name}}</div>
-   <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
+    <!-- <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
       <q-icon class="q-mt-xs" name="favorite" style="font-size: 0.7em"/>
@@ -17,7 +17,7 @@
     <listado-de-favoritos v-if="dataFav.length" :dataFav="dataFav"/>
     <q-card v-else class="shadow-11 q-my-sm q-mx-md q-pa-xs">
       <div class="text-center text-subtitle1">Añade una Tienda a tus favoritos...</div>
-    </q-card>
+    </q-card>-->
    <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-md q-pl-sm">
       <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
       <q-icon class="q-mt-xs" name="star" style="font-size: 0.9em"/>
@@ -40,15 +40,15 @@
 
 <script>
 import BotonesHeader from '../../components/BotonesHeader.vue'
-import ListadoDeFavoritos from '../../components/ListadoDeFavoritos.vue'
+/* import ListadoDeFavoritos from '../../components/ListadoDeFavoritos.vue' */
 import ListadoDeSugerencia from '../../components/ListadoDeSugerencia.vue'
 import ListadoMasPopulares from '../../components/ListadoMasPopulares.vue'
 export default {
   components: {
     BotonesHeader,
     ListadoDeSugerencia,
-    ListadoMasPopulares,
-    ListadoDeFavoritos
+    ListadoMasPopulares
+  /* ListadoDeFavoritos */
   },
   data () {
     return {

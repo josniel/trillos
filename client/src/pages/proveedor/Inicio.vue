@@ -7,7 +7,7 @@
       <div class="text-bold q-ml-sm">ENCUENTRA POR CATEGORÍA</div>
     </div>
    <botones-header/>
-   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO PROVEEDOR</div>
+   <div class="q-mt-lg text-center q-pa-md text-weight-bolder bg-secondary text-black q-ma-md" style="border-radius:12px">BIENVENIDO PROVEEDOR {{this.user.full_name}}</div>
     <div class="row estilo-titulos q-mt-lg q-ml-sm q-mb-sm q-pl-sm">
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
       <q-icon class="q-mt-xs" name="stop_circle" style="font-size: 0.6em"/>
@@ -59,11 +59,14 @@ export default {
       data: {},
       listado: true,
       model: 'one',
+      user: {
+      },
       listado2: false
     }
   },
   mounted () {
     this.getSolicitudes()
+    this.estaLogueado()
   },
   methods: {
     getSolicitudes () {
@@ -100,6 +103,13 @@ export default {
           })
         }
       })
+    },
+    estaLogueado () {
+      const logueo = JSON.parse(localStorage.getItem('TRI_SESSION_INFO'))
+      console.log(logueo, 'usuario')
+      if (logueo) {
+        this.user = JSON.parse(localStorage.getItem('TRI_SESSION_INFO'))
+      }
     }
   }
 }

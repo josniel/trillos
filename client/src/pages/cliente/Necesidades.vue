@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div class="row justify-between q-ma-sm">
-        <q-btn no-caps class="shadow-11" color="white" text-color="black" label="Reportes" to="/reportes" />
-    </div>
     <q-separator inset />
     <div class="row justify-center">
         <div class="text-h6 q-ma-md text-center estilo-titulos">Mis Solicitudes</div>

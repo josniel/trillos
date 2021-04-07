@@ -149,6 +149,7 @@ export default {
       this.$api.get('necesidad_by_user_id/' + this.id).then(v => {
         if (v) {
           this.misDatos = v
+          console.log(this.misDatos, 'revisarrrrrrrrr')
         }
       })
     },

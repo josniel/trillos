@@ -31,6 +31,7 @@ class NecesidadController {
 
   async necesidadByUserId ({ response, params }) {
     let datos = (await Necesidad.query().where({ownerId: params.user_id}).with('creador').fetch()).toJSON()
+    for (let j of datos) j.chat_info = await ChatMessage.findBy('necesidad_id', j._id.toString())
     response.send(datos)
   }
 
