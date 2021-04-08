@@ -1,6 +1,10 @@
 <template>
   <div class="row justify-around">
-    <q-btn v-for="(item, index) in categorias" push color="white" text-color="black" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :to="'/filtrar_categorias/' + item._id" :key="index"/>
+    <q-btn v-for="(item, index) in categorias" push color="white" text-color="black" round class="q-mt-sm q-mr-sm q-ml-sm" :to="'/filtrar_categorias/' + item._id" :key="index">
+      <q-avatar size="40px">
+        <img :src="item.icons">
+      </q-avatar>
+    </q-btn>
   </div>
 </template>
 

@@ -17,27 +17,27 @@ const categoriaData = [
   {
     id: 1,
     name: 'Taller Pintura o carrocería',
-    icons: "format_paint"
+    icons: 'cats/Taller Pintura o carrocería.png'
   },
   {
     id: 2,
     name: 'Repuestos o Autopartes',
-    icons: "local_shipping"
+    icons: 'cats/Repuestos o Autopartes.png'
   },
   {
     id: 3,
     name: 'Gomería o Neumáticos',
-    icons: "settings"
+    icons: 'cats/Gomería o Neumáticos.png'
   },
   {
     id: 4,
     name: 'Taller Mecánica',
-    icons: "build"
+    icons: 'cats/Taller Mecánica.png'
   },
   {
     id: 5,
     name: 'Taller Electricidad',
-    icons: "support_agent"
+    icons: 'cats/Taller Electricidad.png'
   }
 
 ]

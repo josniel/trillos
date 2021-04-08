@@ -64,6 +64,20 @@
           </q-item-section>
         </q-item>
       </q-card>
+
+      <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/reportes_usuarios')" >
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar icon="grading" class="text-black" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-black text-weight-bolder text-h6">necesidades</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon name="arrow_right" color="primary" />
+          </q-item-section>
+        </q-item>
+      </q-card>
     </div>
   </div>
 </template>

@@ -35,7 +35,6 @@
             <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteProduct(img._id)" />
           </div>
           <div v-else class="column justify-around">
-            <q-btn round flat color="white" size="sm" text-color="black" icon="edit" @click="radio(img_id)" />
             <q-btn round flat color="white" size="sm" text-color="red" icon="delete" @click="deleteSoli(img._id)" />
           </div>
       </q-item>

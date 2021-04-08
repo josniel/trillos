@@ -47,6 +47,34 @@
         <q-input v-model="observaciones" label="Observaciones de la Empresa" outlined dense
         />
       </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-pb-md">
+      <div class="text-subtitle2 q-mt-sm">Selecciona las categorias</div>
+          <q-select
+            outlined
+            v-model="categorias"
+            :options="options"
+            label="Selecciona las categorias"
+            multiple
+            emit-value
+            map-options
+            error-message="Ingrese las categorias de la empresa"
+            :error="$v.categorias.$error" @blur="$v.categorias.$touch()"
+        >
+          <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+            <q-item
+              v-bind="itemProps"
+              v-on="itemEvents"
+            >
+              <q-item-section>
+                <q-item-label v-html="opt.label" ></q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-checkbox :value="selected" @input="toggleOption(opt)" />
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <q-file bottom-slots accept=".jpg, image/*" v-model="perfilFile" outlined label="Foto perfil de la tienda" @input="test"
               error-message="Ingrese una foto de perfil para su tienda"
@@ -112,6 +140,7 @@
           </template>
         </q-select>
       </div>
+
         <div class="text-subtitle2 q-mt-sm">Horario</div>
         <div class="q-gutter-sm row justify-between">
           <q-input label="Hora de inicio" class="col-5" v-model="form.hora_inicio" mask="time" :rules="['time']"
@@ -165,12 +194,35 @@ export default {
     return {
       perfilFile: null,
       dias: [],
+      categorias: [],
       tiendaFiles: [],
       pagina: '',
       observaciones: '',
       imgPerfil: '',
       imgTienda: [],
       baseu: '',
+      options: [
+        {
+          label: 'Taller Pintura o carrocería',
+          value: 1
+        },
+        {
+          label: 'Repuestos o Autopartes',
+          value: 2
+        },
+        {
+          label: 'Gomería o Neumáticos',
+          value: 3
+        },
+        {
+          label: 'Taller Mecánica',
+          value: 4
+        },
+        {
+          label: 'Taller Electricidad',
+          value: 5
+        }
+      ],
       options_dias: [
         {
           label: 'Lunes',
@@ -216,6 +268,7 @@ export default {
         hora_fin: { required }
       },
       dias: { required },
+      categorias: { required },
       perfilFile: { required }
     }
   },
@@ -238,10 +291,12 @@ export default {
     },
     async next () {
       this.form.dias = this.dias
+      this.form.categorias = this.categorias
       this.$v.form.$touch()
       this.$v.dias.$touch()
+      this.$v.categorias.$touch()
       this.$v.perfilFile.$touch()
-      if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error) {
+      if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error && !this.$v.categorias.$error) {
         this.form.pagina = this.pagina
         this.form.observaciones = this.observaciones
         if (this.tiendaFiles.length > 0) {

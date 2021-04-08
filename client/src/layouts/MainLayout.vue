@@ -26,7 +26,7 @@
       <div class="bg-grey-1 text-primary shadow-2 full-width row justify-around" >
           <q-btn icon="home" color="primary" flat round size="md" :to="rol === 2 ? '/inicio_cliente' : rol === 3 ? '/inicio_proveedor' : rol === 1 ? '/inicio_administrador' : ''" />
           <q-btn :icon="rol === 3 ? 'card_giftcard' : 'view_list'" color="primary" flat round size="md" :to="rol === 2 ? '/solicitudes' : rol === 3 ? '/productos' : rol === 1 ? '/reportes_usuarios' : ''"/>
-          <q-btn v-if="rol != 1" icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
+          <q-btn v-if="rol != 1 && comprobar" icon="add" outline color="secondary" class="q-mb-sm" round size="lg" :to="rol === 2 ? '/registronecesidades' : rol === 3 ? '/registroproductos' : ''"/>
           <q-btn :icon="rol === 1 ? 'lock_clock' : 'fact_check'" color="primary" flat round size="md" :to="rol === 1 ? '/proveedores_pendientes' : '/mis_cotizaciones'" />
           <q-btn v-if="rol != 1" color="primary" icon="grading" flat round size="md" to="/reportes" />  </div>
     </q-footer>
@@ -43,13 +43,23 @@ export default {
   computed: {
     mostrarBoton () {
       return this.$route.meta.botonchat
+    },
+    comprobar () {
+      if (this.rol === 3) {
+        const buscar = this.categoria.findIndex(v => v === 2)
+        if (buscar >= 0) { return true } else { return false }
+      } else {
+        return true
+      }
     }
   },
   name: 'MainLayout',
   data () {
     return {
       usuario: {},
-      rol: null
+      rol: null,
+      valor: 0,
+      categoria: []
     }
   },
   mounted () {
@@ -57,9 +67,12 @@ export default {
   },
   methods: {
     getUser () {
-      this.$api.get('user_info').then(v => {
-        if (v) {
-          this.rol = v.roles[0]
+      this.$api.get('user_info').then(res => {
+        if (res) {
+          this.usuario = res
+          this.categoria = this.usuario.categorias
+          this.rol = this.usuario.roles[0]
+          console.log(this.categoria, 'categorias')
         }
       })
     },
