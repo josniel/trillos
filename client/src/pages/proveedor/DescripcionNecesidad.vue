@@ -17,7 +17,9 @@
             </q-item-section>
             <q-item-section side top>
               <div class="row">
-                <q-icon :name="categoria.icons" color="yellow" style="font-size: 2rem;"/>
+              <q-avatar size="45px">
+                <img :src="categoria.icons">
+              </q-avatar>
               </div>
             </q-item-section>
           </q-item>

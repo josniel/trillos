@@ -135,7 +135,7 @@ export default {
       }
       if (!this.$v.categoria_id.$error && !this.$v.form.$error && !this.$v.solicitudFiles.$error) {
         this.form.categoria_id = this.categoria_id
-        this.form.status = 0
+        this.form.status = 'Nuevo'
         this.$q.loading.show({
           message: 'Subiendo Solicitud, Por Favor Espere...'
         })

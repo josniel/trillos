@@ -65,11 +65,12 @@ addPrefixToGroup(
     Route.get('producto_filtrado/:filtrar', 'ProductoController.productoFiltrado')
 
     Route.post('necesidad', 'NecesidadController.store')
-    Route.get('necesidad', 'NecesidadController.index')
+    Route.get('necesidad', 'NecesidadController.necesidadByAll')
     Route.get('necesidad_by_user_id/:user_id', 'NecesidadController.necesidadByUserId')
     Route.get('necesidad_by_categoria_id/:categoria_id', 'NecesidadController.necesidadByCategoriaId')
     Route.get('necesidad/:id', 'NecesidadController.show')
     Route.put('necesidad/:id', 'NecesidadController.update')
+    Route.put('necesidadestatus/:id/:status', 'NecesidadController.cambioestado')
     Route.delete('necesidad/:id', 'NecesidadController.destroy')
 
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado

@@ -35,6 +35,12 @@ class NecesidadController {
     response.send(datos)
   }
 
+  async necesidadByAll ({ response, params }) {
+    let datos = (await Necesidad.query().where({}).fetch()).toJSON()
+    for (let j of datos) j.chat_info = await ChatMessage.findBy('necesidad_id', j._id.toString())
+    response.send(datos)
+  }
+
   /**
    * Render a form to be used for creating a new necesidad.
    * GET necesidads/create
@@ -161,6 +167,10 @@ class NecesidadController {
       let modificar = await Necesidad.query().where('_id', params.id).update(dat)
       response.send(modificar)
     }
+  }
+  async cambioestado ({ params, response }) {
+    let modificar = await Necesidad.query().where('_id', params.id).update({ status: params.status })
+    response.send(modificar)
   }
 
   /**

@@ -65,7 +65,7 @@
         </q-item>
       </q-card>
 
-      <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/reportes_usuarios')" >
+      <q-card v-ripple class="q-pa-sm q-my-md bordes" @click="$router.push('/allnecesidades')" >
         <q-item>
           <q-item-section avatar>
             <q-avatar icon="grading" class="text-black" />

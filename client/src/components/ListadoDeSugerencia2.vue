@@ -26,7 +26,7 @@
         <q-item-section>
           <q-item-label class="text-caption q-pl-sm">Nombre: <strong>{{img.name}}</strong> </q-item-label>
           <q-item-label v-if="img.direccion" class="text-caption q-pl-sm">Direccion: <strong>{{img.direccion}}</strong> </q-item-label>
-          <q-item-label v-if="img.chat_info.status" class="text-caption q-pl-sm">Estatus: <strong>{{img.chat_info.status}}</strong> </q-item-label>
+          <q-item-label v-if="img.chat_info" class="text-caption q-pl-sm">Estatus: <strong>{{img.chat_info.status}}</strong> </q-item-label>
         </q-item-section>
         <q-separator vertical color="black" />
           <div class="column justify-around" v-if="soy === 'proveedor'">
