@@ -179,7 +179,7 @@
     <div class="row">
       <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space />
-      <q-btn @click="next()" color="primary" push label="Guardar" glossy/>
+      <q-btn @click="next()" :loading="loading" color="primary" push label="Guardar" glossy/>
     </div>
   </div>
 </template>
@@ -195,6 +195,7 @@ export default {
       perfilFile: null,
       dias: [],
       categorias: [],
+      loading: false,
       tiendaFiles: [],
       pagina: '',
       observaciones: '',
@@ -297,6 +298,10 @@ export default {
       this.$v.categorias.$touch()
       this.$v.perfilFile.$touch()
       if (!this.$v.form.$error && !this.$v.dias.$error && !this.$v.perfilFile.$error && !this.$v.categorias.$error) {
+        this.loading = true
+        this.$q.loading.show({
+          message: 'Cargando...'
+        })
         this.form.pagina = this.pagina
         this.form.observaciones = this.observaciones
         if (this.tiendaFiles.length > 0) {
@@ -319,10 +324,14 @@ export default {
                 message: 'Ya formas parte de Triyus, Bienvenido',
                 color: 'positive'
               })
+              this.loading = false
+              this.$q.loading.hide()
               this.loguear()
             }
           })
         } else {
+          this.loading = false
+          this.$q.loading.hide()
           this.$q.dialog({
             message: 'Debes subir fotos de la tienda.',
             persistent: true

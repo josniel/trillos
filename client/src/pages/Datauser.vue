@@ -5,11 +5,13 @@
         <div v-if="datosusuario">
             <q-card class="bg-amber-1 q-pa-md q-ma-md shadow-3">
                 <div class="row justify-center items-center">
+                  <div class="column items-center justify-center">
                     <div class="q-mt-none q-ml-sm text-h7 text-grey-9 text-bold"></div>
                       <q-avatar size="180px">
                         <img :src="baseu + 'perfil' + form._id" >
                       </q-avatar>
                       <div class="text-h5 q-ma-sm text-center text-bold"> {{form.full_name}} {{form.last_name }} </div>
+                    </div>
                          <q-list style="width:100%">
                             <q-item clickable v-ripple>
                               <q-item-section avatar>
@@ -50,10 +52,12 @@
           <div v-if="datosproveedor">
            <q-card class="bg-amber-1 q-pa-md q-ma-md shadow-3">
                 <div class="row justify-center items-center">
-                      <q-avatar size="180px">
-                        <img :src="baseu + 'perfil' + form._id" >
-                      </q-avatar>
-                      <div class="text-h5 q-ma-sm text-center text-bold"> {{form.full_name}}</div>
+                  <div class="column items-center justify-center">
+                    <q-avatar size="180px">
+                      <img :src="baseu + 'perfil' + form._id" >
+                    </q-avatar>
+                    <div class="text-h5 q-ma-sm text-center text-bold"> {{form.full_name}}</div>
+                  </div>
                           <q-list style="width:100%">
                           <q-item clickable v-ripple>
                             <q-item-section avatar>

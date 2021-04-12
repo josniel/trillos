@@ -246,8 +246,8 @@
         </q-card-section>
 
         <q-card-section class="q-pa-md row justify-center items-center">
-          <q-btn v-if="estatus === 3" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datosproveedor(), $router.go(-1)" push />
-          <q-btn v-if="estatus === 2" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos(), $router.go(-1)" push />
+          <q-btn v-if="estatus === 3" :loading="loading" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datosproveedor(), $router.go(-1)" push />
+          <q-btn v-if="estatus === 2" :loading="loading" class="q-ma-sm" label="Actualizar" color="primary" @click="modificar_datos(), $router.go(-1)" push />
           <q-btn class="q-ma-sm" label="Cerrar" color="grey" v-close-popup />
         </q-card-section>
       </q-card>
@@ -286,6 +286,7 @@ export default {
       form2: {},
       repeatPassword: '',
       password: '',
+      loading: false,
       notifi: false,
       eliminarimg: false,
       perfilFile: null,
@@ -388,9 +389,15 @@ export default {
       console.log(this.form, 'pendiente')
       if (this.password) {
         if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
+          this.loading = true
+          this.$q.loading.show({
+            message: 'Cargando...'
+          })
           this.form.password = this.password
           this.$api.put('datosnew/' + this.id, this.form).then(res => {
             if (res) {
+              this.loading = false
+              this.$q.loading.hide()
               this.$q.notify({
                 message: 'Datos Modificados con exito',
                 color: 'positive'
@@ -398,6 +405,8 @@ export default {
             }
           })
         } else {
+          this.loading = false
+          this.$q.loading.hide()
           this.$q.notify({
             message: 'las contraseñas no son iguales',
             color: 'negative'
@@ -407,7 +416,13 @@ export default {
         if (!this.password) {
           if (!this.$v.form.$error) {
             this.$api.put('datosnew/' + this.id, this.form).then(res => {
+              this.loading = true
+              this.$q.loading.show({
+                message: 'Cargando...'
+              })
               if (res) {
+                this.loading = false
+                this.$q.loading.hide()
                 this.$q.notify({
                   message: 'Datos Modificados con exito',
                   color: 'positive'

@@ -4,7 +4,11 @@
     <q-input rounded outlined bg-color="yellow-2" v-model="form.name" label="Nombre" dense :error="$v.form.name.$error" error-message="Este campo es requerido"  @blur="$v.form.name.$touch()"/>
     <div class="q-mt-lg q-mb-sm text-subtitle2 q-pl-sm">Categoria</div>
     <div class="row justify-around">
-      <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round :icon="item.icons" class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(item)" />
+      <q-btn v-for="(item, index) in categorias" push :color="item.select === false ? 'white' : 'primary'" :text-color="item.select === false ? 'black' : 'white'" round class="q-mt-sm q-mr-sm q-ml-sm" :key="index" @click="seleccionarcategoria(item)">
+      <q-avatar size="40px">
+        <img :src="item.icons">
+      </q-avatar>
+      </q-btn>
     </div>
     <div class="q-mt-lg q-mb-sm text-subtitle2 q-pl-sm">Descripcion</div>
       <q-input rounded outlined bg-color="yellow-2" v-model="form.description" type="textarea" :error="$v.form.description.$error" error-message="Este campo es requerido"  @blur="$v.form.description.$touch()"/>

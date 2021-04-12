@@ -51,7 +51,7 @@
     <div class="row">
       <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space />
-      <q-btn @click="next()" color="primary" push label="Guardar" glossy/>
+      <q-btn @click="next()" :loading="loading"  color="primary" push label="Guardar" glossy/>
     </div>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default {
     return {
       perfilFile: null,
       imgPerfil: '',
+      loading: false,
       baseu: ''
     }
   },
@@ -94,6 +95,10 @@ export default {
       this.$v.form.$touch()
       this.$v.perfilFile.$touch()
       if (!this.$v.form.$error && !this.$v.perfilFile.$error) {
+        this.loading = true
+        this.$q.loading.show({
+          message: 'Cargando...'
+        })
         this.form.enable = true
         var formData = new FormData()
         formData.append('perfilFile', this.perfilFile)
@@ -104,6 +109,8 @@ export default {
           }
         }).then(res => {
           if (res) {
+            this.loading = false
+            this.$q.loading.hide()
             this.$q.notify({
               message: 'Ya formas parte de Triyus, Bienvenido',
               color: 'positive'
