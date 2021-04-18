@@ -109,7 +109,7 @@ export default {
         }).then((res) => {
           this.$q.loading.hide()
           this.$q.notify({
-            message: 'Datos Modificados con exit',
+            message: 'Datos Modificados con exito',
             color: 'positive'
           })
           this.$router.go(-1)
