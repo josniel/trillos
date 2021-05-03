@@ -6,6 +6,7 @@ const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const fs = require('fs')
 var randomize = require('randomatic');
+const moment = require('moment')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -108,7 +109,14 @@ class NecesidadController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
-    response.send(await Necesidad.find(params.id))
+    let dato = await Necesidad.find(params.id)
+    let newFecha = moment(dato.created_at).format('DD/MM/YYYY')
+    let hora = moment(dato.created_at).format('h:mm:ss a');
+    dato.hora = hora
+    dato.newFecha = newFecha
+    let color = dato.necesidad === 'Urgente (1 a 3 Horas)' ? 'red' : dato.necesidad === 'Medio (5 a 24 Horas)' ? 'orange' : 'blue'
+    dato.colorRadio = color
+    response.send(dato)
   }
 
   /**
@@ -118,7 +126,7 @@ class NecesidadController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
+   * @param {datoiew} ctx.view
    */
   async edit ({ params, request, response, view }) {
   }
