@@ -137,39 +137,14 @@ export default {
 
     async getSolicitudes2 () {
       await this.$api.get('user_info').then(res => {
-        if (res.status === 0) {
-          this.data = {}
-          this.$q.dialog({
-            title: 'Atención',
-            message: 'Para cotizar y ver solicitudes de clientes debes esperar por la autorización del administrador.',
-            cancel: false,
-            persistent: true
-          }).onOk(() => {
-            // Ok
-          }).onCancel(() => {
-            // cancel
-          })
-        } else if (res.status === 2) {
-          this.data = {}
-          this.$q.dialog({
-            title: 'Atención',
-            message: 'Tu cuenta ha sido rechazada. Debes modificar tu información de usuario y esperar por respuesta del administrador.',
-            cancel: false,
-            persistent: true
-          }).onOk(() => {
-            // Ok
-          }).onCancel(() => {
-            // cancel
-          })
-        } else {
-          this.$api.get('show_all_cotizations2').then(v => {
-            if (v) {
-              this.data2 = v
-              console.log(this.data2, 'dataaaaaaaaa2222')
-            }
-          })
-        }
-      })
+        this.$api.get('show_all_cotizations2').then(v => {
+          if (v) {
+            this.data2 = v
+            console.log(this.data2, 'dataaaaaaaaa2222')
+          }
+        })
+      }
+      )
     },
 
     getUser () {
