@@ -85,6 +85,7 @@ export default {
       form: {},
       user: {
       },
+      info: {},
       listado2: false,
       ratingTienda: 0
     }
@@ -100,6 +101,8 @@ export default {
   methods: {
     async getSolicitudes () {
       await this.$api.get('user_info').then(res => {
+        this.info = res
+        console.log(this.info, 'info del usuario')
         if (res.status === 0) {
           this.data = {}
           this.$q.dialog({
@@ -125,7 +128,7 @@ export default {
             // cancel
           })
         } else {
-          this.$api.get('necesidad').then(v => {
+          this.$api.get('necesidades').then(v => {
             if (v) {
               this.data = v
               console.log(this.data, 'dataa')

@@ -52,10 +52,12 @@
           <q-select
             outlined
             v-model="categorias"
-            :options="options"
+            :options="ejemplo"
             label="Selecciona las categorias"
             multiple
             emit-value
+            option-value="_id"
+            option-label="name"
             map-options
             error-message="Ingrese las categorias de la empresa"
             :error="$v.categorias.$error" @blur="$v.categorias.$touch()"
@@ -66,7 +68,7 @@
               v-on="itemEvents"
             >
               <q-item-section>
-                <q-item-label v-html="opt.label" ></q-item-label>
+                <q-item-label v-html="opt.name" ></q-item-label>
               </q-item-section>
               <q-item-section side>
                 <q-checkbox :value="selected" @input="toggleOption(opt)" />
@@ -180,6 +182,7 @@
       <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space />
       <q-btn @click="next()" :loading="loading" color="primary" push label="Guardar" glossy/>
+      <q-btn @click="prueba()" color="negative" push label="weoooooooo" glossy/>
     </div>
   </div>
 </template>
@@ -202,6 +205,7 @@ export default {
       imgPerfil: '',
       imgTienda: [],
       baseu: '',
+      ejemplo: [],
       options: [
         {
           label: 'Taller Pintura o carrocería',
@@ -274,6 +278,7 @@ export default {
     }
   },
   mounted () {
+    this.obtenerDatos()
     this.baseu = env.apiUrl
   },
   methods: {
@@ -289,6 +294,9 @@ export default {
     },
     test () {
       if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
+    },
+    prueba () {
+      console.log(this.categorias, 'miraaaaaaaaaa')
     },
     async next () {
       this.form.dias = this.dias
@@ -356,6 +364,14 @@ export default {
           // this.loading = false
         }
         this.$q.loading.hide()
+      })
+    },
+    obtenerDatos () {
+      this.$api.get('categoria').then(res => {
+        if (res) {
+          this.ejemplo = res
+          console.log(this.ejemplo, 'maweooo')
+        }
       })
     }
   }

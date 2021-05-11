@@ -42,6 +42,19 @@ class NecesidadController {
     response.send(datos)
   }
 
+  async necesidades ({ response, params, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
+    for (let j of datos) j.chat_info = await ChatMessage.findBy('necesidad_id', j._id.toString())
+    let filters = []
+    for (let g of user.categorias) {
+      let filterNecesidad = datos.filter(v => v.categoria_id === g)
+      filters = filters.concat(filterNecesidad)
+
+    }
+    response.send(filters)
+  }
+
   /**
    * Render a form to be used for creating a new necesidad.
    * GET necesidads/create
