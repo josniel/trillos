@@ -182,7 +182,6 @@
       <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space />
       <q-btn @click="next()" :loading="loading" color="primary" push label="Guardar" glossy/>
-      <q-btn @click="prueba()" color="negative" push label="weoooooooo" glossy/>
     </div>
   </div>
 </template>
@@ -294,9 +293,6 @@ export default {
     },
     test () {
       if (this.perfilFile) { this.imgPerfil = URL.createObjectURL(this.perfilFile) }
-    },
-    prueba () {
-      console.log(this.categorias, 'miraaaaaaaaaa')
     },
     async next () {
       this.form.dias = this.dias
