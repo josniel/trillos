@@ -189,7 +189,6 @@
       <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space />
       <q-btn @click="next()" :loading="loading" color="primary" push label="Guardar" glossy/>
-      <q-btn @click="ejemploo()" :loading="loading" color="primary" push label="prueba" glossy/>
     </div>
   </div>
 </template>
@@ -304,10 +303,7 @@ export default {
       this.tiendaFiles.splice(ind, 1)
       this.imgTienda.splice(ind, 1)
     },
-    ejemploo () {
-      console.log(this.form, 'mira')
-      console.log(this.tiendaFiles, 'chichia')
-    },
+
     categoriasFN (id) {
       const buscar = this.ejemplo.find(v => v._id === id)
       return buscar.name
