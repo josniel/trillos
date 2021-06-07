@@ -82,12 +82,36 @@ class UserController {
           images.push(profilePic.fileName)
         }
       }
+
+      let imagesDni = []
+      if (dat.cantidadArchivosDni && dat.cantidadArchivosDni > 0) {
+        for (let i = 0; i < dat.cantidadArchivosDni; i++) {
+          let codeFile = randomize('Aa0', 30)
+          const profilePic = request.file('dniFiles_' + i, {
+            types: ['image']
+          })
+          if (Helpers.appRoot('storage/uploads/dniFiles')) {
+            await profilePic.move(Helpers.appRoot('storage/uploads/dniFiles'), {
+              name: codeFile,
+              overwrite: true
+            })
+          } else {
+            mkdirp.sync(`${__dirname}/storage/Excel`)
+          }
+          imagesDni.push(profilePic.fileName)
+        }
+      }
+
       let body = dat
       const rol = body.roles
       body.roles = [rol]
       if (images.length > 0) {
         body.tiendaFiles = images
         delete body.cantidadArchivos
+      }
+      if (imagesDni.length > 0) {
+        body.dniFiles = imagesDni
+        delete body.cantidadArchivosDni
       }
       const user = await User.create(body)
       const profilePic = request.file('perfilFile', {
