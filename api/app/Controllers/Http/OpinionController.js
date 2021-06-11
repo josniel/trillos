@@ -35,10 +35,19 @@ class OpinionController {
       }
 
     })
-
     response.send(formatearFecha)
   }
 
+  async todos ({ request, response, params, auth }) {
+    let opiniones = (await Opiniones.query().where({calificado: params.proveedor_id}).with('calificador_info').with('necesidad_info').fetch()).toJSON()
+    let formatearFecha = opiniones.map(v => {
+      return {
+        ...v,
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
+  }
   async index2 ({ request, response, params, auth }) {
     let opiniones = (await Opiniones.query().where({calificado: params.proveedor_id}).fetch()).toJSON()
     var calificacion = 0

@@ -19,6 +19,9 @@ class Necesidad extends Model {
   creador () {
     return this.hasOne('App/Models/User', 'ownerId', '_id')
   }
+  categorianame () {
+    return this.hasOne('App/Models/Categoria', 'categoria_id', '_id')
+  }
   chat_info () {
     return this.belongsTo('App/Models/ChatMessage', '_id', 'necesidad_id')
   }

@@ -29,6 +29,11 @@
         <ParteCuatro :form="form" :panel="panelito" />
       </div>
     </q-tab-panel>
+    <q-tab-panel name="parte_cinco_proveedor_datos">
+      <div class="column">
+        <ParteCinco :form="form" :panel="panelito" />
+      </div>
+    </q-tab-panel>
   </q-tab-panels>
 </template>
 
@@ -39,10 +44,11 @@ import ParteDosprove from '../components/Registro/PartedosProveedor'
 import ParteTresProv from '../components/Registro/ParteTresProveedor'
 import ParteTresClient from '../components/Registro/ParteTresCliente'
 import ParteCuatro from '../components/Registro/ParteCuatroProveedor'
+import ParteCinco from '..//components/Registro/ParteCincoProveedor'
 import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
 export default {
   components: {
-    ParteUno, ParteDos, ParteTresProv, ParteTresClient, ParteDosprove, ParteCuatro
+    ParteUno, ParteDos, ParteTresProv, ParteTresClient, ParteDosprove, ParteCuatro, ParteCinco
   },
   computed: {
     panel () {

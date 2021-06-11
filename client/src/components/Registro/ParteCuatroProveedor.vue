@@ -365,6 +365,7 @@ export default {
               })
               this.loading = false
               this.$q.loading.hide()
+              this.panel.panel = 'parte_cinco_proveedor_datos'
               /* this.loguear() */
             }
           })

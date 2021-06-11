@@ -147,14 +147,40 @@ class ChatController {
     response.send(formatearFecha)
   }
 
+  async showAllCotizations3 ({ params, response, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let cotizaciones = []
+    let today = moment().format('YYYY/MM/DD')
+    if (user.roles[0] === 2) {
+      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_proveedor').with('necesidad_info').with('categorianame').fetch()).toJSON()
+    } else {
+      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_cliente').with('necesidad_info').with('categorianame').fetch()).toJSON()
+    }
+    for (let i = 0; i < cotizaciones.length; i++) {
+      let dat = (await Necesidad.query().where({_id: cotizaciones[i].necesidad_id}).fetch()).toJSON()
+      cotizaciones[i].datos_necesidad = dat[0]
+      if (cotizaciones[i].fecha_termino && today > cotizaciones[i].fecha_termino && cotizaciones[i].status !== 'Terminado') {
+        let updat = await ChatMessage.query().where('_id', cotizaciones[i]._id).update({status: 'Atrasado'})
+      }
+    }
+    let formatearFecha = cotizaciones.map(v => {
+      return {
+        ...v,
+        colorRadio: v.necesidad_info.necesidad === 'Urgente (1 a 3 Horas)' ? 'red' : v.necesidad_info.necesidad === 'Medio (5 a 24 Horas)' ? 'orange' : 'blue',
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
+  }
+
   async showAllCotizations2 ({ params, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     let cotizaciones = []
     let today = moment().format('YYYY/MM/DD')
     if (user.roles[0] === 2) {
-      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_proveedor').with('necesidad_info').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({cliente_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_proveedor').with('necesidad_info').with('categorianame').fetch()).toJSON()
     } else {
-      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_cliente').with('necesidad_info').fetch()).toJSON()
+      cotizaciones = (await ChatMessage.query().where({proveedor_id: user._id, $or: [{ status: 'Cotizado' }, { status: 'Aprobado' }, { status: 'Iniciado' }, { status: 'Atrasado' }]}).with('datos_cliente').with('necesidad_info').with('categorianame').fetch()).toJSON()
     }
     for (let i = 0; i < cotizaciones.length; i++) {
       let dat = (await Necesidad.query().where({_id: cotizaciones[i].necesidad_id}).fetch()).toJSON()

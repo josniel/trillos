@@ -44,7 +44,8 @@ class NecesidadController {
 
   async necesidades ({ response, params, auth }) {
     const user = (await auth.getUser()).toJSON()
-    let datos = (await Necesidad.query().where({}).with('creador').fetch()).toJSON()
+    let datos = (await Necesidad.query().where({}).with('creador').with('categorianame').fetch()).toJSON()
+
     for (let j of datos) j.chat_info = await ChatMessage.findBy('necesidad_id', j._id.toString())
     let filters = []
     for (let g of user.categorias) {
@@ -52,7 +53,13 @@ class NecesidadController {
       filters = filters.concat(filterNecesidad)
 
     }
-    response.send(filters)
+    let formatearFecha = filters.map(v => {
+      return {
+        ...v,
+        fechaCreacion: moment(v.created_at).format('DD/MM/YYYY')
+      }
+    })
+    response.send(formatearFecha)
   }
 
   /**

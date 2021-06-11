@@ -104,6 +104,7 @@ export default {
         if (res) {
           var info = {}
           info.proveedor_id = res._id
+          info.categoria_id = this.form.categoria_id
           info.cliente_id = this.infoClient._id
           this.$api.post('crear_chat/' + id, info).then(v => {
             if (v) {
