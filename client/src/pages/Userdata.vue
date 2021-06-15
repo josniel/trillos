@@ -71,7 +71,7 @@
     </div>
 
     <div v-if="datosproveedor">
-            <q-card class="bg-amber-1 q-pa-lg q-ma-md shadow-3">
+            <q-card class="q-pa-lg q-ma-md">
                 <div class="row justify-center items-center">
                         <div class="column">
                           <q-avatar size="180px">
@@ -82,15 +82,15 @@
                           </q-avatar>
                         </div>
 
-                    <q-card style="width: 100%" class="shadow-11 bg-amber-1 q-mt-md">
+                    <q-card flat style="width: 100%" class="q-mt-md">
                       <div class="q-mt-sm column">
-                        <q-card class="q-pa-md bg-amber-1 shadow-up-3 q-mt-sm" style="border-radius:25px">
+                        <q-card class="q-pa-md q-mt-sm" style="border-radius:25px">
                               <q-scroll-area
                               horizontal
                               style="height: 110px;"
                             >
                               <div class="row no-wrap" style="width: 100%">
-                                <q-card v-for="(item, index) in form2.tiendaFiles" class="bg-secondary q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
+                                <q-card v-for="(item, index) in form2.tiendaFiles" class="q-mt-xs q-mr-sm" style="border-radius:12px;width: 100px" :key="index">
                                   <q-img :src="form2.tiendaFiles ? baseu2 + item : 'noimgpro.png'" spinner-color="white" style="height: 100px; width: 100px" />
                                    <q-btn icon="delete" style="position:absolute;top:0px;right:0px" flat round @click="eliminarimg = true, nameImgBorrar = item , estatus = rol" />
                                 </q-card>
@@ -100,7 +100,7 @@
 
                         <div class="row justify-center items-center">
                           <div class="column">
-                            <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-amber-1" style="height:100px;border-radius:12px;width:140px">
+                            <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm" style="height:100px;border-radius:12px;width:140px">
                               <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Imagen</div>
                               <q-avatar size="50px">
                                 <div style="z-index:1">
@@ -116,12 +116,12 @@
                     </q-card>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
-                      <q-input v-model="password" label="Contraseña" outlined dense
+                      <q-input v-model="password" label="Contraseña" outlined  filled dense
                         error-message="Ingrese una contraseña válida, mínimo 6 caracteres"
                         :error="$v.password.$error" @blur="$v.password.$touch()" @input="cambioClave = true"/>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="repeatPassword" label="Repita su Contraseña" outlined dense
+                      <q-input v-model="repeatPassword" label="Repita su Contraseña" outlined  filled dense
                         error-message="Las contraseñas deben ser iguales"
                         :error="$v.repeatPassword.$error"
                         @blur="$v.repeatPassword.$touch()"
@@ -129,27 +129,46 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form2.full_name" label="Nombre de la Empresa" outlined dense
-                        error-message="Ingrese el nombre de la Empresa"
+                      <q-input v-model="form2.full_name" label="Nombre de la empresa" outlined  filled dense
+                        error-message="Ingrese el nombre de la empresa"
                         :error="$v.form2.full_name.$error" @blur="$v.form.full_name.$touch()"
                         @input="cambioSoloClave = false"
                       />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-select v-model="form2.country" label="País" outlined dense :options="['Colombia', 'Chile']" error-message="Ingrese su País" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="cambioSoloClave = false" />
+                      <q-input v-model="form2.name" label="Nombre" outlined filled dense
+                        error-message="Ingrese su Nombre"
+                        :error="$v.form2.name.$error" @blur="$v.form.name.$touch()"
+                        @input="cambioSoloClave = false"
+                      />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <q-input :disable="form2.country ? false : true" v-model="form2.run_dni" :label="form2.country === 'Chile' ? 'Ingrese RUN' : form2.country === 'Colombia' ? 'Ingrese DNI' : 'Debes seleccionar un país'" outlined dense
-                          error-message="Ingrese RUN O DNI"
-                          :error="$v.form2.run_dni.$error" @blur="$v.form2.run_dni.$touch()"
-                          @input="cambioSoloClave = false"
-                        />
+                      <q-input v-model="form2.last_name" label="Apellido" outlined  filled dense
+                        error-message="Ingrese su apellido"
+                        :error="$v.form2.last_name.$error" @blur="$v.form.last_name.$touch()"
+                        @input="cambioSoloClave = false"
+                      />
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form2.direccion" label="Dirección" outlined dense
+                      <q-input v-model="form2.Dni" label="Dni" outlined  filled dense
+                        error-message="Ingrese su Dni"
+                        :error="$v.form2.Dni.$error" @blur="$v.form.Dni.$touch()"
+                        @input="cambioSoloClave = false"
+                      />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <q-input v-model="form2.fecha" stack-label type="date" filled dense
+                        error-message="ingrese una fecha valida" :error="$v.form2.fecha.$error" @blur="$v.form2.fecha.$touch()"
+                        @input="cambioSoloClave = false"
+                      />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <q-input v-model="form2.direccion" label="Dirección" outlined  filled dense
                         error-message="Ingrese su Dirección"
                         :error="$v.form2.direccion.$error" @blur="$v.form2.direccion.$touch()"
                         @input="cambioSoloClave = false"
@@ -157,25 +176,37 @@
                     </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <q-input v-model="form2.phone" type="tel" label="Telefono" outlined dense
-                        error-message="Ingrese el número de su Teléfono"
-                        :error="$v.form2.phone.$error" @blur="$v.form2.phone.$touch()" @input="cambioSoloClave = false" />
+                      <q-input v-model="form2.pais" label="Pais" outlined  filled dense
+                       error-message="Ingrese un Pais" :error="$v.form2.pais.$error" @blur="$v.form2.pais.$touch()"
+                       @input="cambioSoloClave = false"
+                      />
+                    </div>
 
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <q-input v-model="form2.ciudad" label="ciudad" outlined  filled dense
+                       error-message="Ingrese una Ciudad" :error="$v.form2.ciudad.$error" @blur="$v.form2.ciudad.$touch()"
+                       @input="cambioSoloClave = false"
+                      />
                     </div>
 
                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <q-toggle
-                          v-model="form2.delivery"
-                          label="Activar delivery"
-                          icon="delivery_dining"
-                          @input="cambioSoloClave = false"
-                        />
-                     </div>
+                      <q-input v-model="form2.region" label="region" outlined  filled dense
+                       error-message="Ingrese una Region" :error="$v.form2.region.$error" @blur="$v.form2.region.$touch()"
+                       @input="cambioSoloClave = false"
+                      />
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      <q-input v-model="form2.observaciones" type="textarea" label="observaciones" outlined  filled dense
+                       error-message="Ingrese unas observaciones" :error="$v.form2.observaciones.$error" @blur="$v.form2.observaciones.$touch()"
+                       @input="cambioSoloClave = false"
+                      />
+                    </div>
 
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
-                      <q-select outlined v-model="form2.dias" :options="options_dias" label="Días laborables" multiple emit-value map-options
+                      <q-select filled outlined v-model="form2.dias" :options="options_dias" label="Días laborables" multiple emit-value map-options
                         error-message="Ingrese los días laborables de la empresa"
-                        :error="$v.dias.$error" @blur="$v.dias.$touch()"
+                        :error="$v.form2.dias.$error" @blur="$v.form2.dias.$touch()" @input="cambioSoloClave = false"
                        >
                         <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
                           <q-item
@@ -192,9 +223,41 @@
                         </template>
                       </q-select>
                   </div>
+
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 q-mt-md">
+                      <q-select
+                        outlined
+                        v-model="form2.categorias"
+                        :options="ejemplo"
+                        label="Selecciona las categorias"
+                        multiple
+                        filled
+                        emit-value
+                        option-value="_id"
+                        option-label="name"
+                        map-options
+                        error-message="Ingrese las categorias de la empresa"
+                        :error="$v.form2.categorias.$error" @blur="$v.form2.categorias.$touch()" @input="cambioSoloClave = false"
+                    >
+                      <template v-slot:option="{ itemProps, itemEvents, opt, selected, toggleOption }">
+                        <q-item
+                          v-bind="itemProps"
+                          v-on="itemEvents"
+                        >
+                          <q-item-section>
+                            <q-item-label v-html="opt.name" ></q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-checkbox :value="selected" @input="toggleOption(opt)" />
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+
                     <div class="text-subtitle2 q-mt-sm">Horario</div>
                     <div class="q-gutter-sm row justify-between">
-                      <q-input label="Hora de inicio" class="col-5" v-model="form2.hora_inicio" mask="time" :rules="['time']"
+                      <q-input filled label="Inicio" class="col-5" v-model="form2.hora_inicio" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de inicio laboral"
                         :error="$v.form2.hora_inicio.$error" @blur="$v.form2.hora_inicio.$touch()" @input="cambioSoloClave = false" >
                         <template v-slot:append>
@@ -210,7 +273,7 @@
                         </template>
                       </q-input>
 
-                      <q-input label="Hora de cierre" class="col-5" v-model="form2.hora_fin" mask="time" :rules="['time']"
+                      <q-input filled label="Cierre" class="col-5" v-model="form2.hora_fin" mask="time" :rules="['time']"
                         error-message="Ingrese la hora de cierre laboral"
                         :error="$v.form2.hora_fin.$error" @blur="$v.form2.hora_fin.$touch()" @input="cambioSoloClave = false">
                         <template v-slot:append>
@@ -291,6 +354,7 @@ export default {
       eliminarimg: false,
       perfilFile: null,
       imgPerfil: '',
+      ejemplo: [],
       baseu: '',
       baseu2: '',
       usuario: {},
@@ -337,6 +401,7 @@ export default {
   },
   mounted () {
     this.getUser()
+    this.obtenerDatos()
     this.baseu = env.apiUrl + '/perfil_img/'
     this.baseu2 = env.apiUrl + '/tienda_img/'
     console.log(this.cambioSoloClave, 'cambio solo clave')
@@ -354,17 +419,24 @@ export default {
       },
       form2: {
         full_name: { required, maxLength: maxLength(40) },
-        country: { required },
         direccion: { required },
-        run_dni: { required },
-        phone: { required },
+        Dni: { required },
+        name: { required },
+        last_name: { required },
+        pais: { required },
+        ciudad: { required },
+        fecha: { required },
+        region: { required },
+        observaciones: { required },
         hora_inicio: { required },
-        hora_fin: { required }
+        hora_fin: { required },
+        dias: { required },
+        categorias: { required }
+
       },
       repeatPassword: { sameAsPassword: sameAs('password') },
       password: { required, maxLength: maxLength(256), minLength: minLength(6) },
-      perfilFile: { required },
-      dias: { required }
+      perfilFile: { required }
     }
   },
   methods: {
@@ -376,6 +448,7 @@ export default {
         if (this.rol === 3) {
           this.datosproveedor = true
           this.form2 = v
+          console.log(this.form2, 'Datos del usuario')
           this.espejo = v
         }
         if (this.rol === 2) {
@@ -438,6 +511,7 @@ export default {
       this.form2.cambioSoloClave = this.cambioSoloClave
       this.form2.cambioClave = this.cambioClave
       this.$v.form2.$touch()
+      console.log(this.form2, 'Datos que guardasaaaa')
       if (this.password) {
         if (!this.$v.form2.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
           this.form2.password = this.password
@@ -525,6 +599,14 @@ export default {
         })
         location.reload()
       }
+    },
+    obtenerDatos () {
+      this.$api.get('categoria').then(res => {
+        if (res) {
+          this.ejemplo = res
+          console.log(this.ejemplo, 'categorias')
+        }
+      })
     }
   }
 }
@@ -537,7 +619,7 @@ export default {
   border-radius: 12px;
 }
 .estilo-titulos {
-  background-color: #fff599;
+  background-color: $primary;
   width: 250px;
   border-radius: 12px
 }
