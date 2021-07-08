@@ -1,6 +1,18 @@
 <template>
-<div class="q-ma-md q-pa-md">
-  <div class="column">
+<div>
+  <q-carousel class="window-height" animated v-model="slide" infinite ref="carousel">
+    <q-carousel-slide :name="1" class="q-pa-none" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
+      <div class="absolute-bottom custom-caption q-mb-md">
+        <div class="row justify-center">
+          <q-btn flat no-caps class="text-h4" color="white" @click="next()">Necesito un Taller</q-btn>
+        </div>
+        <div class="row justify-center">
+          <div class="text-h5" color="white">Omitir, ir a la tienda</div>
+        </div>
+      </div>
+    </q-carousel-slide>
+  </q-carousel>
+  <!-- <div class="column">
     <animation-transition :animation-in-type="AnimationType.BOUNCEINDOWN" :animation-out-type="AnimationType.ROLLOUT">
       <div class="animated-body row justify-center" v-show="show">
         <img src="logo-400x400.png" alt="Logo" style="width: 90%;height:260px">
@@ -55,7 +67,7 @@
       <q-space />
       <q-btn @click="next()" color="primary" push label="Siguiente" glossy/>
     </div>
-    </div>
+    </div> -->
 </div>
 </template>
 
@@ -69,6 +81,7 @@ export default {
   props: ['form', 'panel'],
   data () {
     return {
+      slide: 1,
       repeatPassword: '',
       isPwd: true,
       isPwd2: true,
@@ -92,7 +105,7 @@ export default {
   },
   methods: {
     async next () {
-      if (this.panel.panel === 'parte_dos') {
+      /* if (this.panel.panel === 'parte_dos') {
         this.$q.loading.show()
         this.$v.form.email.$touch()
         this.$v.password.$touch()
@@ -110,6 +123,11 @@ export default {
           })
         }
         this.$q.loading.hide()
+      } */
+      if (this.form.roles === 2) {
+        this.panel.panel = 'parte_tres_cliente_datos'
+      } else if (this.form.roles === 3) {
+        this.panel.panel = 'parte_tres_proveedor_datos'
       }
     }
   }

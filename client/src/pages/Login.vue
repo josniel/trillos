@@ -36,8 +36,14 @@
           <div class="q-mt-md row justify-center">
               <q-btn color="primary" text-color="white" label="Iniciar Sesión" :loading="loading" @click="loguear()"/>
           </div>
-          <div class="q-mt-sm row justify-center">
-              <q-btn flat color="primary" label="Regístrate aquí" @click="$router.push('/registro')"/>
+          <div class="column q-mt-xl items-center">
+          <div class="text-subtitle1">Soy nuevo en triyus</div>
+          <div class="row items-center">
+            <div class="text-subtitle1">quiero</div>
+              <div flat class="text-bold text-subtitle1 q-ml-sm" @click="$router.push('/registro')">
+              Registrame
+              </div>
+          </div>
           </div>
       </div>
     </div>
