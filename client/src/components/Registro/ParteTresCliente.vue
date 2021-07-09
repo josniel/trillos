@@ -136,7 +136,7 @@
     <div class="row justify-center">
       <!-- <q-btn @click="panel.panel = 'parte_dos'" color="primary" push label="Atras" flat/>
       <q-space /> -->
-      <q-btn @click="next()" :loading="loading"  color="primary" push label="Guardar" glossy/>
+      <q-btn @click="next()" style="border-radius:25px; width: 70%" :loading="loading"  color="primary" push label="Guardar" class="q-px-xl q-py-sm"/>
     </div>
   </div>
 </template>
@@ -153,7 +153,11 @@ export default {
       imgPerfil: '',
       loading: false,
       baseu: '',
-      terms: false
+      terms: false,
+      appear: false,
+      isPwd: true,
+      password: '',
+      repeatPassword: ''
     }
   },
   validations () {
@@ -184,12 +188,18 @@ export default {
     },
     async next () {
       this.$v.form.$touch()
+      this.$v.repeatPassword.$touch()
+      this.$v.password.$touch()
       this.$v.perfilFile.$touch()
-      if (!this.$v.form.$error && !this.$v.perfilFile.$error) {
+      if (!this.terms) {
+        this.appear = true
+      }
+      if (!this.$v.form.$error && !this.$v.perfilFile.$error && this.terms && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
         this.loading = true
         this.$q.loading.show({
           message: 'Cargando...'
         })
+        this.form.password = this.password
         this.form.enable = true
         var formData = new FormData()
         formData.append('perfilFile', this.perfilFile)
@@ -208,6 +218,11 @@ export default {
             })
             this.loguear()
           }
+        })
+      } else {
+        this.$q.notify({
+          message: 'Debes ingresar todos los datos requeridos',
+          color: 'negative'
         })
       }
     },
